@@ -18,17 +18,26 @@ console.log("La media es: ",media)
 
 
 if (media<5) {
-    console.log("SUSPENSO")
-    alert("---HAS SUSPENDIDO---")
-} else if(media>=5||media<=7){
-    console.log("APROBADO")
-    alert("---APROBADO---")
 
-}else if(media>=7 || media ==8.5){
+    console.log("SUSPENSO")
+    alert("---HAS SUSPENDIDO---"+media)
+
+} else if(media>=5 && media<7){
+
+    console.log("APROBADO")
+    alert("---APROBADO---"+media)
+
+}else if(media>=7 && media <8.5){
+
     console.log("NOTABLE")
-    alert("---NOTABLE---")
-}else if(media>=8.5||media==10){
+    alert("---NOTABLE---"+media)
+
+}else if(media>=8.5 && media<=10){
+
     console.log("SOBRESALIENTE")
-    alert("---SOBRESALIENTE---")
+    alert("---SOBRESALIENTE---"+media)
+
+}else{
+    console.log("EL VALOR INTRODUCIDO NO ESTA EN EL CIRTERIO DE EVALUACION")
 }
 
