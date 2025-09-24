@@ -23,8 +23,8 @@ for (let index = 0; index < palabras.length; index++) {
 
 if(contador>0){
 
-  console.log("la palabra ${palaBuscar} aparece "+contador)
-}else{
+  console.log(`La palabra ${palaBuscar} aparece ${contador} veces`);
 
-  console.log("la palabra ${palaBuscar} no aparece ")
+}else{
+  console.log(`La palabra ${palaBuscar} no aparece`);
 }
