@@ -1,23 +1,18 @@
-console.log("T03 - Ejercicio 13");
+console.log("T03 - Ejercicio 15");
 /*
-    * Crea un script que pida al usuario la fecha de su nacimiento (para saber su cumpleaños) y le indique su edad actual.
+    * Repite el ejercicio verificando si la fecha es correcta sin usar expresiones regulares 
+    * (la fecha solo será correcta con este formato: DD/MM/YYYY): 
+
 */
 
 let fechaNacimiento = prompt("Introduce la fecha de tu nacimiento en estos formatos estos DD-MM-YYYY, DD/MM/YYYY o DD MM YYYY: ")
 
 let separar = "";
 
-if (fechaNacimiento.includes("-")) {
-
-    separar = "-";
-
-} else if (fechaNacimiento.includes("/")) {
+if (fechaNacimiento.includes("/")) {
 
     separar = "/";
-
-} else if (fechaNacimiento.includes(" ")) {
-    separar = " ";
-} else {
+}else {
     console.log("--FORMATO DE FECHA INVALIDA--");
 }
 
@@ -39,7 +34,6 @@ let fechaActual=new Date();
 let fechaCumple=new Date(year,month,day);
 
 let edad=fechaActual.getFullYear()-fechaActual.getFullYear();
-
 let mesDate=fechaActual.getMonth()-fechaCumple.getMonth();
 
 if (mesDate< 0 || (mesDate === 0 && fechaActual.getDate() < fechaNacimiento.getDate())) {
@@ -47,13 +41,9 @@ if (mesDate< 0 || (mesDate === 0 && fechaActual.getDate() < fechaNacimiento.getD
 }
 
 if(edad>=18){
-
     console.log("ERES MAYOR DE EDAD !!");
-
 }else{
-
     console.log("ERES MENOR DE EDAD....");
-
 }
 
 
