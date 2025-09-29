@@ -14,4 +14,6 @@ let user=prompt("Introduce un DNI o un CIF: ");
 let pattDni=/^([XYZ]|\d)\d{7}[A-Z]$/;
 let pattCif=/^[A-HNPQRSUVW]\d{7}[0-9A-J]$/i;
 
-function validarDNIyCIF(){}
+function validarDNIyCIF(){
+    
+}
