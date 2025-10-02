@@ -50,12 +50,69 @@ function validarDni(cadena){
     }else{
         isValid=true;
         let letrasDni=['T','R','W','A','G','M','Y','F','P','D','X','B','N','J','Z','S','Q','V','H','L','C','K','E'];
-    let letraValida=letrasDni[posLetra-1];
+        let letraValida=letrasDni[posLetra-1];
     }
 
 }
 
+let cifLeroyMerlin="B84818442";
 
+function validarCIF(cadena){
+    
+    let isValidLetra=false;
+    let digitos=Number(cadena.substring(1,8));
+
+    let digiControl=cadena.slice(-1);
+    console.log(digiControl)
+    console.log(typeof(digitos))
+
+    if(cadena[0]=="A"||cadena[0]=="B"){
+        isValidLetra=true;
+    }else{
+
+        console.log("--EMPEZAMOS MAL QUE LA LETRA INICIAL NO COINCIDE CON LOS TIPOS DE ENTIDADES--")
+    }
+
+    let sumPar=0;
+    let sumImpar=0;
+    // PARA CALCULAR EL DIGITO DE CONTROL 
+    for (let i = 0; i < digitos.length; i++) {
+
+        if(i%2==0){
+            //sumo los pares
+            sumPar+=digitos[i];
+
+        }else{
+
+            let multi=digitos[i]*2;
+
+            if(multi>=10){
+
+                let cadenaCifras=multi.toString();
+
+                let digi1=cadenaCifras[0];
+                let digi2=cadenaCifras[1];
+                let sumaDigi=Number(digi1)+Number(digi2);
+                sumImpar+=sumaDigi;
+
+            }else{
+                //si es una cifra lo sumo directamente
+                sumImpar+=digitos[i];
+
+            }
+        }
+        
+    }
+
+    let sumaTotal=sumImpar+sumPar;
+
+    let resto=sumaTotal%10;
+    let codeControl=10-resto;
+
+    if(codeControl===10){
+        codeControl=0;
+    }
+}
 
 
 
