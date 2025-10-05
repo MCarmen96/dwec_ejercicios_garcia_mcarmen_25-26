@@ -2,15 +2,14 @@ console.log("T02 - Ejercicio 02");
 
 let num=parseInt(prompt("Dime un numero: "));
 
-let comprobacion=isNaN(num);
 
-if(comprobacion==false){
+if(isNaN(num)){
 
-    console.log("EL VALOR INTRODUCIDO ES UN NUMERO")
+    console.log("EL VALOR INTRODUCIDO NO ES UN NUMERO")
 
-}else{
+}else if(Number.isInteger(num)){
     
-    console.log("EL VALOR NO ES NUMERO")
+    console.log("EL VALOR  ES NUMERO")
 
     if(num%2==0){
         console.log("ES MULTIPLO DE 2"+num)
@@ -28,6 +27,8 @@ if(comprobacion==false){
         console.log("EL NUMERO NO ES MULTIPLO DE NINGUNO DE LOS NUMEROS")
         alert("EL NUMERO NO ES MULTIPLO DE NINGUNO DE LOS NUMEROS")
     }
+}else{
+    console.log("VALOR INTRODUCIDO NO VALIDO");
 }
 
 

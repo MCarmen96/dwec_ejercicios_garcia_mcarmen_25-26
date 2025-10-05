@@ -2,10 +2,12 @@ console.log("T02 - Ejercicio 01");
 
 let sumatorio=0;
 let media=0;
+let num;
 
 for (let index = 0; index < 3; index++) {
-
-    let num=parseFloat(prompt("Introduce un numero:"))
+    
+    
+    num=parseFloat(prompt("Introduce un numero:"))
     sumatorio+=num;
     console.log(num)
 
@@ -20,22 +22,22 @@ console.log("La media es: ",media)
 if (media<5) {
 
     console.log("SUSPENSO")
-    alert("---HAS SUSPENDIDO---"+media)
+    alert("---HAS SUSPENDIDO---\n"+media)
 
 } else if(media>=5 && media<7){
 
     console.log("APROBADO")
-    alert("---APROBADO---"+media)
+    alert("---APROBADO---\n"+media)
 
 }else if(media>=7 && media <8.5){
 
     console.log("NOTABLE")
-    alert("---NOTABLE---"+media)
+    alert("---NOTABLE---\n"+media)
 
 }else if(media>=8.5 && media<=10){
 
     console.log("SOBRESALIENTE")
-    alert("---SOBRESALIENTE---"+media)
+    alert("---SOBRESALIENTE---\n"+media)
 
 }else{
     console.log("EL VALOR INTRODUCIDO NO ESTA EN EL CIRTERIO DE EVALUACION")

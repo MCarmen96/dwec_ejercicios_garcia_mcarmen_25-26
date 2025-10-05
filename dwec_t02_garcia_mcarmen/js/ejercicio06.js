@@ -6,29 +6,40 @@ console.log("T02 - Ejercicio 06");
 
 */
 
-let resultado=0;
-let factor=0;
-let multiplicador=0;
+let resultado = 0;
+let factor = 0;
+let multiplicador = 0;
+let isNegative=false;
+do {
 
-do{
+    multiplicador = Number(prompt("Introduce un numero: "));
+    factor = Number(prompt("Introduce otro numero: "));
 
-    factor=parseInt(prompt("Introduce un numero: "));
-    multiplicador=parseInt(prompt("Introduce otro numero: "));
+    if (!isNaN(factor) && !isNaN(multiplicador)) {
 
-    if(!isNaN(factor)){
-        
+        if (factor<0 && multiplicador<0){
+            factor*=-1;
+            multiplicador*=-1;
+            isNegative=true;
+        } else if (factor<0){
+            factor*=-1;
+            isNegative=true;
+        } else if (multiplicador<0){
+            multiplicador*=-1;
+            isNegative=true;
+        }
 
-    for (let index = 0; index < factor; index++) {
-        resultado+=multiplicador;
-    }
+        for (let index = 0; index < multiplicador; index++) {
+            resultado += factor;
+        }
 
-        alert("Resultado es : "+resultado)
+        alert("Resultado es : " + resultado)
 
-    }else{
+    } else {
         alert("El numero introducido no es valido")
     }
 
-}while(isNaN(factor)&&isNaN(multiplicador))
+} while (isNaN(factor) && isNaN(multiplicador))
 
 
 

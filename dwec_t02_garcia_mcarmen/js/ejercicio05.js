@@ -6,21 +6,33 @@ console.log("T02 - Ejercicio 05");
 */
 
 let media=0;
-let num1=parseFloat(prompt("Introduce el numero 1: "))
-let num2=parseFloat(prompt("Introduce el numero 2: "))
-let num3=parseFloat(prompt("Introduce el numero 3: "))
-let num4=parseFloat(prompt("Introduce el numero 4: "))
-let num5=parseFloat(prompt("Introduce el numero 5: "))
+let num1=Number(prompt("Introduce el numero 1: "))
+let num2=Number(prompt("Introduce el numero 2: "))
+let num3=Number(prompt("Introduce el numero 3: "))
+let num4=Number(prompt("Introduce el numero 4: "))
+let num5=Number(prompt("Introduce el numero 5: "))
 
 media=(num1+num2+num3+num4+num5)/5;
 
-
-if (num1>media && num2>media && num3>media && num4>media && num5>media){
-
-    alert("Los siguientes números introducidos son superiores a la media (VALORMEDIA): ");
-
-}else{
-    alert("NO HAS INTRODUCIDO NINGUN NUMERO QUE SUPERE A LA MEDIA")
+let numerosSuperiores="";
+if (num1>media){
+    numerosSuperiores+=num1+",";
 }
+
+if(num2>media){
+    numerosSuperiores+=num2+",";
+}
+if(num3>media){
+    numerosSuperiores+=num3+",";
+}
+if(num4>media){
+    numerosSuperiores+=num4+",";
+}
+if(num5>media){
+    numerosSuperiores+=num5;
+}
+
+console.log("Los siguientes números introducidos son superiores a la media (" + media + "): " + numerosSuperiores);
+
 
 
