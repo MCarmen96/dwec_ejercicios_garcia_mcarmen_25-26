@@ -13,3 +13,7 @@ function cambioOrdenArrayManual(array){
 }
 
 cambioOrdenArrayManual(myArray);
+
+const ordenado=myArray.sort(function(a,b){return a-b});
+
+console.log("array con sort ordenado: "+ordenado);
