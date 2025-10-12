@@ -6,9 +6,8 @@ const datosEquipos = [
     ["Malaga", 37, 14, 12, 1, 1],
     ["Eibar", 34, 14, 11, 1, 2],
     ["Cordoba", 27, 14, 8, 3, 3]];
-let opcion;
 
-
+    let opcion;
 function equipoLider(matriz) {
 
     let puntosMaximo = 0;
@@ -100,6 +99,12 @@ function añadirEquipo(matriz) {
     return matriz;
 }
 
+function ordenarClasificacion(matriz){
+
+        matriz
+    
+}
+
 function actualizarDatos(matriz) {
 
     let nombreEqp;
@@ -145,6 +150,7 @@ function actualizarDatos(matriz) {
             matriz[index][4]+=prtdEmpatado;
             matriz[index][5]+=prtdPerdido;
 
+            ordenarClasificacion(matriz);
 
         } else {
             console.log("El equipo introducido no esta en la clasificacion");
@@ -155,11 +161,12 @@ function actualizarDatos(matriz) {
 
 }
 
-//console.table(datosEquipos);
+
+console.table(datosEquipos);
 
 do {
 
-    opcion = Number(prompt("MENU\n1.Equipo lider\n2.Equipo partidos perdidos\n3.Equipos partidos ganados\n4.Mostrar clasificacion\n5.Añadir equipo\n0.Salir"));
+    opcion = Number(prompt("MENU\n1.Equipo lider\n2.Equipo partidos perdidos\n3.Equipos partidos ganados\n4.Mostrar clasificacion\n5.Añadir equipo\n6.Actualizar datos\n0.Salir"));
 
     switch (opcion) {
         case 1:
@@ -180,7 +187,11 @@ do {
             break;
         case 5:
             console.log(añadirEquipo(datosEquipos));
-
+        case 6:
+            console.log("Jornada actualizada: "+actualizarDatos(datosEquipos));
+            break;
+        case 7:
+            console.log("sorted "+ordenarClasificacion(datosEquipos));
         default:
             console.log("No valida");
     }
