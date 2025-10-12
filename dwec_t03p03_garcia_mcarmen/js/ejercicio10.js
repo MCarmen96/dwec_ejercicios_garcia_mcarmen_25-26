@@ -7,7 +7,7 @@ const datosEquipos = [
     ["Eibar", 34, 14, 11, 1, 2],
     ["Cordoba", 27, 14, 8, 3, 3]];
 
-    let opcion;
+let opcion;
 function equipoLider(matriz) {
 
     let puntosMaximo = 0;
@@ -99,10 +99,35 @@ function añadirEquipo(matriz) {
     return matriz;
 }
 
-function ordenarClasificacion(matriz){
+function ordenarClasificacion(matriz) {
 
-        matriz
-    
+    let arrayDatos=[];
+
+    for (let index = 1; index < matriz.length; index++) {
+        arrayDatos.push(matriz[index][1]);
+    }
+
+    arrayDatos.sort(function(a,b){return b-a});
+
+    let matrizOrdenada=[];
+    matrizOrdenada.push(matriz[0]);
+
+    for (let index =0; index < arrayDatos.length; index++) {
+        
+        let puntos=arrayDatos[index];
+        
+        for (let j = 1; j < matriz.length; j++) {
+            
+            if(matriz[j][1]===puntos){
+                
+                matrizOrdenada.push(matriz[j]);
+            }
+            
+        }
+        
+    }
+
+    return matrizOrdenada;
 }
 
 function actualizarDatos(matriz) {
@@ -112,7 +137,7 @@ function actualizarDatos(matriz) {
     let prtdPerdido;
     let prtdEmpatado;
     let prtJugados = 0;
-    let puntosTotales=0;
+    let puntosTotales = 0;
 
     do {
 
@@ -131,24 +156,24 @@ function actualizarDatos(matriz) {
 
             prtJugados = prtdGanados + prtdEmpatado + prtdPerdido;
 
-            if(prtdGanados>0){
-                puntosTotales+=3*prtdGanados;
-            }else{
+            if (prtdGanados > 0) {
+                puntosTotales += 3 * prtdGanados;
+            } else {
                 console.log("No ha ganado ningun partido");
             }
 
-            if(prtdEmpatado>0){
-                puntosTotales+=prtdEmpatado;
-            }else{
+            if (prtdEmpatado > 0) {
+                puntosTotales += prtdEmpatado;
+            } else {
                 console.log("No ha empatado ningun partido");
             }
 
 
-            matriz[index][1]+=puntosTotales;
-            matriz[index][2]+=prtJugados;
-            matriz[index][3]+=prtdGanados;
-            matriz[index][4]+=prtdEmpatado;
-            matriz[index][5]+=prtdPerdido;
+            matriz[index][1] += puntosTotales;
+            matriz[index][2] += prtJugados;
+            matriz[index][3] += prtdGanados;
+            matriz[index][4] += prtdEmpatado;
+            matriz[index][5] += prtdPerdido;
 
             ordenarClasificacion(matriz);
 
@@ -166,7 +191,7 @@ console.table(datosEquipos);
 
 do {
 
-    opcion = Number(prompt("MENU\n1.Equipo lider\n2.Equipo partidos perdidos\n3.Equipos partidos ganados\n4.Mostrar clasificacion\n5.Añadir equipo\n6.Actualizar datos\n0.Salir"));
+    opcion = Number(prompt("MENU\n1.Equipo lider\n2.Equipo partidos perdidos\n3.Equipos partidos ganados\n4.Mostrar clasificacion\n5.Añadir equipo\n6.Actualizar datos\n7.Ordenar calsificacion\n0.Salir"));
 
     switch (opcion) {
         case 1:
@@ -188,10 +213,10 @@ do {
         case 5:
             console.log(añadirEquipo(datosEquipos));
         case 6:
-            console.log("Jornada actualizada: "+actualizarDatos(datosEquipos));
+            console.log("Jornada actualizada: " + actualizarDatos(datosEquipos));
             break;
         case 7:
-            console.log("sorted "+ordenarClasificacion(datosEquipos));
+            console.log("sorted " + ordenarClasificacion(datosEquipos));
         default:
             console.log("No valida");
     }
