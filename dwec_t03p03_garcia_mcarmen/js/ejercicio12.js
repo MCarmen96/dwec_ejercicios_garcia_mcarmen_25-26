@@ -4,58 +4,32 @@ const categorias = [];
 const estados = new Set(["toDo", "done"]);
 const categoriasExistentes = new Set([]);
 let nombreCategoria;
-function añadirNuevaTarea(matriz, categoria, estados) {
 
-    let estadoTarea;
+function añadirNuevaTarea(categoria) {
     let nombreTarea;
-    let encontradaCategoria = false;
-    let añadirTarea = false;
-    let filaCategoria;
-    let tareaCompleta = [];
+    let seguir=true;
 
-    for (let fila = 0; fila < matriz.length; fila++) {
+    do{
+        nombreTarea=prompt(`Introduce el nombre de la tarea para la categoria "${categoria[0]}" n/no para salir`);
 
-        if (matriz[fila][0] === categoria) {
-            encontradaCategoria = true;
-            filaCategoria = fila;
+        if(nombreTarea&&nombreTarea.trim()!==""){
+            categoria.push([nombreTarea,"toDo"])
+        }else{
+            console.log("entrada no valida");
         }
-    }
 
-    if (encontradaCategoria) {
-        do {
-            nombreTarea = prompt(`Nombre de la tarea a añadir a la categoria ${categoria} si no quieres añadir mas tareas n/no: `);
-
-            if (nombreTarea && nombreTarea.toLocaleLowerCase !== "n" && nombreTarea.toLocaleLowerCase() !== "no") {
-                console.log(`Tarea ${nombreTarea} añadida a ${categoria}`);
-            }
-
-        } while (nombreTarea && nombreTarea.toLocaleLowerCase() !== "n" && nombreTarea.toLocaleLowerCase() !== "no");
-
-        do {
-            estadoTarea = prompt("El estado de la tarea puede ser \"toDo\" o \"done\": ");
-        } while (!estados.has(estadoTarea));
-
-    } else {
-        console.log("La categoria no se ha encotrado.....");
-    }
-
-    tareaCompleta = [nombreTarea, estadoTarea];
-    console.log(`Añadiendo tarea ${nombreTarea} con estado ${estadoTarea} a la categoria ${categoria}`);
-    matriz[filaCategoria].push(tareaCompleta);
-
-    return matriz;
+        seguir=confirm("Quieres añadir una nueva tarea a esta categoria??");
+    }while(seguir);
 }
 
-function añadirNueveCategoria(matriz, categoriasExistentes) {
+function añadirNuevaCategoria(matriz, categoriasExistentes) {
     let nombreCategoria;
-    let seguir = false;
+    let seguir=true;
 
     do {
-        nombreCategoria = prompt("Introduce el nombre de la nueva categoria si no quieres añadir mas no/NO: ");
+        nombreCategoria = prompt("Introduce el nombre de la nueva categoria: ");
 
-        if (nombreCategoria.toLowerCase() == "n" || nombreCategoria == "no") {
-            console.log("no quiere añadir mas catgorias");
-        } else if (categoriasExistentes.has(nombreCategoria)) {
+        if (categoriasExistentes.has(nombreCategoria)) {
             console.log(`La categoria ${nombreCategoria} ya existe vuelve a introducir otro nombre`);
 
         } else {
@@ -63,59 +37,40 @@ function añadirNueveCategoria(matriz, categoriasExistentes) {
             console.log(`Nueva categoria añadida ${nombreCategoria}`);
         }
 
-    } while (nombreCategoria.toLowerCase() !== "n" && nombreCategoria.toLowerCase() != "no");
+        seguir=confirm("Quieres añadir otra categoria???");
+
+    } while (seguir);
 
 }
 
-function menuCategorias(matriz) {
+function menu2(matriz) { 
     let lista = "";
     for (let i = 0; i < matriz.length; i++) {
+        //monto una lista numerada de las categorias que hay en la matriz
         lista += `${i + 1}. ${matriz[i][0]}\n`;
     }
 
-    let opcion = prompt(`Menu 2\n======\n${lista}${matriz.length + 1}. Atrás`);
-
-    opcion = Number(opcion);
+    let opcion =Number(prompt(`Menu 2\n======\n${lista}${matriz.length + 1}. Atrás`));
 
     if (opcion >= 1 && opcion <= matriz.length) {
         // categoría seleccionada
         let categoriaSeleccionada = matriz[opcion - 1];
         console.log(`Has seleccionado la categoría: ${categoriaSeleccionada[0]}`);
-        menuTareasCategoria(categoriaSeleccionada, matriz);
+        menu3(categoriaSeleccionada, matriz);
     } else if (opcion === matriz.length + 1) {
         //volver a al menu 1
-        mostrarMenu1(matriz);
+        menuPrincipal(matriz);
     } else {
         console.log("Opción no válida");
-        menuCategorias(matriz);
+        //vuelvo a mostrar el menu si la opcion no es valida
+        menu2(matriz);
     }
 }
+function menu3(categoria, matriz) {
 
-function mostrarMenu1(matriz) {
-
-    let opcionMenu = Number(prompt("MENU 1\n====\n1.Listar categorias\n2.Añadir nueva categoria\n3.Borrar categoria\n4.Salir"));
-
-    switch (opcionMenu) {
-        case 1:
-            menuCategorias(categorias);
-            break;
-        case 2:
-            añadirNueveCategoria(matriz, categoriasExistentes);
-            break;
-        case 3:
-            eliminarCategoria(categorias);
-            break;
-        case 4:
-            console.log("saliendo de menu edicion categorias......");
-            break;
-        default:
-            console.log("opcion no valida......");
-    }
-}
-
-function menuTareasCategoria(categoria, matriz) {
     let nombreCategoria = categoria[0];
-    let tareas = categoria.slice(1); // me quedo con el array de las tareas de la categoria selecionada
+    let tareas = categoria.slice(1); // guardo los arrays que hay en la categoria
+    let listaTareas;
 
     if (tareas.length === 0) {
         listaTareas = "No hay tareas todavía.\n";
@@ -126,71 +81,42 @@ function menuTareasCategoria(categoria, matriz) {
     }
 
     let opcion = Number(prompt(
-        `Menu 3. Categoría ${nombreCategoria}\n======\n${listaTareas}\n${tareas.length + 1}. Añadir nueva tarea\n${tareas.length + 2}. Marcar tareas como done\n${tareas.length + 3}. Borrar tarea\n${tareas.length + 4}. Atrás`
+        `Menu 3. Categoría ${nombreCategoria}\n======\n${listaTareas}\n ${tareas.length + 1}. Añadir nueva tarea\n${tareas.length + 2}. Borrar tarea\n${tareas.length + 3}. Atrás`
     ));
+
+    if(opcion>=1&&opcion<=tareas.length){
+        
+        let index=opcion;
+        if(categoria[index][1]==="done"){
+            console.log(`Tarea ${categoria[index][0]} ya esta completada`);
+        }else{
+            categoria[index][1]="done";
+            console.log(`Tarea ${categoria[index][0]} marcada como done`);
+        }
+
+        //vuelvo a mostrar el menu
+        menu3(categoria,matriz);
+
+    }
 
     switch (opcion) {
         case (tareas.length + 1):
-            añadirNuevaTarea(matriz, nombreCategoria, estados);
-            menuTareasCategoria(categoria, matriz);
+            añadirNuevaTarea(nombreCategoria);
+            menu3(categoria, matriz);
             break;
 
         case (tareas.length + 2):
-            marcarTareasDone(categoria);
-            menuTareasCategoria(categoria, matriz);
-            break;
-
-        case (tareas.length + 3):
             borrarTarea(categoria);
-            menuTareasCategoria(categoria, matriz);
+            menu3(categoria, matriz);
             break;
-
-        case (tareas.length + 4):
-            menuCategorias(matriz);
+        case (tareas.length + 3):
+            menu2(matriz);
             break;
-
         default:
             console.log("Opción no válida");
-            menuTareasCategoria(categoria, matriz);
+            menu3(categoria, matriz);
     }
 }
-
-
-function marcarTareasDone(categoria) {
-    if (categoria.length <= 1) {
-        console.log("No hay tareas en esta categoría.");
-        return;
-    }
-
-    let tareas = categoria.slice(1);
-    let lista = "";
-
-    for (let i = 0; i < tareas.length; i++) {
-        lista += `${i + 1}. ${tareas[i][0]} (${tareas[i][1]})\n`;
-    }
-
-    let seleccion = Number(prompt(
-        `Selecciona el número de la tarea a marcar como done:\n${lista}`
-    ));
-
-    if (isNaN(seleccion) || seleccion < 1 || seleccion > tareas.length) {
-        console.log("Número no válido.");
-        return;
-    }
-
-    let tarea = tareas[seleccion - 1];
-
-    if (tarea[1] === "done") {
-        console.log(`La tarea "${tarea[0]}" ya está completada.`);
-    } else {
-        tarea[1] = "done";
-        console.log(`Tarea "${tarea[0]}" marcada como done.`);
-    }
-
-    // Actualizar la categoría directamente (sin cosas raras)
-    categoria[seleccion] = tarea;
-}
-
 
 function borrarTarea(categoria) {
 
@@ -223,6 +149,30 @@ function borrarTarea(categoria) {
     }
 }
 
+
+
+
+function menuPrincipal(matriz) {
+
+    let opcionMenu = Number(prompt("MENU 1\n====\n1.Listar categorias\n2.Añadir nueva categoria\n3.Borrar categoria\n4.Salir"));
+
+    switch (opcionMenu) {
+        case 1:
+            menu2(categorias);
+            break;
+        case 2:
+            añadirNuevaCategoria(matriz, categoriasExistentes);
+            break;
+        case 3:
+            eliminarCategoria(categorias);
+            break;
+        case 4:
+            console.log("saliendo de menu edicion categorias......");
+            break;
+        default:
+            console.log("opcion no valida......");
+    }
+}
 
 
 // * 1 pedir categorias
@@ -259,5 +209,5 @@ if (pregunta2.toLocaleLowerCase() === "s" || pregunta2.toLocaleLowerCase() === "
 
 
 if (categorias.length >= 1) {
-    mostrarMenu1(categorias);
+    menuPrincipal(categorias);
 }
