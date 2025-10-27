@@ -1,116 +1,21 @@
 console.log("T04p01 - Ejercicio 01");
 
-function Alumno(dni,nombre,fechaNaci,notaTUno,notaTDos,notaTTres,sexo){
+function funcionPrueba1(){
 
-    this.dni=dni;
-    this.nombre=nombre;
-    this.fechaNaci=fechaNaci;
-    this.notaTUno=notaTUno;
-    this.notaTDos=notaTDos;
-    this.notaTTres=notaTTres;
-    this.sexo=sexo;
-    this.edad=function(fechaNaci){
+    const alumno1=new Alumno("71368712B","carmen","1996-10-27",7,6,7,"m");
+    const alumno2= new Alumno("71268312A","Alberto","1993-10-27",8,6,5,"h")
+    let datosAlum1=JSON.stringify(alumno1);
+    let datosAlum2=JSON.stringify(alumno2);
 
-    }
-    this.notaFinal=function(notaTUno,notaTDos,notaTTres){
-        let media=(notaTDos+notaTTres+notaTUno)/3;
-        return media;
-    }
+    console.log(datosAlum1);
+    console.log(datosAlum2);
+
+    let comparacion=alumno1.comparar(alumno2);
+
+    
+    let nota=alumno1.cambiarNotas(2,5,3);
+    console.log(comparacion);
+    console.log(datosAlum1);
 }
 
-Object.defineProperty(Alumno.prototype,"dni",{
-
-    get:function(){
-        return this._dni;
-    },
-    set:function(value){
-        let patron='/^\d{8}[A-Z]$/';
-
-        this._dni=value.trim();
-
-    }
-
-});
-
-Object.defineProperty(Alumno.prototype,"nombre",{
-    get:function(){
-        return this._nombre;
-    },
-    set:function(value){
-        this._nombre=value.trim();
-    }
-});
-
-Object.defineProperty(Alumno.prototype,"fechaNaci",{
-    get:function(){
-        return this._fechaNaci;
-    },
-    set: function(value){
-        this._fechaNaci=value.trim();
-    }
-});
-Object.defineProperty(Alumno.prototype,"notaTUno",{
-
-    get:function(){
-        return this._notaTUno;
-    },
-    set:function(value){
-        this._notaTUno=value.trim();
-    }
-});
-Object.defineProperty(Alumno.prototype,"notaTDos",{
-
-    get:function(){
-        return this._notaTDos;
-    },
-    set:function(value){
-        this._notaTDos=value.trim();
-    }
-});
-
-Object.defineProperty(Alumno.prototype,"notaTTres",{
-
-    get:function(){
-        return this._notaTTres;
-    },
-    set:function(value){
-        this._notaTTres=value.trim();
-    }
-});
-
-Object.defineProperty(Alumno.prototype,"sexo",{
-    get:function(){
-        return this._sexo;
-    },
-    set: function(value){
-        let validSex=new Set(["h","m","o"]);
-        if(validSex.has(value)){
-            // con el this lo que hacia es que lo asigno directamente a la propiedad
-            this._sex=value;
-        }else{
-            this._sex=null;
-        }
-    }
-})
-
-Object.defineProperty(Alumno.prototype,"fechaNaci",{
-
-    get:function(){
-        return this._fechaNaci;
-    },
-    set:function(value){
-        this._fechaNaci=value.trim();
-    }
-});
-
-Object.defineProperty(Alumno.prototype,"edad",{
-    get:function(){
-        return this._edad;
-    }
-});
-
-Object.defineProperty(Alumno.prototype,"notaFinal",{
-    get:function(){
-        return this._notaFinal;
-    }
-});
+console.log(funcionPrueba1());
