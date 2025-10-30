@@ -187,17 +187,23 @@ function obtenerResumenGlobal(listaCategorias) {
 }
 
 function menu3(categoria, matriz) {
+
     let salir = false;
+
     while (salir === false) {
+
         let texto = "";
-        for (let i = 1; i < categoria.length; i++) {
-            texto += i + ". " + categoria[i][0] + " (" + categoria[i][1] + ")\n";
-        }
-        if (categoria.length === 1) {
+        //saco nombre tarea
+        if (categoria.length <= 1) {
             texto = "No hay tareas todavía.\n";
+        } else {
+            for (let i = 1; i < categoria.length; i++) {
+                texto += i + ". " + categoria[i][0] + " (" + categoria[i][1] + ")\n";
+            }
         }
 
         let tareasCount = categoria.length - 1;
+
         let opcion = prompt(
             "Menú 3. Categoría " + categoria[0] + "\n=====\n" +
             texto +
@@ -208,10 +214,13 @@ function menu3(categoria, matriz) {
         );
 
         let entradaValida = opcion && opcion.trim() !== "";
+
         if (entradaValida) {
-            let entrada = opcion.replace(/\s+/g, "");
-            let partes = entrada.split(",");
+
+            let partes = opcion.split(",");
+
             let indices = [];
+
             for (let i = 0; i < partes.length; i++) {
                 let n = Number(partes[i]);
                 if (!isNaN(n)) {
@@ -219,7 +228,34 @@ function menu3(categoria, matriz) {
                 }
             }
 
+
             if (indices.length > 0) {
+
+                let num = Number(opcion);
+
+                if (!isNaN(num)) {
+                    if (num === tareasCount + 1) {
+                        
+                        añadirNuevaTarea(categoria);
+                        salir=true;
+                    } else if (num === tareasCount + 2) {
+                        
+                        borrarTarea(categoria);
+                        salir=true;
+                    } else if (num === tareasCount + 3) {
+                        
+                        menu2(categoria);
+                        salir=true;
+                    } else {
+                        console.log("Opción no válida.");
+                    }
+                } else {
+                    console.log("Entrada no válida.");
+                }
+                
+
+            } else {
+
                 for (let i = 0; i < indices.length; i++) {
                     let n = indices[i];
                     if (n >= 1 && n <= tareasCount) {
@@ -231,22 +267,8 @@ function menu3(categoria, matriz) {
                         }
                     }
                 }
-            } else {
-                let num = Number(entrada);
-                if (!isNaN(num)) {
-                    if (num === tareasCount + 1) {
-                        añadirNuevaTarea(categoria);
-                    } else if (num === tareasCount + 2) {
-                        borrarTarea(categoria);
-                    } else if (num === tareasCount + 3) {
-                        salir = true;
-                    } else {
-                        console.log("Opción no válida.");
-                    }
-                } else {
-                    console.log("Entrada no válida.");
-                }
             }
+
         } else {
             salir = true;
         }

@@ -77,8 +77,6 @@ function Alumno(dni,nombre,fechaNaci,notaTUno,notaTDos,notaTTres,sexo){
         return aprobado;
     };
 
-    // funcion mostrar info alumno
-
 }
 
 // * DEFINIR LOS GETTERS Y LOS SETTERS MEJOR FUERA
@@ -147,7 +145,7 @@ Object.defineProperty(Alumno.prototype,"getYsetsexo",{
         return this._sexo;
     },
     set: function(value){
-        const validSex=new Set(["h","m","o"]);
+        let validSex=new Set(["h","m","o"]);
         if(validSex.has(value)){
             // con el this lo que hacia es que lo asigno directamente a la propiedad
             this._sex=value;
