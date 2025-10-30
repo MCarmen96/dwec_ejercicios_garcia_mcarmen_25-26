@@ -85,6 +85,7 @@ Aula.prototype.haySitioAlumnos(){
     } else {
         haySitio = false;
     }
+    return haySitio;
 }
 Aula.prototype.hayAlumnos(){ }
 

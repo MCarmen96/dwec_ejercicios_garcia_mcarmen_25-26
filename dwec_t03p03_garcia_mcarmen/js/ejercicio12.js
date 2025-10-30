@@ -228,9 +228,7 @@ function menu3(categoria, matriz) {
                 }
             }
 
-
-            if (indices.length > 0) {
-
+            if (indices.length === 1 && (indices[0] === tareasCount + 1 || indices[0] === tareasCount + 2 || indices[0] === tareasCount + 3)) {
                 let num = Number(opcion);
 
                 if (!isNaN(num)) {
@@ -252,9 +250,8 @@ function menu3(categoria, matriz) {
                 } else {
                     console.log("Entrada no válida.");
                 }
-                
 
-            } else {
+            } else{
 
                 for (let i = 0; i < indices.length; i++) {
                     let n = indices[i];
