@@ -25,4 +25,26 @@ function funcionPrueba1(){
     console.log(datosAlum1);
 }
 
-console.log(funcionPrueba1());
+//console.log(funcionPrueba1());
+
+function funcionPrueba2(){
+
+    let maxAlu;
+    do{
+        maxAlu=parseInt(prompt("Introduce el numero maximo de alumnos: "));
+
+        if(maxAlu<=0){
+            console.log("El numero debe ser mayor que 0");
+        }
+    }while(isNaN(maxAlu)|| maxAlu<=0)
+
+    const aula1= new Aula(maxAlu,1,"DAW",2);
+
+    let datos=aula1.pedirDatos()
+    //console.log(aula1.pedirDatos());
+    aula1.insertarAlumnos(datos);
+
+
+}
+debugger
+console.log(funcionPrueba2());

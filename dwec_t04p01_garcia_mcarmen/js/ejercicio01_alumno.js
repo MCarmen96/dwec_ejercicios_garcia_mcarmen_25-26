@@ -89,7 +89,15 @@ Object.defineProperty(Alumno.prototype,"getYsetdni",{
     },
     set:function(value){
 
-        let patron='/^\d{8}[A-Z]$/';
+        let regla='/^\d{8}[A-Z]$/';
+        let patron=new RegExp(regla);
+
+        if(patron.test(value)){
+            this._dni=value;
+        }else{
+            this._dni=null;
+        }
+
         this._dni=value.trim();
     }
 
@@ -170,3 +178,29 @@ Object.defineProperty(Alumno.prototype,"getYsetnotaFinal",{
     
 });
 
+/*
+*----METODOS DE OBJECTS---
+    Nos permiten definir unas reglas d emodificaicon del objeto 
+    Para que salga el error hay que usar 'use strict'
+* Prevents re-assignment
+const car = {type:"Fiat", model:"500", color:"white"};
+
+* Prevents adding object properties
+Object.preventExtensions(object)
+
+* Returns true if properties can be added to an object
+Object.isExtensible(object)
+
+* Prevents adding and deleting object properties
+Object.seal(object)
+
+* Returns true if object is sealed
+Object.isSealed(object)
+
+* Prevents any changes to an object
+Object.freeze(object)
+
+* Returns true if object is frozen
+Object.isFrozen(object)
+
+*/
