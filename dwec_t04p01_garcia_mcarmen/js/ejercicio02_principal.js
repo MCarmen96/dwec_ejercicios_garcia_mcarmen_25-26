@@ -41,9 +41,7 @@ function funcionPrueba2(){
     const aula1= new Aula(maxAlu,1,"DAW",2);
 
     let datos=aula1.pedirDatos()
-    //console.log(aula1.pedirDatos());
     aula1.insertarAlumnos(datos);
-
 
 }
 debugger
