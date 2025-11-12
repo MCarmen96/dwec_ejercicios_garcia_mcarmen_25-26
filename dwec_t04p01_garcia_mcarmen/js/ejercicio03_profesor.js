@@ -1,32 +1,34 @@
+
+
 const profesor1={
-    asigantura:[],
-    nombre:'Alberto',
-    email:'albert@gmail.com'
+    _asignatura:[],
+    _nombre:'Alberto',
+    _email:'albert@gmail.com'
 }
 const profesor2={
-    asigantura:[],
-    nombre:'Carmen',
-    email:'carmen@gmail.com'
+    _asignatura:[],
+    _nombre:'Carmen',
+    _emailemail:'carmen@gmail.com'
 }
 const profesor3={
-    asigantura:[],
-    nombre:'Mikel',
-    email:'mikel@gmail.com'
+    _asignatura:[],
+    _nombre:'Mikel',
+    _email:'mikel@gmail.com'
 }
 const profesor4={
-    asigantura:[],
-    nombre:'Aitana',
-    email:'aitana@gmail.com'
+    _asignatura:[],
+    _nombre:'Aitana',
+    _email:'aitana@gmail.com'
 }
 
 function addGetter(obj){
 
     Object.defineProperty(obj,'nombre',{
         get:function(){
-            return this.nombre;
+            return this._nombre;
         },
         set:function(value){
-            this.nombre=value.trim();
+            this._nombre=value.trim();
         }
     });
 
@@ -39,14 +41,14 @@ function addGetter(obj){
         }
     });
 
-     Object.defineProperty(obj,'asignatura',{
+    Object.defineProperty(obj,'asignatura',{
         get:function(){
-            return this.asigantura;
+            return this._asignatura;
         },
         set:function(value){
-            this.asigantura=value.trim();
+            this._asignatura=value.trim();
         }
     });
 }
 
-[profesor1,profesor2,profesor3,profesor4].forEach(addGetter)
+[profesor1,profesor2,profesor3,profesor4].forEach(addGetter);

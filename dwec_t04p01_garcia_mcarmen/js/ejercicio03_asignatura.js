@@ -1,91 +1,110 @@
-const asignatura1={
-    _nombre:'Matematicas',
-    tipo:'obligatoria',
-    curso:1,
-    alumnos:[]
+const asignatura1 = {
+    _nombre: 'Matematicas',
+    _tipo: 'obligatoria',
+    _curso: 1,
+    _alumnos: []
 };
 
-const asignatura2={
-    _nombre:'Ingles',
-    tipo:'obligatoria',
-    curso:1,
-    alumnos:[]
+const asignatura2 = {
+    _nombre: 'Ingles',
+    _tipo: 'obligatoria',
+    _curso: 1,
+    _alumnos: []
 };
 
-const asignatura3={
-    _nombre:'Filosofia',
-    tipo:'obligatoria',
-    curso:2,
-    alumnos:[]
+const asignatura3 = {
+    _nombre: 'Filosofia',
+    _tipo: 'obligatoria',
+    _curso: 2,
+    _alumnos: []
 };
 
-const asignatura4={
-    _nombre:'Matematicas discretas',
-    tipo:'obligatoria',
-    curso:2,
-    alumnos:[]
+const asignatura4 = {
+    _nombre: 'Matematicas discretas',
+    _tipo: 'obligatoria',
+    _curso: 2,
+    _alumnos: []
 };
 
-const asignatura5={
-    _nombre:'Dibujo',
-    tipo:'optativa',
-    curso:1,
-    alumnos:[]
+const asignatura5 = {
+    _nombre: 'Dibujo',
+    _tipo: 'optativa',
+    _curso: 1,
+    _alumnos: []
 }
-const asignatura6={
-    _nombre:'Modelado 3D',
-    tipo:'optativa',
-    curso:2,
-    alumnos:[]
+const asignatura6 = {
+    _nombre: 'Modelado 3D',
+    _tipo: 'optativa',
+    _curso: 2,
+    _alumnos: []
 }
-const asignatura7={
-    _nombre:'Unreal Engine 5',
-    tipo:'optativa',
-    curso:2,
-    alumnos:[]
+const asignatura7 = {
+    _nombre: 'Unreal Engine 5',
+    _tipo: 'optativa',
+    _curso: 2,
+    _alumnos: []
 }
-const asignatura8={
-    _nombre:'Unity',
-    tipo:'optativa',
-    curso:1,
-    alumnos:[]
+const asignatura8 = {
+    _nombre: 'Unity',
+    _tipo: 'optativa',
+    _curso: 1,
+    _alumnos: []
+
 }
 
-function addData(obj){
+function addData(obj) {
 
-    Object.defineProperty(obj,'nombre',{
-        get:function(){
+    Object.defineProperty(obj, 'nombre', {
+        get: function () {
             return this._nombre;
         },
-        set:function(value){
-            this._nombre=value.trim();
+        set: function (value) {
+            this._nombre = value.trim();
         }
     });
-    Object.defineProperty(obj,'tipo',{
-        get:function(){
-            return this.tipo;
+    Object.defineProperty(obj, 'tipo', {
+        get: function () {
+            return this._tipo;
         },
-        set:function(value){
-            this.tipo=value.trim();
+        set: function (value) {
+            this._tipo = value.trim();
         }
     });
-    Object.defineProperty(obj,'curso',{
-        get:function(){
+    Object.defineProperty(obj, 'curso', {
+        get: function () {
             return this._nombre;
         },
-        set:function(value){
-            const validCurso = new Set([1, 2, 3, 4])
-            this._nombre=value.trim();
+        set: function (value) {
+            const valid_Curso = new Set([1, 2, 3, 4])
 
-            if(validCurso.has(value)){
-                this.curso=value;
-            }else{
-                this.curso=null;
+            if (valid_Curso.has(value)) {
+                this._curso = value;
+            } else {
+                this._curso = null;
             }
         }
     });
+
+    Object.defineProperty(obj, 'alumnos', {
+        get: function () {
+            return this._alumnos;
+        }
+    });
+
 }
 
-[asignatura1,asignatura2,asignatura3,asignatura4,asignatura5,asignatura6,asignatura7,asignatura8].forEach(addData);
+
+function insertarAlumnos(alumno) {
+    this._alumnos.push(alumno);
+
+}
+
+function añadirAsignaturas(){}
+
+function alumnosOptativas(optativa){
+
+}
+
+[asignatura1, asignatura2, asignatura3, asignatura4, asignatura5, asignatura6, asignatura7, asignatura8].forEach(addData);
 
 

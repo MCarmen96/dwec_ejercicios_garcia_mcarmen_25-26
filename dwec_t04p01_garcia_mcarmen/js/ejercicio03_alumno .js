@@ -6,11 +6,11 @@ console.log("T04p01 - Ejercicio 01");
 
 */
 // TODO FUNCION CONSTRUCTORA 
-function Alumno(nombre,id){
+function Alumno(nombre){
 
     this._nombre=nombre;
-    this._id=id;
     this._notas=[];
+    
     // funcion mostrar info alumno
 
 }
@@ -26,15 +26,7 @@ Object.defineProperty(Alumno.prototype,"getYsetnombre",{
         this._nombre=value.trim();
     }
 });
-Object.defineProperty(Alumno.prototype,"getId",{
 
-    get:function(){
-        return this._id;
-    },
-    set:function(value){
-        this._id=value.trim();
-    }
-})
 
 
 

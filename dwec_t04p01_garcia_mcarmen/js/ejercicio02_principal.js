@@ -18,8 +18,6 @@ function funcionPrueba1(){
 
     let comparacion=alumno1.comparar(alumno2);
 
-
-    
     let nota=alumno1.cambiarNotas(2,5,3);
     console.log(comparacion);
     console.log(datosAlum1);
