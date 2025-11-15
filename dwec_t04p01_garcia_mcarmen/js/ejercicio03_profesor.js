@@ -51,4 +51,5 @@ function addGetter(obj){
     });
 }
 
-[profesor1,profesor2,profesor3,profesor4].forEach(addGetter);
+const profesores=[profesor1,profesor2,profesor3,profesor4];
+profesores.forEach(addGetter);

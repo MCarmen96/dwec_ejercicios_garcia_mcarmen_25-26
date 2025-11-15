@@ -80,20 +80,28 @@ function Alumno(dni,nombre,fechaNaci,notaTUno,notaTDos,notaTTres,sexo){
 }
 
 // * DEFINIR LOS GETTERS Y LOS SETTERS MEJOR FUERA
-Object.defineProperty(Alumno.prototype,"getYsetdni",{
+Object.defineProperty(Alumno.prototype,"dni",{
 
     get:function(){
         return this._dni;
     },
     set:function(value){
 
-        let patron='/^\d{8}[A-Z]$/';
+        let regla=/^\d{8}[A-Z]$/;
+        let patron=new RegExp(regla);
+
+        if(patron.test(value)){
+            this._dni=value;
+        }else{
+            this._dni=null;
+        }
+
         this._dni=value.trim();
     }
 
 });
 
-Object.defineProperty(Alumno.prototype,"getYsetnombre",{
+Object.defineProperty(Alumno.prototype,"nombre",{
     get:function(){
         return this._nombre;
     },
@@ -102,66 +110,71 @@ Object.defineProperty(Alumno.prototype,"getYsetnombre",{
     }
 });
 
-Object.defineProperty(Alumno.prototype,"getYsetfechaNaci",{
+Object.defineProperty(Alumno.prototype,"fechaNaci",{
     get:function(){
         return this._fechaNaci;
     },
     set: function(value){
         this._fechaNaci=value.trim();
+        this._edad=this.calcularEdad();
     }
 });
 
-Object.defineProperty(Alumno.prototype,"getYsetnotaTUno",{
+Object.defineProperty(Alumno.prototype,"notaTUno",{
 
     get:function(){
         return this._notaTUno;
     },
     set:function(value){
-        this._notaTUno=value.trim();
+        this._notaTUno=Number(value);
+        this._notaFinal=this.calcularNota();
     }
 });
-Object.defineProperty(Alumno.prototype,"getYsetnotaTDos",{
+
+Object.defineProperty(Alumno.prototype,"notaTDos",{
 
     get:function(){
         return this._notaTDos;
     },
     set:function(value){
-        this._notaTDos=value.trim();
+        this._notaTDos=Number(value);
+        this._notaFinal=this.calcularNota();
     }
 });
 
-Object.defineProperty(Alumno.prototype,"getYsetnotaTTres",{
+Object.defineProperty(Alumno.prototype,"notaTTres",{
 
     get:function(){
         return this._notaTTres;
     },
     set:function(value){
-        this._notaTTres=value.trim();
+        this._notaTTres=Number(value);
+        this._notaFinal=this.calcularNota();
     }
 });
 
-Object.defineProperty(Alumno.prototype,"getYsetsexo",{
+Object.defineProperty(Alumno.prototype,"sexo",{
     get:function(){
         return this._sexo;
     },
     set: function(value){
-        let validSex=new Set(["h","m","o"]);
+        const validSex=new Set(["h","m","o"]);
         if(validSex.has(value)){
-            // con el this lo que hacia es que lo asigno directamente a la propiedad
-            this._sex=value;
+            this._sexo=value;
         }else{
-            this._sex=null;
+            this._sexo=null;
         }
     }
-})
+});
 
-Object.defineProperty(Alumno.prototype,"getYsetedad",{
+
+Object.defineProperty(Alumno.prototype,"edad",{
     get:function(){
         return this._edad;
     }
 });
 
-Object.defineProperty(Alumno.prototype,"getYsetnotaFinal",{
+Object.defineProperty(Alumno.prototype,"notaFinal",{
     get:function(){
         return this._notaFinal;
     }

@@ -7,21 +7,24 @@ function Aula(maxAulumnos, idAula, descripcionAula, curso) {
     this._descripcionAula = descripcionAula;
     this._curso = curso;
     this._alumnos = [];
-    this._cantidadAlumnos = 0;
-
-    
+    this._cantidadAlumnos = 0; 
 }
 
 
-Object.defineProperty(Aula.prototype, "getYsetmaxAlumnos", {
+Object.defineProperty(Aula.prototype, "maxAlumnos", {
     get: function () {
         return this._maxAlumnos;
     },
     set: function (value) {
-        this._maxAlumnos = value.trim();
+        value=Number(value);
+        if(isNaN(value)||value<=0){
+            console.warn("Maxalumnos debe ser un numero positivo");
+        }else{
+            this._maxAlumnos=value;
+        }
     }
 });
-Object.defineProperty(Aula.prototype, "getYsetidAula", {
+Object.defineProperty(Aula.prototype, "idAula", {
 
     get: function () {
         return this._idAula;
@@ -31,7 +34,7 @@ Object.defineProperty(Aula.prototype, "getYsetidAula", {
 
     }
 });
-Object.defineProperty(Aula.prototype, "getYsetdescripcion", {
+Object.defineProperty(Aula.prototype, "descripcion", {
 
     get: function () {
         return this._descripcionAula;
@@ -40,24 +43,25 @@ Object.defineProperty(Aula.prototype, "getYsetdescripcion", {
         this._descripcionAula = value.trim();
     }
 });
-Object.defineProperty(Aula.prototype, "getYsetcurso", {
+Object.defineProperty(Aula.prototype, "curso", {
 
     get: function () {
         return this._curso;
     },
     set: function (value) {
+        value=Number(value);
         const validCurso = new Set([1, 2, 3, 4]);
-        this._curso = value.trim();
 
         if (validCurso.has(value)) {
             this._curso = value;
         } else {
-            this.curso = null;
+            this._curso = null;
         }
 
     }
 });
-Object.defineProperty(Aula.prototype, "getYsetalumnos", {
+
+Object.defineProperty(Aula.prototype, "alumnos", {
     
     get:function (){
         return this._alumnos;
@@ -69,10 +73,24 @@ Object.defineProperty(Aula.prototype, "getYsetalumnos", {
         if(result){
             this._alumnos=value;
         }else{
-            this._alumnos=null;
+            this._alumnos=[];
         }
     }
 });
+
+Object.defineProperty(Aula.prototype,"cantidadAlumnos",{
+    get:function(){
+        return this._cantidadAlumnos;
+    },
+    set:function(value){
+        value=Number(value);
+        if(isNaN(value)){
+            console.log("El valor introducido no es numerico");
+        }else{
+            this._cantidadAlumnos=value;
+        }
+    }
+})
 
 
 
@@ -103,6 +121,7 @@ Aula.prototype.pedirDatosUnAlumno=function(){
     let nota2;
     let nota3;
     let sexo;
+
     do{
         nombre=prompt("Introduce el nombre del alumno: ");
         if(nombre==" "){
@@ -118,12 +137,10 @@ Aula.prototype.pedirDatosUnAlumno=function(){
     }while(fechaNaci==" ")
     
     do{
-        // esto ya lo hago en alumnos no hace falta ahcerlo aqui
-        regla='/^\d{8}[A-Z]$/';
-        patron=new RegExp(regla)
+    
         dni=prompt("Introduce el dni del alumno: ");
-        if(dni==" "&& !patron.test(dni)){
-            console.log("El dni no puede estar vacio y no cumple el patron de un dni");
+        if(dni==" "){
+            console.log("El dni es obligatorio");
         }
 
     }while(dni==" " && !patron.test(dni))
@@ -193,7 +210,7 @@ Aula.prototype.insertarAlumnos=function(alumnosArray){
 
 Aula.prototype.obtenerSitiosAlumnos=function(){
 
-    let plazasLibres=this._cantidadAlumnos-this._maxAlumnos;
+    let plazasLibres=this._maxAlumnos-this._cantidadAlumnos;
     return plazasLibres;
 }
 
@@ -208,7 +225,7 @@ Aula.prototype.mostrarDatos=function(){
 }
 
 Aula.prototype.mediasNota=function(){
-    let suma;
+    let suma=0;
 
     for (let index = 0; index < this._alumnos.length; index++) {
         
@@ -240,7 +257,7 @@ Aula.prototype.porcentajeSuspenso=function(){
     let cantidadSuspensos=0;
     for (let index = 0; index < this._alumnos.length; index++) {
         
-        if(this.alumnos[index].notaFinal<5){
+        if(this._alumnos[index].notaFinal<5){
 
             cantidadSuspensos++;
         }
@@ -258,7 +275,7 @@ Aula.prototype.mostrarSuspensosAprobados=function(){
     let cantidadAporbados=0;
     for (let index = 0; index < this._alumnos.length; index++) {
         
-        if(this.alumnos[index].notaFinal<5){
+        if(this._alumnos[index].notaFinal<5){
 
             cantidadSuspensos++;
         }else{

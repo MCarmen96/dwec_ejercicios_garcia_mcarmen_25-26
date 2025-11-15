@@ -6,19 +6,37 @@ console.log("T04p01 - Ejercicio 01");
 
 */
 // TODO FUNCION CONSTRUCTORA 
-function Alumno(nombre){
+function Alumno(dni,nombre,curso){
 
+    this._dni=dni;
     this._nombre=nombre;
     this._notas=[];
-    
-    // funcion mostrar info alumno
+    this._curso=curso;
 
 }
 
 // * DEFINIR LOS GETTERS Y LOS SETTERS MEJOR FUERA
+Object.defineProperty(Alumno.prototype,"dni",{
 
+    get:function(){
+        return this._dni;
+    },
+    set:function(value){
 
-Object.defineProperty(Alumno.prototype,"getYsetnombre",{
+        let regla=/^\d{8}[A-Z]$/;
+        let patron=new RegExp(regla);
+
+        if(patron.test(value)){
+            this._dni=value;
+        }else{
+            this._dni=null;
+        }
+
+        this._dni=value.trim();
+    }
+
+});
+Object.defineProperty(Alumno.prototype,"nombre",{
     get:function(){
         return this._nombre;
     },
@@ -26,33 +44,28 @@ Object.defineProperty(Alumno.prototype,"getYsetnombre",{
         this._nombre=value.trim();
     }
 });
+Object.defineProperty(Alumno.prototype,"notaFinal",{
+    get:function(){
+        return this._notaFinal;
+    }
+    
+});
 
+Object.defineProperty(Aula.prototype, "curso", {
 
+    get: function () {
+        return this._curso;
+    },
+    set: function (value) {
+        value=Number(value);
+        const validCurso = new Set([1, 2, 3, 4]);
 
+        if (validCurso.has(value)) {
+            this._curso = value;
+        } else {
+            this._curso = null;
+        }
 
-/*
-*----METODOS DE OBJECTS---
-    Nos permiten definir unas reglas d emodificaicon del objeto 
-    Para que salga el error hay que usar 'use strict'
-* Prevents re-assignment
-const car = {type:"Fiat", model:"500", color:"white"};
+    }
+});
 
-* Prevents adding object properties
-Object.preventExtensions(object)
-
-* Returns true if properties can be added to an object
-Object.isExtensible(object)
-
-* Prevents adding and deleting object properties
-Object.seal(object)
-
-* Returns true if object is sealed
-Object.isSealed(object)
-
-* Prevents any changes to an object
-Object.freeze(object)
-
-* Returns true if object is frozen
-Object.isFrozen(object)
-
-*/
