@@ -157,7 +157,8 @@ const personajes = [
 //* Si se quiere ordenar por valor numerico se utiliza una funcion de comparacion en la cual se define el modo de ordenacion
 // Logica de la funcion de comparacion El método sort() solo mira el signo del número que devuelves: // TODO  si es negativo a va antes b, si es positivo b antes que a y si es 0 son iguales
 // * El metodo 'sort' modifica el array original mutacion del array
-// TODO a sera el primer elemento a comparar y b el segundo elemento a comparar Devuelve el array ordenado
+// TODO a sera el primer elemento a comparar y b el segundo elemento a comparar Devuelve la referencia del array ordenado
+
 
 personajes.sort((personajeA,personajeB)=>{
     return personajeB.numeroApariciones - personajeA.numeroApariciones;
@@ -166,20 +167,18 @@ personajes.sort((personajeA,personajeB)=>{
 console.log("Array personajes ordenado con sort(): ",personajes);
 
 // TODO toSorted() -> Ordena el array, pero no modifica el original.Devuelve una copia ordenada del array segun el metodo de ordenacion
-
 const personajes2=personajes.toSorted((personajeA,personajeB)=>{
     return personajeA.numeroApariciones - personajeB.numeroApariciones;
 });
 console.log("Array personajes ordenado con toSorted de menor a mayor: ",personajes2);
 
 // TODO toReversed() -> Invierte el orden de los elementos del array.Devuelve un nuevo array, y no recibe parametros 
-
 const personajes3=personajes.toReversed();
 console.log("Array invertido con toReversed(): ",personajes3)
 
 //* T. Usa el método "sort" para ordenar los personajes por edad, de menor a mayor. ¿Diferencia con toSorted() y toReversed()?
-//personajes.sort((a,b)=>{return a.edad-b.edad;});
-//console.log("Personajes ordenados por edad: ",personajes)
+personajes.sort((a,b)=>{return a.edad-b.edad;});
+console.log("Personajes ordenados por edad: ",personajes)
 // * U. Usa el método "toSorted" para ordenar los personajes alfabéticamente por nombre (de la A-Z). ¿Diferencia con sort() y reverse()?
 
 // TODO  localCompare Compara dos cadenas de texto referenceStr.localeCompare(compareString, locales, options);
@@ -192,7 +191,9 @@ const perosnajesAlfabe=personajes.toSorted((a,b)=>{
 console.log("Array ordenado alfabeticamente por nombre de A-Z: ",perosnajesAlfabe)
 
 // * V. Usa el método "toSorted" para ordenar los personajes alfabéticamente por nombre real (de la Z-A). ¿Diferencia con sort() y reverse()?
+
 // TODO La prinicpal diferencia es que no mutan el array original como sort y reverse que si lo hacen
+
 const personajesAlfabe_Invert=personajes.toSorted((a,b)=>{
     return a.nombreReal.localeCompare(b.nombreReal);
 });
