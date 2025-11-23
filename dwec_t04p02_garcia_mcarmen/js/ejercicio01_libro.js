@@ -22,9 +22,10 @@ class Libro{
         "Infantil",
     ]);
 
-    constructor(isbn,titulo,autor,genero,precio){
+    constructor(isbn,titulo,autores,genero,precio){
         this.isbn=isbn;
         this.titulo=titulo;
+        this.autores=[autores];
         this.genero=genero;
         this.precio=precio;
         this.#precioOriginal=this.precio;
@@ -33,12 +34,7 @@ class Libro{
     get isbn(){
         return this.#isbn;
     }
-    set isbn(newIsbn){
-        if (Util.validarEntero(newIsbn)){
-            throw new Error("El tipo de valor no es valido para isbn");
-        }
-        this.#titulo=newIsbn;
-    }
+    
 
     get titulo(){
         return this.#titulo;
@@ -50,18 +46,24 @@ class Libro{
         this.#titulo=newTitulo;
     }
 
-    get autor(){
+    get autores(){
         return this.#autor;
     }
-    set autor(newAutor){
+    set autores(newAutor){
 
         if(!Array.isArray(newAutor)){
             throw new Error("El nuevo autor no es un array");
+        }else if(newAutor.length===0){
+            throw new Error("El libro debe tener al menos un autor.");
         }
 
-        if(!Util.validarNombrePersona(newAutor)){
-            throw new Error("El nombre no cumple los requisitos");
+        const objetosAutor=newAutor.every(autor=>autor instanceof Autor);
+
+        if(!objetosAutor){
+            throw new Error("Todos los elemento que tiene que ser la clase autor");
+            
         }
+        
         this.#autor=newAutor;
     }
 
@@ -89,7 +91,8 @@ class Libro{
     }
 
     mostrarDatosLibro(){
-        return `·Titulo: ${this.titulo}\n·Autor: ${this.autor}\n·Genero: ${this.genero}\n·Precio: ${this.precio}\n·Isbn:${this.isbn}`;
+        // autor es un array tengo que acceder a el como un array 
+        return `·Titulo: ${this.titulo}\n·Autor: ${this.autores}\n·Genero: ${this.genero}\n·Precio: ${this.precio}\n·Isbn:${this.isbn}`;
     }
 
     deshacerDescuentoLibro(){
@@ -101,8 +104,6 @@ class Libro{
     }
 
     aplicarDescuentoLibro(descuento){
-
-
         if(descuento<=0||descuento>100){
             throw new Error("el descuento no es valido");
             
@@ -114,6 +115,7 @@ class Libro{
     
         this.precio=this.precio-(this.precio*(descuento/100));
     }
+    
 }
 
 class Ebook extends Libro{
@@ -175,6 +177,41 @@ class Ebook extends Libro{
 
     mostrarDatosLibro(){
         return `${super.mostrarDatosLibro()}, ·Tamaño Archivo: ${this.tamanoArchivo}\n ·Formato:${this.formato}`; 
+    }
+
+    comprobarDisponibilidad(){
+        return true;
+    }
+
+    modificarLibro(mapainfo){
+
+        for(const [clave,valor] of mapainfo){
+            if(clave==="isbn"){
+                throw new Error("El isbn no se puede cambiar");
+            }
+
+            switch(clave.toLowerCase()){
+                case "titulo":
+                    this.titulo=valor;
+                    break;
+                case "autor"||"autores":
+                    this.autores=valor;
+                    break;
+                case "genero":
+                    this.genero=valor;
+                    break;
+                case "precio":
+                    this.precio=valor;
+                    break;
+                case "tamaño":
+                    this.tamanoArchivo=valor;
+                    break;
+                case "formato":
+                    this.formato=valor;
+                    break;               
+            }
+        }
+
     }
 }
 
@@ -253,6 +290,49 @@ class LibroPapel extends Libro{
 
     mostrarDatosLibro(){
         return `${super.mostrarDatosLibro()}, ·Peso Libro: ${this.peso}\n ·Dimensiones:${this.dimensiones}\n ·Stock:${this.stock}`; 
+    }
+
+    comprobarDisponibilidad(){
+        let hayStock=false;
+        if(this.stock>0){
+            hayStock=true;
+        }
+
+        return hayStock;
+    }
+
+    modificarLibro(mapainfo){
+
+        for(const [clave,valor] of mapainfo){
+            if(clave==="isbn"){
+                throw new Error("El isbn no se puede cambiar");
+            }
+
+            switch(clave.toLowerCase()){
+                case "titulo":
+                    this.titulo=valor;
+                    break;
+                case "autor"||"autores":
+                    this.autores=valor;
+                    break;
+                case "genero":
+                    this.genero=valor;
+                    break;
+                case "precio":
+                    this.precio=valor;
+                    break;
+                case "peso":
+                    this.peso=valor;
+                    break;
+                case "dimensiones":
+                    this.dimensiones=valor;
+                    break;  
+                case "stock":
+                    this.stock=valor;
+                    break;                 
+            }
+        }
+
     }
 }
 

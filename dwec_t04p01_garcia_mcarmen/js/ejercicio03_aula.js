@@ -96,8 +96,8 @@ Aula.prototype.matricularAlumnos=function(){
 
             this._alumnos.push(alumno);
 
-            matricularObligatorias(alumno);
-            matricularOptativas(alumno);
+            this.matricularObligatorias(alumno);
+            this.matricularOptativas(alumno);
 
 
         }
@@ -106,10 +106,11 @@ Aula.prototype.matricularAlumnos=function(){
 Aula.prototype.matricularObligatorias=function(alumno){
 
     asignaturas.filter(asig=>asig.curso===alumno.curso&&asig.tipo==="obligatoria").forEach(asig=>asig.alumnos.push(alumno));
+    
 }
 
 Aula.prototype.matricularOptativas=function(alumno){
-    
+
 }
 
 Aula.prototype.haySitioAlumnos=function(){
