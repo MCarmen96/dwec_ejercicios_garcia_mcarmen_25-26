@@ -2,11 +2,13 @@ console.log("T04 - Ejercicio 0X");
 
 class Autores{
 
-    listadoAutores;//tienes que ser privada'????
+    #listadoAutores;//tienes que ser privada'????
 
     constructor(){
         this.listadoAutores=[];
     }
+
+    get listadoAutores(){return this.#listadoAutores}
     //existeAutorPorNombre(nombreAbuscar): devuelve true o false si ya existe el autor.
     existeAutorPorNombre(nombreAbuscar){
         return this.listadoAutores.some(autor=>{autor.nombre===nombreAbuscar});
