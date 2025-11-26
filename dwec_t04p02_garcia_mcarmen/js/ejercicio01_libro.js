@@ -25,7 +25,7 @@ class Libro{
     constructor(isbn,titulo,autores,genero,precio){
         this.isbn=isbn;
         this.titulo=titulo;
-        this.autores=[autores];
+        this.autores=autores;
         this.genero=genero;
         this.precio=precio;
         this.#precioOriginal=this.precio;
@@ -176,6 +176,7 @@ class Ebook extends Libro{
     }
 
     mostrarDatosLibro(){
+        //modificar como mostrar el autor es un array
         return `${super.mostrarDatosLibro()}, ·Tamaño Archivo: ${this.tamanoArchivo}\n ·Formato:${this.formato}`; 
     }
 
@@ -289,6 +290,7 @@ class LibroPapel extends Libro{
     }
 
     mostrarDatosLibro(){
+        //modificar como mostrar el autor es un array
         return `${super.mostrarDatosLibro()}, ·Peso Libro: ${this.peso}\n ·Dimensiones:${this.dimensiones}\n ·Stock:${this.stock}`; 
     }
 
