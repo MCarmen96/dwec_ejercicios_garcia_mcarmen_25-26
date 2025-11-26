@@ -2,7 +2,7 @@ console.log("T04 - Ejercicio 0X");
 
 class Autores{
 
-    listadoAutores;
+    listadoAutores;//tienes que ser privada'????
 
     constructor(){
         this.listadoAutores=[];
@@ -34,17 +34,19 @@ class Autores{
             return autor.nombre===nombreAbuscar;
         });
     }
-
+    //obtenerCadenaAutoresMenu(): 
+    //Devuelve una cadena con el listado numerado de los autores en orden alfabético y entre paréntesis el número de libros escritos.
     obtenerCadenaAutoresMenu(){
         let cadenaAutores;
         let numero=0;
         const ordenadoAlfabeAutores=this.listadoAutores.toSorted((a,b)=>{
             return a.nombre.localCompare(b.nombre);
         });
-
-        ordenadoAlfabeAutores.forEach(autor=>{
-            cadenaAutores+=``;
-        })
+        //con el map me genero un array con los libros de cada autor
+        ordenadoAlfabeAutores.forEach(autor,index=>{
+            cadenaAutores+=`${(index+1)}. ${autor.mostrarDatosAutor()}\n ·Libros: (${autor.libros.map(libro=>libro.titulo)})`;
+        });
+        return cadenaAutores;
     }
 
 }
