@@ -36,7 +36,7 @@ class tipoEnvio{
         this.#pesoMax=newPeso;
     }
 
-    get preciosSinIVA(){return this.#diasMaxEntrega};
+    get preciosSinIVA(){return this.#preciosSinIVA};
     set preciosSinIVA(newPrecio){
         if(!Util.validarPrecio(newPrecio)){
             throw new Error("El precio nuevo no es valido");
