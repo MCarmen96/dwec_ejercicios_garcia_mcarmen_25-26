@@ -46,9 +46,13 @@ class cliente{
 
     insertarPedidoCliente(pedido){
 
-        if(pedido instanceof Pedido){
-            this.listaPedidos.push(pedido)
+        if(!(pedido instanceof Pedido)){
+            throw new Error("El argumento no es uan instancia de Pedido");
+            
         }
+
+        this.listaPedidos.push(pedido)
+
     }
 
 

@@ -1,6 +1,6 @@
 console.log("T04 - Ejercicio 0X");
 
-class tipoEnvio{
+class TipoEnvio{
     #nombre;//NO PUEDE HABER 2 IGUALES
     #diasMaxEntrega;
     #pesoMax;
