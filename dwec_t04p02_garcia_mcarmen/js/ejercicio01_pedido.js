@@ -1,5 +1,6 @@
 console.log("T04 - Ejercicio 0X");
 
+// buscar en matrices bidimensionales
 
 class Pedido{
 
@@ -129,18 +130,25 @@ class Pedido{
     }
 
     insertarLibros(libro,unidades){
+
         if(!(libro instanceof Libro)){
             throw new Error("El libro no es una instancia de la clase Libro");
         }
-        if(!(libro instanceof Libro)){
+        this.librosPedido.set(libro.isbn)
+        if(!(libro instanceof Ebook)){
             this.librosPedido.set(libro,1);
         }else{
             this.librosPedido.set(libro,unidades);
         }
+
     }
 
-    establecerTipoEnvio(){
-        
+    /*establecerTipoEnvio(){
+        if()
     }
+
+    calcularTotal(){
+        this.librosPedido.get('');
+    }*/
 
 }

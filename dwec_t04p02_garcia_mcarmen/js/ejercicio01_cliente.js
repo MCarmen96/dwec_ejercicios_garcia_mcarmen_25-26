@@ -50,9 +50,7 @@ class cliente{
             throw new Error("El argumento no es uan instancia de Pedido");
             
         }
-
         this.listaPedidos.push(pedido)
-
     }
 
 

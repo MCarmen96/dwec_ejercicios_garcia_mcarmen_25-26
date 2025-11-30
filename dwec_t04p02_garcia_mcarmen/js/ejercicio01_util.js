@@ -205,9 +205,7 @@ class Util{
         if(validarEntero(dias)&&dias>=1&&dias<=31){
             isValid=true;
         }
-
         return isValid;
     }
-
     
 }
