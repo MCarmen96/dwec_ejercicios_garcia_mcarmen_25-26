@@ -11,8 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let deleteButton=document.getElementById('btnBorrar');
 
+    deleteButton.addEventListener('click',function(){
+        deleteAlimento();
+    })
 
-
+    let ordenarButton=document.getElementById('btnOrdenar');
+    ordenarButton.addEventListener('click',function(){
+        ordenarLista();
+    })
 
 });
 
@@ -21,14 +27,36 @@ function addAlimento(){
     let valueInput=document.getElementById('inputAlimento').value;
     let lista=document.getElementById('listaAlimentos');
 
-    lista.textContent=valueInput;
+    let li = document.createElement('li');
+    li.textContent = valueInput;
+
+    lista.appendChild(li);
 }
 
 function deleteAlimento(){
 
     let lista=document.getElementById('listaAlimentos');
-    let borrarElement=lista.query
-
+    
+    if(lista.lastElementChild){
+        lista.removeChild(lista.lastElementChild);
+    }
 
 }
+
+function ordenarLista(){
+    let lista=document.getElementById('listaAlimentos');
+    let itemsArray=Array.from(lista.children);
+
+    let ordenados = itemsArray.toSorted((a, b) =>
+        a.textContent.localeCompare(b.textContent)
+    );
+    lista.innerHTML = "";
+    ordenados.forEach(li => lista.appendChild(li));
+}
+
+/*
+    element.remove() → borra el nodo
+    element.textContent = "" → vacía contenido
+    removeChild() → borra un hijo concreto
+*/
 
