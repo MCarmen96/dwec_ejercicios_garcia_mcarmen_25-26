@@ -12,11 +12,10 @@ class Util{
     }
 
     static validarReal(valor){
-        let isValid=false;
-        if(valor!=""||!isNaN(valor)){
-            isValid=true;
+        if (valor === null || valor === undefined || typeof valor === "boolean" || String(valor).trim() === "") {
+            return false;
         }
-        return isValid;
+        return Number.isFinite(Number(valor));
     }
     //modificar funcion 1 tiene que comprobar que es un formato de fecha correctp
     static validarCadenaFecha(valor){
@@ -120,8 +119,8 @@ class Util{
 
     static validarPrecio(precio){
         let isValid=false;
-        let comprobacion=validarReal(precio);
-        if(comprobacion&&precio>0){
+        
+        if(this.validarReal(precio)&&precio>0){
             isValid=true;
         }
         return isValid;
@@ -194,7 +193,7 @@ class Util{
 
     static validarPeso(peso){
         let isValid=false;
-        if(validarReal(peso)&&peso>0){
+        if(this.validarReal(peso)&&peso>0){
             isValid=true;
         }
         return isValid;
@@ -202,7 +201,7 @@ class Util{
 
     static validarDiasEnvio(dias){
         let isValid=false;
-        if(validarEntero(dias)&&dias>=1&&dias<=31){
+        if(this.validarEntero(dias)&&dias>=1&&dias<=31){
             isValid=true;
         }
         return isValid;

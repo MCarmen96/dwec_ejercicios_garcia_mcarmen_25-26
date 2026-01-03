@@ -14,21 +14,29 @@ class Autor{
     }
     // obtenerSiguienteId(): Incrementa el último ID en 1 y devuelve su valor. Se invoca desde el constructor de la Clase Autor.
     static obtenerSiguienteId(){
-        Autor.ultimoIdAsignado++;
-        return Autor.ultimoIdAsignado;
+        return ++Autor.ultimoIdAsignado;
     }
     // PREGUNTAR ALBERTO HACE FALTA??? HABER SI PARA OBETENR EL VALOR o no por que es interno depende de loq ue se quiera
     get id(){
         return this.#id;
     }
+    set id(newId){
+        this.#id=newId;
+    }
 
     get libros(){//hago setter de libros????
         return this.#libros;
     }
+
+    set libros(newLibros){
+        if(newLibros.isArray){
+            this.#libros=newLibros;
+        }
+    }
+
     get nombre(){
         return this.#nombre;
     }
-
     set nombre(newNombre){
         if(!Util.validarNombrePersona(newNombre)){
             throw new Error("Nombre no valido");

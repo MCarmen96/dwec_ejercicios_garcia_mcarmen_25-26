@@ -4,7 +4,7 @@ class Libro{
 
     #isbn;
     #titulo;
-    #autor;
+    #autores;
     #genero;
     #precio;
     #precioOriginal;
@@ -55,7 +55,7 @@ class Libro{
     }
 
     get autores(){
-        return this.#autor;
+        return this.#autores;
     }
     set autores(newAutor){
 
@@ -64,7 +64,7 @@ class Libro{
         }else if(newAutor.length===0){
             throw new Error("El libro debe tener al menos un autor.");
         }
-
+        // aseguro que cada elemento del array es una instancia de la clase autor
         const objetosAutor=newAutor.every(autor=>autor instanceof Autor);
 
         if(!objetosAutor){
@@ -72,7 +72,7 @@ class Libro{
             
         }
         
-        this.#autor=newAutor;
+        this.#autores=newAutor;
     }
 
     get genero(){
@@ -95,7 +95,7 @@ class Libro{
         if(!Util.validarPrecio(newPrecio)){
             throw new Error("El precio no es un valor valido");
         }
-        this.precio=newPrecio;
+        this.#precio=newPrecio;
     }
 
     mostrarDatosLibro(){
@@ -256,7 +256,7 @@ class LibroPapel extends Libro{
         if(!Util.validarDimensiones(newDimensiones)){
             throw new Error("Peso no valido");
         }
-        this.dimensiones=newDimensiones;
+        this.#dimensiones=newDimensiones;
     }
 
     get stock(){

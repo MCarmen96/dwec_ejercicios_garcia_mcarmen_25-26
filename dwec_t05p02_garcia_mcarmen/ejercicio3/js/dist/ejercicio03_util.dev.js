@@ -29,13 +29,11 @@ function () {
   }, {
     key: "validarReal",
     value: function validarReal(valor) {
-      var isValid = false;
-
-      if (valor != "" || !isNaN(valor)) {
-        isValid = true;
+      if (valor === null || valor === undefined || typeof valor === "boolean" || String(valor).trim() === "") {
+        return false;
       }
 
-      return isValid;
+      return Number.isFinite(Number(valor));
     } //modificar funcion 1 tiene que comprobar que es un formato de fecha correctp
 
   }, {
@@ -147,9 +145,8 @@ function () {
     key: "validarPrecio",
     value: function validarPrecio(precio) {
       var isValid = false;
-      var comprobacion = validarReal(precio);
 
-      if (comprobacion && precio > 0) {
+      if (this.validarReal(precio) && precio > 0) {
         isValid = true;
       }
 
@@ -239,7 +236,7 @@ function () {
     value: function validarPeso(peso) {
       var isValid = false;
 
-      if (validarReal(peso) && peso > 0) {
+      if (this.validarReal(peso) && peso > 0) {
         isValid = true;
       }
 
@@ -250,7 +247,7 @@ function () {
     value: function validarDiasEnvio(dias) {
       var isValid = false;
 
-      if (validarEntero(dias) && dias >= 1 && dias <= 31) {
+      if (this.validarEntero(dias) && dias >= 1 && dias <= 31) {
         isValid = true;
       }
 

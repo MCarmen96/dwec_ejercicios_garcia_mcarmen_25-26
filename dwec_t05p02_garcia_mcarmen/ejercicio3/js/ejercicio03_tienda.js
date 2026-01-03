@@ -60,8 +60,8 @@ class Tienda {
 
     cargarDatosPrueba(){
 
-        const autorBoticaria=new Autor('Nisu');
-        const autorKimetsu=new Autor('Nisu2');
+        const autorBoticaria=[new Autor('Nisu')];
+        const autorKimetsu=[new Autor('NisuDos')];
 
         const libro1 = new LibroPapel(1111, "Los diarios de la boticaria",autorBoticaria, "Novela", 15.99,10,'10x10x5',200);
         const libro2 = new Ebook(2222, "Kimetsu no yaiba",autorKimetsu,"Fantasia",10.99,12,"pdf");
