@@ -1,6 +1,5 @@
 extends layout
 block main 
-    br
     h1.mb-4.text-center Catálogo de libros
     .row.mb-3
         .col-md-6.mx-auto
@@ -9,7 +8,6 @@ block main
                 button#btnBuscar.btn.btn-primary(type="button") Buscar
     p#mensaje-vacio.text-center.text-muted.d-none
         | No se han encontrado libros que coincidan con la búsqueda.
-
     .table-responsive
         table#table-libros.table.table-hover.table-bordered.align-middle
             thead.table-dark
@@ -23,35 +21,36 @@ block main
                     th Stock
                     th.text-center Acciones
             tbody
+            
                 // Aquí se cargarán los libros por JS
     div.modal.fade#modalLibro(tabindex="-1")
-    div.modal-dialog.modal-lg
-        div.modal-content
-            div.modal-header
-                h5.modal-title Detalles del libro
-                button.btn-close(type="button" data-bs-dismiss="modal")
-            div.modal-body
-                ul.list-group
-                    li.list-group-item
-                        strong ISBN: 
-                        span#detalle-isbn
-                    li.list-group-item
-                        strong Título: 
-                        span#detalle-titulo
-                    li.list-group-item
-                        strong Autor: 
-                        span#detalle-autor
-                    li.list-group-item
-                        strong Género: 
-                        span#detalle-genero
-                    li.list-group-item
-                        strong Precio: 
-                        span#detalle-precio
-                    li.list-group-item
-                        strong Tipo: 
-                        span#detalle-tipo
-                    li.list-group-item
-                        strong Stock: 
-                        span#detalle-stock
-            div.modal-footer
-                button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar
+        div.modal-dialog.modal-lg
+            div.modal-content
+                div.modal-header
+                    h5.modal-title Detalles del libro
+                    button.btn-close(type="button" data-bs-dismiss="modal")
+                div.modal-body
+                    ul.list-group
+                        li.list-group-item
+                            strong ISBN: 
+                            span#detalle-isbn
+                        li.list-group-item
+                            strong Título: 
+                            span#detalle-titulo
+                        li.list-group-item
+                            strong Autor: 
+                            span#detalle-autor
+                        li.list-group-item
+                            strong Género: 
+                            span#detalle-genero
+                        li.list-group-item
+                            strong Precio: 
+                            span#detalle-precio
+                        li.list-group-item
+                            strong Tipo: 
+                            span#detalle-tipo
+                        li.list-group-item
+                            strong Stock: 
+                            span#detalle-stock
+                div.modal-footer
+                    button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cerrar

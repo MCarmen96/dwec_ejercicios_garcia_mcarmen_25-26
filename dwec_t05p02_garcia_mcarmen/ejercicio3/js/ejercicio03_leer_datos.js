@@ -19,7 +19,7 @@ class LeerDatos{
 
 }
 
-class LeerDatosPrompt extends LeerDatos{
+class LeerDatosFrom extends LeerDatos{
 
     leer(mensaje){ return prompt(mensaje);}
 
