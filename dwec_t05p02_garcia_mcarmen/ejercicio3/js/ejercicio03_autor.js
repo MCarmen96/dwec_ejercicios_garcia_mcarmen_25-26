@@ -29,7 +29,7 @@ class Autor{
     }
 
     set libros(newLibros){
-        if(newLibros.isArray){
+        if(Array.isArray(newLibros)){
             this.#libros=newLibros;
         }
     }
@@ -57,13 +57,13 @@ class Autor{
         if(libro instanceof Libro){
             this.#libros.push(libro);
         }
-        let cantidadLibrosAutor=this.#libros.lenght;
+        let cantidadLibrosAutor=this.#libros.length;
         return cantidadLibrosAutor;
     }
     //tieneLibros(): devuelve true / false si ha escrito libros.
     tieneLibros(){
         let tieneLibros=false;
-        if(this.#libros.lenght>0){
+        if(this.#libros.length>0){
             tieneLibros=true;
         }
         return tieneLibros;

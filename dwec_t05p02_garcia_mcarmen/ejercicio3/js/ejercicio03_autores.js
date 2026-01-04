@@ -9,6 +9,7 @@ class Autores{
     }
 
     get listadoAutores(){return this.#listadoAutores}
+    set listadoAutores(listadoAutores) { this.#listadoAutores = listadoAutores; }
     //existeAutorPorNombre(nombreAbuscar): devuelve true o false si ya existe el autor.
     existeAutorPorNombre(nombreAbuscar){
         return this.listadoAutores.some(autor=>{autor.nombre===nombreAbuscar});

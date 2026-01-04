@@ -36,19 +36,59 @@
 </nav>
 
   </header>
-  <main class="container"> 
-    <h1>ahdasjhfda</h1>
-    <table class="table-hover" id="table-libros">
-      <thead> 
-        <tr>
-          <th>Isbn</th>
-          <th>Titulo</th>
-          <th>Autor</th>
-          <th>Genero </th>
-          <th>Precio </th>
-        </tr>
-      </thead>
-    </table>
+  <main class="container pt-5"><br/>
+    <h1 class="mb-4 text-center">Catálogo de libros</h1>
+    <div class="row mb-3">
+      <div class="col-md-6 mx-auto">
+        <div class="input-group">
+          <input class="form-control" id="buscador" type="text" placeholder="Buscar por título, autor o género..."/>
+          <button class="btn btn-primary" id="btnBuscar" type="button">Buscar</button>
+        </div>
+      </div>
+    </div>
+    <p class="text-center text-muted d-none" id="mensaje-vacio">No se han encontrado libros que coincidan con la búsqueda.</p>
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered align-middle" id="table-libros">
+        <thead class="table-dark">
+          <tr>
+            <th>Isbn</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Género</th>
+            <th>Precio</th>
+            <th>Tipo</th>
+            <th>Stock</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se cargarán los libros por JS-->
+        </tbody>
+      </table>
+    </div>
+    <div class="modal fade" id="modalLibro" tabindex="-1"></div>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detalles del libro</h5>
+          <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>ISBN: </strong><span id="detalle-isbn"></span></li>
+            <li class="list-group-item"><strong>Título: </strong><span id="detalle-titulo"></span></li>
+            <li class="list-group-item"><strong>Autor: </strong><span id="detalle-autor"></span></li>
+            <li class="list-group-item"><strong>Género: </strong><span id="detalle-genero"></span></li>
+            <li class="list-group-item"><strong>Precio: </strong><span id="detalle-precio"></span></li>
+            <li class="list-group-item"><strong>Tipo: </strong><span id="detalle-tipo"></span></li>
+            <li class="list-group-item"><strong>Stock: </strong><span id="detalle-stock"></span></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
   </main>
   <footer>
          <div class="container">

@@ -2,10 +2,11 @@ class Tienda {
     // ===== Propiedad estática =====
     static instancia = null;
     #nombre;
-    #listaClientes;
     #libros;
-    #listaPedidos;
-    #tipoPedidos;
+    #autores;
+    #tiposEnvios;
+    #clientes;
+    #pedidos;
     #leerDatosForm;
 
 
@@ -25,56 +26,49 @@ class Tienda {
             throw new Error("[Tienda] Use Tienda.getInstancia() en lugar de new Tienda()");
         }
         this.#nombre =nombreTienda;
-        this.listaClientes= new Clientes();
-        this.libros= new Libros();
-        //this.listaPedidos=new Pedidos();
+        this.#clientes= new Clientes();
+        this.#libros= new Libros();
+        this.#autores=new Autores();
+
     }
 
-    get listaLibros(){ return this.#libros;}
-    set listaLibros(value){
-        if(!(value instanceof Libros)){
-            throw new Error("Libros Invalido");
-        }
-        this.#libros=value;
-    }
+    get nombre() { return this.#nombre; }
+    set nombre(nombre) { this.#nombre = nombre; }
 
-    get listaClientes(){ return this.#listaClientes;}
-    set listaClientes(value){
-        if(!(value instanceof Clientes)){
-            throw new Error("Clientes invalido");
-        }
-        this.#listaClientes=value;
-    }
+    get libros() { return this.#libros; }
+    set libros(libros) { this.#libros = libros; }
 
-    get listaPedidos(){ return this.#listaPedidos;}
-    set listaPedidos(value){
-        if(!(value instanceof Pedidos)){
-            throw new Error("Pedidos invalido");
-        }
-        this.#listaPedidos=value;
-    }
+    //get lector() { return this.#lector; }
+    //set lector(lector) { this.#lector = lector; }
+
+    get autores() { return this.#autores; }
+    set autores(autores) { this.#autores = autores; }
+
+    //get tiposEnvio() { return this.#tiposEnvio; }
+    //set tiposEnvio(tiposEnvio) { this.#tiposEnvio = tiposEnvio; }
+
+    get clientes() { return this.#clientes; }
+    set clientes(clientes) { this.#clientes = clientes; }
+
+    //get pedidos() { return this.#pedidos; }
+    //set pedidos(pedidos) { this.#pedidos = pedidos; }
         
         
-
-
 
     cargarDatosPrueba(){
-
-        const autorBoticaria=[new Autor('Nisu')];
-        const autorKimetsu=[new Autor('NisuDos')];
-
-        const libro1 = new LibroPapel(1111, "Los diarios de la boticaria",autorBoticaria, "Novela", 15.99,10,'10x10x5',200);
-        const libro2 = new Ebook(2222, "Kimetsu no yaiba",autorKimetsu,"Fantasia",10.99,12,"pdf");
-        const arrayLibros = [];
         
-        arrayLibros.push(libro1);
-        arrayLibros.push(libro2);
-        autorBoticaria.insertarLibro(libro1);
-        autorKimetsu.insertarLibro(libro2);
+        const autoresPrueba=[new Autor('Nisu'),new Autor('NisuDos')]
+        
+        this.autores.insertarAutores(autoresPrueba);
 
-        const libros = new Libros();
-
-        libros.insertarLibros(arrayLibros);
+        const arrayLibros = [
+                            new LibroPapel(1111, "Los diarios de la boticaria",[this.autores.listadoAutores[0]], "Novela", 15.99,10,'10x10x5',200),
+                            new Ebook(2222, "Kimetsu no yaiba",[this.autores.listadoAutores[1]],"Fantasia",10.99,12,"pdf")];
+        
+        this.libros.insertarLibros(arrayLibros);
+        
+        autoresPrueba[0].insertarLibro(arrayLibros[0]);
+        autoresPrueba[1].insertarLibro(arrayLibros[1]);
 
     }
 
@@ -85,9 +79,16 @@ class Tienda {
             let tr=document.createElement('tr');
             tr.innerHTML=`<td>${libro.isbn}</td>
             <td>${libro.titulo}</td>
-            <td>${libro.autor}</td>
+            <td>${libro.autores.map(aut=>aut.nombre)}</td>
             <td>${libro.genero}</td>
-            <td>${libro.precio}</td>`;
+            <td>${libro.precio}</td>
+            <td>${(libro instanceof Ebook) ? "Ebook" : "Libro en Papel"}</td>
+            <td>${libro.stock ?? "Ilimitado"}</td>
+            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalLibro">
+                Ver detalles
+            </button>
+            
+            `;
             tableBody.appendChild(tr);
 
         });

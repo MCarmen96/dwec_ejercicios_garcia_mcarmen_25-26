@@ -59,20 +59,16 @@ class Libro{
     }
     set autores(newAutor){
 
-        if(!Array.isArray(newAutor)){
-            throw new Error("El nuevo autor no es un array");
-        }else if(newAutor.length===0){
-            throw new Error("El libro debe tener al menos un autor.");
+        if (typeof newAutor === "object" && newAutor instanceof Array) {
+            newAutor.forEach(autor => {
+                if (!newAutor instanceof Autor) {
+                    throw new Error("El parametro enviado no es un Autor");
+                }
+            });
+        } else {
+            throw new Error("El parametro enviado No es un array");
         }
-        // aseguro que cada elemento del array es una instancia de la clase autor
-        const objetosAutor=newAutor.every(autor=>autor instanceof Autor);
-
-        if(!objetosAutor){
-            throw new Error("Todos los elemento que tiene que ser la clase autor");
-            
-        }
-        
-        this.#autores=newAutor;
+        this.#autores = newAutor;
     }
 
     get genero(){
