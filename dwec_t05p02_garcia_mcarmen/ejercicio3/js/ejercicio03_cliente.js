@@ -20,6 +20,7 @@ class cliente{
         if(!patron.test(newDni)){
             throw new Error ("El nuevo dni no es valido");
         }
+        this.#dni=newDni;
     }
 
     get nombreCompleto(){return this.#nombreCompleto}
@@ -39,7 +40,11 @@ class cliente{
     }
 
     get listaPedidos(){return this.#listaPedidos;}
-
+    set listaPedidos(newPedidos){
+        if(Array.isArray(newPedidos)){
+            this.#listaPedidos=newPedidos;
+        }
+    }
     mostrarDatosClientes(){
         return `·Datos cliente:${this.nombreCompleto},${this.dni},${this.dirrecion}\nPedidosCliente:${this.listaPedidos.map(pedido=>pedido.abierto===true)}`
     }

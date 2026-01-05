@@ -29,7 +29,7 @@ class Tienda {
         this.#clientes= new Clientes();
         this.#libros= new Libros();
         this.#autores=new Autores();
-        //.pedidos=new Pedidos();
+        //this.pedidos=new Pedidos();
         this.#tiposEnvios=new tiposEnvios();
 
     }
@@ -59,14 +59,14 @@ class Tienda {
 
     cargarDatosPrueba(){
         
-        const autoresPrueba=[new Autor('Nisu'),new Autor('NisuDos'),new Autor('Jay Kristof'),new Autor('Brandon Sanderson')]
+        const autoresPrueba=[new Autor('Natsu Hyūga'),new Autor('Koyoharu Gotouge'),new Autor('Jay Kristoff'),new Autor('Brandon Sanderson'),new Autor('Tatsuya Endo')]
         
         this.autores.insertarAutores(autoresPrueba);
 
         const arrayLibros = [
-                            new LibroPapel(1111, "Los diarios de la boticaria",[this.autores.listadoAutores[0]], "Novela", 15.99,10,'10x10x5',200),
+                            new LibroPapel(1111, "Los diarios de la boticaria",[this.autores.listadoAutores[0]], "Novela", 15.99,10,'10x10x5',500),
                             new Ebook(2222, "Kimetsu no yaiba",[this.autores.listadoAutores[1]],"Fantasia",10.99,12,"pdf"),
-                            new LibroPapel(3333, "Spy family",[this.autores.listadoAutores[0]], "Ciencia Ficcion", 8.99,10,'10x10x5',120),
+                            new LibroPapel(3333, "Spy family",[this.autores.listadoAutores[4]], "Ciencia Ficcion", 8.99,10,'10x10x5',120),
                             new LibroPapel(4444,"El imperio de los condenados",[this.autores.listadoAutores[2]],"Fantasia",25.99,10,'10x10x5',200),
                             new Ebook(5555, "Nacidos de la bruma",[this.autores.listadoAutores[3]],"Ciencia Ficcion",22.99,12,"epub")
                         
@@ -78,6 +78,8 @@ class Tienda {
         autoresPrueba[1].insertarLibro(arrayLibros[1]);
         autoresPrueba[2].insertarLibro(arrayLibros[2]);
         autoresPrueba[3].insertarLibro(arrayLibros[3]);
+
+        const clientesPrueba=[new Clientes("71368712B","Carmen",),]
 
     }
 
@@ -111,6 +113,10 @@ class Tienda {
         });
 
         return tableBody;
+    }
+
+    insertarClientes(){
+
     }
 
 }

@@ -37,59 +37,73 @@
 
   </header>
   <main class="container pt-5">
-    <h1 class="mb-4 text-center">Catálogo de libros</h1>
-    <div class="row mb-3">
-      <div class="col-md-6 mx-auto">
-        <div class="input-group">
-          <input class="form-control" id="buscador" type="text" placeholder="Buscar por título, autor o género..."/>
-          <button class="btn btn-primary" id="btnBuscar" type="button">Buscar</button>
-        </div>
-      </div>
-    </div>
-    <p class="text-center text-muted d-none" id="mensaje-vacio">No se han encontrado libros que coincidan con la búsqueda.</p>
-    <div class="table-responsive">
-      <table class="table table-hover table-bordered align-middle" id="table-libros">
-        <thead class="table-dark">
-          <tr>
-            <th>Isbn</th>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>Género</th>
-            <th>Precio</th>
-            <th>Tipo</th>
-            <th>Stock</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Aquí se cargarán los libros por JS-->
-        </tbody>
-      </table>
-    </div>
-    <div class="modal fade" id="modalLibro" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Detalles del libro</h5>
-            <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+    <h1 class="mb-4 text-center">Gestión de clientes</h1>
+    <!-- =========================-->
+    <!-- FORMULARIO INSERTAR CLIENTE-->
+    <!-- =========================-->
+    <section class="mb-5" id="formulario-clientes">
+      <h3 class="mb-3">Añadir nuevo cliente</h3>
+      <form class="needs-validation" id="formCliente" novalidate="novalidate">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="dni">DNI</label>
+            <input class="form-control" id="dni" type="text" required="required" pattern="^[0-9]{8}[A-Za-z]$" placeholder="12345678A"/>
+            <div class="invalid-feedback">DNI no válido</div>
           </div>
-          <div class="modal-body">
-            <ul class="list-group">
-              <li class="list-group-item"><strong>ISBN: </strong><span id="detalle-isbn"></span></li>
-              <li class="list-group-item"><strong>Título: </strong><span id="detalle-titulo"></span></li>
-              <li class="list-group-item"><strong>Autor: </strong><span id="detalle-autor"></span></li>
-              <li class="list-group-item"><strong>Género: </strong><span id="detalle-genero"></span></li>
-              <li class="list-group-item"><strong>Precio: </strong><span id="detalle-precio"></span></li>
-              <li class="list-group-item"><strong>Tipo: </strong><span id="detalle-tipo"></span></li>
-              <li class="list-group-item"><strong>Stock: </strong><span id="detalle-stock"></span></li>
-            </ul>
+          <div class="col-md-6">
+            <label class="form-label" for="nombre">Nombre</label>
+            <input class="form-control" id="nombre" type="text" required="required"/>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cerrar</button>
+          <div class="col-md-6">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control" id="email" type="email" required="required"/>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="telefono">Teléfono</label>
+            <input class="form-control" id="telefono" type="tel" required="required"/>
           </div>
         </div>
+        <div class="mt-4 text-center">
+          <button class="btn btn-success" type="submit">Insertar cliente</button>
+        </div>
+      </form>
+      <p class="text-danger mt-2 d-none" id="mensaje-dni">El DNI ya existe en el sistema.</p>
+    </section>
+    <!-- =========================-->
+    <!-- TABLA DE CLIENTES-->
+    <!-- =========================-->
+    <section>
+      <h3 class="mb-3 text-center">Lista de clientes</h3>
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle" id="tabla-clientes">
+          <thead class="table-dark">
+            <tr>
+              <th>DNI</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Se rellena por JS-->
+          </tbody>
+        </table>
       </div>
-    </div>
+    </section>
+    <!-- =========================-->
+    <!-- PANEL OCULTO PEDIDOS-->
+    <!-- =========================-->
+    <section class="mt-5 d-none" id="panel-pedidos">
+      <h3 class="mb-4 text-center">Pedidos del cliente</h3>
+      <div class="row" id="gPedidos">
+        <!-- Cards de pedidos por JS-->
+      </div>
+    </section>
+    <!-- =========================-->
+    <!-- BOTÓN SUBIR ARRIBA-->
+    <!-- =========================-->
+    <div class="text-center mt-5"><a class="btn btn-secondary" href="#formulario-clientes">Subir al formulario</a></div>
   </main>
   <footer>
          <div class="container">

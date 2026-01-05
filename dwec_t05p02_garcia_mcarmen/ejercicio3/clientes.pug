@@ -1,0 +1,72 @@
+extends layout
+block main
+    h1.mb-4.text-center Gestión de clientes
+    // =========================
+    // FORMULARIO INSERTAR CLIENTE
+    // =========================
+    section#formulario-clientes.mb-5
+        h3.mb-3 Añadir nuevo cliente
+
+        form#formCliente.needs-validation(novalidate)
+            .row.g-3
+                .col-md-6
+                    label.form-label(for="dni") DNI
+                    input#dni.form-control(
+                        type="text"
+                        required
+                        pattern="^[0-9]{8}[A-Za-z]$"
+                        placeholder="12345678A"
+                    )
+                    .invalid-feedback DNI no válido
+
+                .col-md-6
+                    label.form-label(for="nombre") Nombre
+                    input#nombre.form-control(type="text" required)
+
+                .col-md-6
+                    label.form-label(for="email") Email
+                    input#email.form-control(type="email" required)
+
+                .col-md-6
+                    label.form-label(for="telefono") Teléfono
+                    input#telefono.form-control(type="tel" required)
+
+            .mt-4.text-center
+                button.btn.btn-success(type="submit") Insertar cliente
+
+        p#mensaje-dni.text-danger.mt-2.d-none
+            | El DNI ya existe en el sistema.
+
+    // =========================
+    // TABLA DE CLIENTES
+    // =========================
+    section
+        h3.mb-3.text-center Lista de clientes
+
+        .table-responsive
+            table#tabla-clientes.table.table-hover.table-bordered.align-middle
+                thead.table-dark
+                    tr
+                        th DNI
+                        th Nombre
+                        th Email
+                        th Teléfono
+                        th.text-center Acciones
+                tbody
+                    // Se rellena por JS
+
+    // =========================
+    // PANEL OCULTO PEDIDOS
+    // =========================
+    section#panel-pedidos.mt-5.d-none
+        h3.mb-4.text-center Pedidos del cliente
+
+        .row#gPedidos
+            // Cards de pedidos por JS
+
+    // =========================
+    // BOTÓN SUBIR ARRIBA
+    // =========================
+    .text-center.mt-5
+        a.btn.btn-secondary(href="#formulario-clientes")
+            | Subir al formulario
