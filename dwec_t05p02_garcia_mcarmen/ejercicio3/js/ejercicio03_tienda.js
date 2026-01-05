@@ -1,13 +1,13 @@
 class Tienda {
     // ===== Propiedad estática =====
-    //static instancia = null;
+    static instancia = null;
     #nombre;
     #libros;
     #autores;
     #tiposEnvios;
     #clientes;
     #pedidos;
-    #leerDatosForm;
+    #lectorDatosForm;
 
     // ===== Método estático Singleton =====
     static getInstancia(nombreTienda) {
@@ -24,38 +24,38 @@ class Tienda {
         }
 
         
-        this.nombre =nombreTienda;
+        this.#nombre =nombreTienda;
         //this.lectorDatosForm= new LeerDatosFrom();
-        this.clientes= new Clientes();
-        this.libros= new Libros();
-        this.autores=new Autores();
+        this.#clientes= new Clientes();
+        this.#libros= new Libros();
+        this.#autores=new Autores();
         //.pedidos=new Pedidos();
-        this.tiposEnvios=new tiposEnvios();
+        this.#tiposEnvios=new tiposEnvios();
 
     }
 
-    //get nombre() { return this.#nombre; }
-    //set nombre(nombre) { this.#nombre = nombre; }
+    get nombre() { return this.#nombre; }
+    set nombre(nombre) { this.#nombre = nombre; }
 
-    //get libros() { return this.#libros; }
-    //set libros(libros) { this.#libros = libros; }
+    get libros() { return this.#libros; }
+    set libros(libros) { this.#libros = libros; }
 
-    //get lector() { return this.#lector; }
-    //set lector(lector) { this.#lector = lector; }
+    get lector() { return this.#lectorDatosForm; }
+    set lector(lector) { this.#lectorDatosForm = lector; }
 
-    //get autores() { return this.#autores; }
-    //set autores(autores) { this.#autores = autores; }
+    get autores() { return this.#autores; }
+    set autores(autores) { this.#autores = autores; }
 
-    //get tiposEnvio() { return this.#tiposEnvio; }
-    //set tiposEnvio(tiposEnvio) { this.#tiposEnvio = tiposEnvio; }
+    get tiposEnvio() { return this.#tiposEnvios; }
+    set tiposEnvio(tiposEnvio) { this.#tiposEnvios = tiposEnvio; }
 
-    //get clientes() { return this.#clientes; }
-    //set clientes(clientes) { this.#clientes = clientes; }
+    get clientes() { return this.#clientes; }
+    set clientes(clientes) { this.#clientes = clientes; }
 
-    //get pedidos() { return this.#pedidos; }
-    //set pedidos(pedidos) { this.#pedidos = pedidos; }
+    get pedidos() { return this.#pedidos; }
+    set pedidos(pedidos) { this.#pedidos = pedidos; }
         
-        
+
 
     cargarDatosPrueba(){
         
@@ -81,23 +81,29 @@ class Tienda {
 
     }
 
-    mostrarCatalogoLibros(){
+
+    mostrarCatalogoLibros(lista){
+
+        const librosOrdenados=lista.toSorted((a,b)=>{
+            return a.titulo.localeCompare(b.titulo);
+        });
 
         let tableBody=document.createElement('tbody');
-        this.libros.listaLibros.forEach(libro => {
+        librosOrdenados.forEach(libro => {
             let tr=document.createElement('tr');
-            tr.innerHTML=`<td>${libro.isbn}</td>
-            <td>${libro.titulo}</td>
-            <td>${libro.autores.map(aut=>aut.nombre)}</td>
-            <td>${libro.genero}</td>
-            <td>${libro.precio}</td>
-            <td>${(libro instanceof Ebook) ? "Ebook" : "Libro en Papel"}</td>
-            <td>${libro.stock ?? "Ilimitado"}</td>
-            <td> 
-                <button class="btn btn-sm btn-info btn-detalle" data-bs-toggle="modal" data-isbn="${libro.isbn}" data-bs-target="#modalLibro">
-                    Ver detalles
-                </button>
-            </td>
+            tr.innerHTML=`
+                <td>${libro.isbn}</td>
+                <td>${libro.titulo}</td>
+                <td>${libro.autores.map(aut=>aut.nombre)}</td>
+                <td>${libro.genero}</td>
+                <td>${libro.precio}</td>
+                <td>${(libro instanceof Ebook) ? "Ebook" : "Libro en Papel"}</td>
+                <td>${libro.stock ?? "Ilimitado"}</td>
+                <td> 
+                    <button class="btn btn-sm btn-info btn-detalle" data-bs-toggle="modal" data-isbn="${libro.isbn}" data-bs-target="#modalLibro">
+                        Ver detalles
+                    </button>
+                </td>
             
             `;
             tableBody.appendChild(tr);
@@ -108,4 +114,4 @@ class Tienda {
     }
 
 }
-Tienda.instancia = null;
+
