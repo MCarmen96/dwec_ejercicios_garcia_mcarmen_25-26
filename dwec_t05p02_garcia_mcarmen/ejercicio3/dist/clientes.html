@@ -21,16 +21,10 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="./catalogo.html">Home</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#">Libros</a></li>
+                <li class="nav-item"><a class="nav-link" href="">Libros</a></li>
                 <li class="nav-item"><a class="nav-link" href="./clientes.html">Clientes</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Pedidos</a></li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                <button class="btn btn-outline-success" type="submit">
-                    Search
-                </button>
-            </form>
         </div>
     </div>
 </nav>
@@ -38,9 +32,7 @@
   </header>
   <main class="container pt-5">
     <h1 class="mb-4 text-center">Gestión de clientes</h1>
-    <!-- =========================-->
-    <!-- FORMULARIO INSERTAR CLIENTE-->
-    <!-- =========================-->
+    <!--formulario-->
     <section class="mb-5" id="formulario-clientes">
       <h3 class="mb-3">Añadir nuevo cliente</h3>
       <form class="needs-validation" id="formCliente" novalidate="novalidate">
@@ -69,9 +61,7 @@
       </form>
       <p class="text-danger mt-2 d-none" id="mensaje-dni">El DNI ya existe en el sistema.</p>
     </section>
-    <!-- =========================-->
-    <!-- TABLA DE CLIENTES-->
-    <!-- =========================-->
+    <!--tabla clienters-->
     <section>
       <h3 class="mb-3 text-center">Lista de clientes</h3>
       <div class="table-responsive">
@@ -91,18 +81,13 @@
         </table>
       </div>
     </section>
-    <!-- =========================-->
-    <!-- PANEL OCULTO PEDIDOS-->
-    <!-- =========================-->
+    <!--PEDIDOS-->
     <section class="mt-5 d-none" id="panel-pedidos">
       <h3 class="mb-4 text-center">Pedidos del cliente</h3>
       <div class="row" id="gPedidos">
         <!-- Cards de pedidos por JS-->
       </div>
     </section>
-    <!-- =========================-->
-    <!-- BOTÓN SUBIR ARRIBA-->
-    <!-- =========================-->
     <div class="text-center mt-5"><a class="btn btn-secondary" href="#formulario-clientes">Subir al formulario</a></div>
   </main>
   <footer>

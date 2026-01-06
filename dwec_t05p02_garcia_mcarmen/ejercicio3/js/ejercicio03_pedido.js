@@ -19,9 +19,9 @@ class Pedido{
 
     constructor(cliente){
 
-        this.#id=Pedido.obtenerSiguienteId();
+        this.id=Pedido.obtenerSiguienteId();
         this.cliente=cliente;
-        this.librosPedido=new Map([]);
+        this.librosPedido=new Map();
         this.fecha=new Date();
         this.tipoEnvioPedido=null;
         this.precioTotalSinEnvioSinIVA=0;
@@ -32,10 +32,14 @@ class Pedido{
         this.#cliente.insertarPedidoCliente(this);
     }
 
-    get id(){return this.#id}
     static obtenerSiguienteId(){
-        Pedido.ultimoIdAsignado++;
-        return Pedido.ultimoIdAsignado;
+        return ++Pedido.ultimoIdAsignado;
+    }
+
+    get id(){return this.#id}
+    
+    set id(newId){
+        this.#id=newId;
     }
 
     get cliente(){return this.#cliente}

@@ -78,8 +78,20 @@ class Tienda {
         autoresPrueba[1].insertarLibro(arrayLibros[1]);
         autoresPrueba[2].insertarLibro(arrayLibros[2]);
         autoresPrueba[3].insertarLibro(arrayLibros[3]);
+        
+        
 
-        const clientesPrueba=[new Clientes("71368712B","Carmen",),]
+        const clientesPrueba=[new Cliente(1,"Carmen","Av.Madrid"),new Cliente(2,"Carmen","Av.Madrid")];
+        this.clientes.insertarClientes(clientesPrueba);
+
+        const pedidosPrueba = [
+            new Pedido(clientesPrueba[0]),
+            new Pedido(clientesPrueba[1]),
+        ];
+
+        for (let i = 0; i < pedidosPrueba.length - 1; i++) {
+            clientesPrueba[i].agregarPedido(pedidosPrueba[i]);
+        }
 
     }
 
@@ -115,9 +127,6 @@ class Tienda {
         return tableBody;
     }
 
-    insertarClientes(){
-
-    }
 
 }
 

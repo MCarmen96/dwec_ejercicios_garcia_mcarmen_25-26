@@ -19,91 +19,64 @@ class LeerDatos{
 
 }
 
-class LeerDatosFrom extends LeerDatos{
+class LeerDatosForm extends LeerDatos {
+    
+    // La base: Lee el valor de cualquier input
+    leer(id) {
+        const elemento = document.getElementById(id);
+        if (!elemento) {
+            console.error(`Ojo: No existe ningún input con el id: ${id}`);
+            return "";
+        }
+        return elemento.value.trim();
+    }
 
-    leer(mensaje){ return prompt(mensaje);}
-
-    leerEntero(mensaje){
-        const entero=Number(prompt(mensaje));
-        if(!Util.validarEntero(entero)){
-            throw new Error("El valor introducido no es un numero");
+    // Para números (Edad, Unidades, etc.)
+    leerEntero(id) {
+        const valor = this.leer(id);
+        const entero = parseInt(valor);
+        if (isNaN(entero)) {
+            throw new Error("Debe ser un número entero");
         }
         return entero;
     }
 
-    leerEnteroHasta(mensaje){
-
-        let entero;
-        do{
-            entero=leerEntero(mensaje)
-
-        }while(isNaN(entero));
-
-        return entero;
-    }
-
-    leerReal(mensaje){
-
-        let leerReal=Number(prompt(mensaje));
-        if(!Util.validarReal(leerReal)){
-            throw new Error("El valor introducido no es un numero real");
+    // Para precios o pesos (usando el Util que ya tienes)
+    leerReal(id) {
+        const valor = this.leer(id);
+        const real = parseFloat(valor);
+        if (isNaN(real)) {
+            throw new Error("Debe ser un número real");
         }
-        return leerReal;
+        return real;
     }
 
-    leerEnteroEntre(mensaje,min,max){
-
-        let entero=leerEntero(mensaje);
-
-        if(!entero>=min&&!entero<=max){
-            throw new Error(`El valor introducido no esta entre los valores${min} y ${max}`);
+    // Para nombres, apellidos, títulos (con longitud mínima)
+    leerCadena(id, longitud = 1) {
+        const valor = this.leer(id);
+        if (valor.length < longitud) {
+            throw new Error(`Mínimo ${longitud} caracteres`);
         }
-
-        return entero;
+        return valor;
     }
 
-    leerEnteroEntreHasta(mensaje,min,max){
-
-        let entero;
-        do{
-            entero=leerEnteroEntre(mensaje);
-        }while(isNaN(entero))
-    }
-
-    leerCadena(mensaje){
-
-        let leer=prompt(mensaje);
-
-        if(leer=""||leer.length<1){
-            throw new Error("La cadan esta vacia y no tiene mas de un caracter");
+    // ¡Esta es vital para el DNI e ISBN!
+    leerCadenaPatron(id, patron, mensajeError) {
+        const valor = this.leer(id);
+        if (!patron.test(valor)) {
+            throw new Error(mensajeError || "El formato no es correcto");
         }
-        return leer;
+        return valor;
     }
 
-    leerCadena(mensaje,longitud){
-
-        let leerDato=prompt(mensaje);
-        if(leerDato=""||leerDato.length<longitud){
-            throw new Error("La cadena esta vacia o tiene la longitud minima indicada");
+    // Para los select (como el género literario o tipo de envío)
+    leerDesplegable(id) {
+        const valor = this.leer(id);
+        if (valor === "" || valor === "0") { // Suponiendo que '0' es la opción por defecto
+            throw new Error("Debes seleccionar una opción");
         }
-        return leerDato;
+        return valor;
     }
-
-    leerCadenaPatron(mensaje,longitud,patron){
-        let leerDato=prompt(mensaje);
-        if(leerDato==""||leerDato.length<longitud||!patron.test(leerDato)){
-            throw new Error("La cadena esta vacia o no tiene la longitud minima indicada o no cumple con el patron");
-        }
-        return leerDato;
-    }
-
-    leerCadenaHasta(mensaje){
-        let leerDato;
-        /*do{
-
-        }while();*/
-    }
-
 }
 
 

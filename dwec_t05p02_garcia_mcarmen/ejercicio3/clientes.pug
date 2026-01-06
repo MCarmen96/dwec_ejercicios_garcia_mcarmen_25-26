@@ -1,9 +1,7 @@
 extends layout
 block main
     h1.mb-4.text-center Gestión de clientes
-    // =========================
-    // FORMULARIO INSERTAR CLIENTE
-    // =========================
+    //formulario
     section#formulario-clientes.mb-5
         h3.mb-3 Añadir nuevo cliente
 
@@ -37,9 +35,7 @@ block main
         p#mensaje-dni.text-danger.mt-2.d-none
             | El DNI ya existe en el sistema.
 
-    // =========================
-    // TABLA DE CLIENTES
-    // =========================
+    //tabla clienters
     section
         h3.mb-3.text-center Lista de clientes
 
@@ -55,18 +51,15 @@ block main
                 tbody
                     // Se rellena por JS
 
-    // =========================
-    // PANEL OCULTO PEDIDOS
-    // =========================
+    //PEDIDOS
+
     section#panel-pedidos.mt-5.d-none
         h3.mb-4.text-center Pedidos del cliente
 
         .row#gPedidos
             // Cards de pedidos por JS
 
-    // =========================
-    // BOTÓN SUBIR ARRIBA
-    // =========================
+    
     .text-center.mt-5
         a.btn.btn-secondary(href="#formulario-clientes")
             | Subir al formulario

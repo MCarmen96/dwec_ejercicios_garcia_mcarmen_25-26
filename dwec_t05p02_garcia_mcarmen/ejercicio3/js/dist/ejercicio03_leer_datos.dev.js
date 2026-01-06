@@ -52,116 +52,95 @@ function () {
   return LeerDatos;
 }();
 
-var LeerDatosFrom =
+var LeerDatosForm =
 /*#__PURE__*/
 function (_LeerDatos) {
-  _inherits(LeerDatosFrom, _LeerDatos);
+  _inherits(LeerDatosForm, _LeerDatos);
 
-  function LeerDatosFrom() {
-    _classCallCheck(this, LeerDatosFrom);
+  function LeerDatosForm() {
+    _classCallCheck(this, LeerDatosForm);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(LeerDatosFrom).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(LeerDatosForm).apply(this, arguments));
   }
 
-  _createClass(LeerDatosFrom, [{
+  _createClass(LeerDatosForm, [{
     key: "leer",
-    value: function leer(mensaje) {
-      return prompt(mensaje);
-    }
+    // La base: Lee el valor de cualquier input
+    value: function leer(id) {
+      var elemento = document.getElementById(id);
+
+      if (!elemento) {
+        console.error("Ojo: No existe ning\xFAn input con el id: ".concat(id));
+        return "";
+      }
+
+      return elemento.value.trim();
+    } // Para números (Edad, Unidades, etc.)
+
   }, {
     key: "leerEntero",
-    value: function leerEntero(mensaje) {
-      var entero = Number(prompt(mensaje));
+    value: function leerEntero(id) {
+      var valor = this.leer(id);
+      var entero = parseInt(valor);
 
-      if (!Util.validarEntero(entero)) {
-        throw new Error("El valor introducido no es un numero");
+      if (isNaN(entero)) {
+        throw new Error("Debe ser un número entero");
       }
 
       return entero;
-    }
-  }, {
-    key: "leerEnteroHasta",
-    value: function leerEnteroHasta(mensaje) {
-      var entero;
+    } // Para precios o pesos (usando el Util que ya tienes)
 
-      do {
-        entero = leerEntero(mensaje);
-      } while (isNaN(entero));
-
-      return entero;
-    }
   }, {
     key: "leerReal",
-    value: function leerReal(mensaje) {
-      var leerReal = Number(prompt(mensaje));
+    value: function leerReal(id) {
+      var valor = this.leer(id);
+      var real = parseFloat(valor);
 
-      if (!Util.validarReal(leerReal)) {
-        throw new Error("El valor introducido no es un numero real");
+      if (isNaN(real)) {
+        throw new Error("Debe ser un número real");
       }
 
-      return leerReal;
-    }
-  }, {
-    key: "leerEnteroEntre",
-    value: function leerEnteroEntre(mensaje, min, max) {
-      var entero = leerEntero(mensaje);
+      return real;
+    } // Para nombres, apellidos, títulos (con longitud mínima)
 
-      if (!entero >= min && !entero <= max) {
-        throw new Error("El valor introducido no esta entre los valores".concat(min, " y ").concat(max));
-      }
-
-      return entero;
-    }
-  }, {
-    key: "leerEnteroEntreHasta",
-    value: function leerEnteroEntreHasta(mensaje, min, max) {
-      var entero;
-
-      do {
-        entero = leerEnteroEntre(mensaje);
-      } while (isNaN(entero));
-    }
   }, {
     key: "leerCadena",
-    value: function leerCadena(mensaje) {
-      var leer = prompt(mensaje);
+    value: function leerCadena(id) {
+      var longitud = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var valor = this.leer(id);
 
-      if (leer = "" || leer.length < 1) {
-        throw new Error("La cadan esta vacia y no tiene mas de un caracter");
+      if (valor.length < longitud) {
+        throw new Error("M\xEDnimo ".concat(longitud, " caracteres"));
       }
 
-      return leer;
-    }
-  }, {
-    key: "leerCadena",
-    value: function leerCadena(mensaje, longitud) {
-      var leerDato = prompt(mensaje);
+      return valor;
+    } // ¡Esta es vital para el DNI e ISBN!
 
-      if (leerDato = "" || leerDato.length < longitud) {
-        throw new Error("La cadena esta vacia o tiene la longitud minima indicada");
-      }
-
-      return leerDato;
-    }
   }, {
     key: "leerCadenaPatron",
-    value: function leerCadenaPatron(mensaje, longitud, patron) {
-      var leerDato = prompt(mensaje);
+    value: function leerCadenaPatron(id, patron, mensajeError) {
+      var valor = this.leer(id);
 
-      if (leerDato == "" || leerDato.length < longitud || !patron.test(leerDato)) {
-        throw new Error("La cadena esta vacia o no tiene la longitud minima indicada o no cumple con el patron");
+      if (!patron.test(valor)) {
+        throw new Error(mensajeError || "El formato no es correcto");
       }
 
-      return leerDato;
-    }
+      return valor;
+    } // Para los select (como el género literario o tipo de envío)
+
   }, {
-    key: "leerCadenaHasta",
-    value: function leerCadenaHasta(mensaje) {
-      var leerDato;
-      /*do{
-        }while();*/
+    key: "leerDesplegable",
+    value: function leerDesplegable(id) {
+      var valor = this.leer(id);
+
+      if (valor === "" || valor === "0") {
+        // Suponiendo que '0' es la opción por defecto
+        throw new Error("Debes seleccionar una opción");
+      }
+
+      return valor;
     }
   }]);
 
-  return LeerDatosFrom;
+  return LeerDatosForm;
 }(LeerDatos);
