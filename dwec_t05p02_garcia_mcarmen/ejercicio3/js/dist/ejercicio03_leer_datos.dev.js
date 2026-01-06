@@ -65,79 +65,52 @@ function (_LeerDatos) {
 
   _createClass(LeerDatosForm, [{
     key: "leer",
-    // La base: Lee el valor de cualquier input
     value: function leer(id) {
       var elemento = document.getElementById(id);
-
-      if (!elemento) {
-        console.error("Ojo: No existe ning\xFAn input con el id: ".concat(id));
-        return "";
-      }
-
-      return elemento.value.trim();
-    } // Para números (Edad, Unidades, etc.)
-
+      return elemento ? elemento.value.trim() : "";
+    }
+  }, {
+    key: "leerCadena",
+    value: function leerCadena(id) {
+      var min = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var valor = this.leer(id);
+      if (valor.length < min) throw new Error("M\xEDnimo ".concat(min, " caracteres"));
+      return valor;
+    }
   }, {
     key: "leerEntero",
     value: function leerEntero(id) {
       var valor = this.leer(id);
-      var entero = parseInt(valor);
-
-      if (isNaN(entero)) {
-        throw new Error("Debe ser un número entero");
-      }
-
-      return entero;
-    } // Para precios o pesos (usando el Util que ya tienes)
-
+      if (!Util.validarEntero(valor)) throw new Error("Debe ser un número entero");
+      return parseInt(valor);
+    }
   }, {
-    key: "leerReal",
-    value: function leerReal(id) {
+    key: "leerPrecio",
+    value: function leerPrecio(id) {
       var valor = this.leer(id);
-      var real = parseFloat(valor);
-
-      if (isNaN(real)) {
-        throw new Error("Debe ser un número real");
-      }
-
-      return real;
-    } // Para nombres, apellidos, títulos (con longitud mínima)
-
+      if (!Util.validarPrecio(valor)) throw new Error("Precio no válido");
+      return parseFloat(valor);
+    }
   }, {
-    key: "leerCadena",
-    value: function leerCadena(id) {
-      var longitud = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    key: "leerDimensiones",
+    value: function leerDimensiones(id) {
       var valor = this.leer(id);
-
-      if (valor.length < longitud) {
-        throw new Error("M\xEDnimo ".concat(longitud, " caracteres"));
-      }
-
+      if (!Util.validarDimensiones(valor)) throw new Error("Formato dimensiones: 00x00x00");
       return valor;
-    } // ¡Esta es vital para el DNI e ISBN!
-
+    }
   }, {
-    key: "leerCadenaPatron",
-    value: function leerCadenaPatron(id, patron, mensajeError) {
+    key: "leerFecha",
+    value: function leerFecha(id) {
       var valor = this.leer(id);
-
-      if (!patron.test(valor)) {
-        throw new Error(mensajeError || "El formato no es correcto");
-      }
-
+      if (!Util.validarFecha(valor)) throw new Error("Fecha no válida");
       return valor;
-    } // Para los select (como el género literario o tipo de envío)
+    } // Método para capturar el valor de los Select (Género, etc.)
 
   }, {
     key: "leerDesplegable",
     value: function leerDesplegable(id) {
       var valor = this.leer(id);
-
-      if (valor === "" || valor === "0") {
-        // Suponiendo que '0' es la opción por defecto
-        throw new Error("Debes seleccionar una opción");
-      }
-
+      if (valor === "" || valor === "0") throw new Error("Selecciona una opción");
       return valor;
     }
   }]);

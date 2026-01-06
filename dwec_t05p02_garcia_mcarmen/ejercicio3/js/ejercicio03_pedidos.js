@@ -35,17 +35,16 @@ class Pedidos {
     }
 
     cerrarPedidoPorId(idAbuscar) {
-        const miPedido = this.listadoPedidos.find((pedido) => (pedido.id = idAbuscar));
-        if (miPedido == undefined) {
-            return false;
-        } else {
+        const miPedido = this.listadoPedidos.find((pedido) => pedido.id == idAbuscar); // Corregido ==
+        if (miPedido) {
             miPedido.abierto = false;
             return true;
         }
+        return false;
     }
 
     borrarPedidos(pedidosAborrar) {
-        
+
         let todosBorrados = true;
         for (const idABorrar of pedidosAborrar) {
             const indice = this.listadoPedidos.findIndex(pedido => pedido.id === idABorrar);

@@ -10,7 +10,7 @@ class Clientes{
 
     get listadoClientes(){return this.#listadoClientes;}
     set listadoClientes(newlistClientes){
-        if(newlistClientes.isArray){
+        if(Array.isArray(newlistClientes)){
             this.#listadoClientes=newlistClientes;
         }
     }
@@ -22,8 +22,8 @@ class Clientes{
         let clientesCount=0;
         clientes.forEach(cliente=> {
             if(!this.existeClientePorDNI(cliente.dni)){
-                clientesCount++;
                 this.listadoClientes.push(cliente);
+                clientesCount++;
             }
         });
         return clientesCount;
@@ -36,14 +36,11 @@ class Clientes{
     }
 
     borrarClientePorDNI(dniAborrar){
-        let puedoBorrar=false;
-        let clienteEncontrado=this.buscarClientePorDNI(dniAborrar);
-
-        if(clienteEncontrado===undefined){
-            throw new Error("El cliente no exite");
+        if (!this.existeClientePorDNI(dniAborrar)) {
+            throw new Error("El cliente no existe");
         }
-        puedoBorrar=true;
-        return puedoBorrar;
+        this.listadoClientes.filter(c => c.dni !== dniAborrar);
+        return true;
     }
     
 }

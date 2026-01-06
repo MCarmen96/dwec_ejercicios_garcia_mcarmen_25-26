@@ -4,13 +4,13 @@ class cliente{
 
     #dni;
     #nombreCompleto;
-    #dirrecion;
+    #direccion;
     #listaPedidos;
 
-    constructor(dni,nombre,dirrecion){
+    constructor(dni,nombre,direccion){
         this.dni=dni;
         this.nombreCompleto=nombre;
-        this.dirrecion=dirrecion;
+        this.direccion=direccion;
         this.listaPedidos=[];
     }
 
@@ -31,12 +31,12 @@ class cliente{
         this.#nombreCompleto=newNombre;
     }
 
-    get dirrecion(){return this.#dirrecion}
-    set dirrecion(newDirrecion){
-        if(!Util.validarDireccion(newDirrecion)){
+    get direccion(){return this.#direccion}
+    set direccion(newDireccion){
+        if(!Util.validarDireccion(newDireccion)){
             throw new Error("La nueva dirrecion no es valida");
         }
-        this.#dirrecion=newDirrecion;
+        this.#direccion=newDireccion;
     }
 
     get listaPedidos(){return this.#listaPedidos;}
@@ -46,7 +46,7 @@ class cliente{
         }
     }
     mostrarDatosClientes(){
-        return `·Datos cliente:${this.nombreCompleto},${this.dni},${this.dirrecion}\nPedidosCliente:${this.listaPedidos.map(pedido=>pedido.abierto===true)}`
+        return `·Datos cliente:${this.nombreCompleto},${this.dni},${this.direccion}\nPedidosCliente:${this.listaPedidos.map(pedido=>pedido.abierto===true)}`
     }
 
     insertarPedidoCliente(pedido){

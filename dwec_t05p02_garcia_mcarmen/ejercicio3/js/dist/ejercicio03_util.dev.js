@@ -18,240 +18,89 @@ function () {
   _createClass(Util, null, [{
     key: "validarEntero",
     value: function validarEntero(valor) {
-      var isValid = false;
-
-      if (valor != "" || Number.isInteger(valor)) {
-        isValid = true;
-      }
-
-      return isValid;
+      if (valor === "" || valor === null) return false;
+      return Number.isInteger(Number(valor));
     }
   }, {
     key: "validarReal",
     value: function validarReal(valor) {
-      if (valor === null || valor === undefined || typeof valor === "boolean" || String(valor).trim() === "") {
-        return false;
-      }
-
+      if (valor === null || valor === undefined || String(valor).trim() === "") return false;
       return Number.isFinite(Number(valor));
-    } //modificar funcion 1 tiene que comprobar que es un formato de fecha correctp
-
-  }, {
-    key: "validarCadenaFecha",
-    value: function validarCadenaFecha(valor) {
-      var validFormat = false;
-      var day;
-      var month;
-      var year;
-      var partesFecha;
-
-      if (valor.includes("-")) {
-        partesFecha = valor.split("-");
-        validFormat = true;
-      } else {
-        validFormat = false;
-      }
-
-      if (partesFecha.length == 3) {
-        validFormat = true;
-      }
-
-      if (partesFecha[2].length === 4) {
-        day = Number(partesFecha[0]);
-        month = Number(partesFecha[1]);
-        year = Number(partesFecha[2]);
-      } else if (partesFecha[0].length === 4) {
-        year = Number(partesFecha[0]);
-        month = Number(partesFecha[1]);
-        year = Number(partesFecha[2]);
-      } else {
-        validFormat = false;
-      }
-
-      if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) {
-        validFormat = false;
-      }
-
-      var fecha = new Date(year, month - 1, day);
-
-      if (fecha.getFullYear() === year && fecha.getMonth() === month - 1 && fecha.getDate() === day) {
-        validFormat = false;
-      }
-
-      return validFormat;
     }
   }, {
     key: "validarFecha",
     value: function validarFecha(valor) {
-      return validarCadenaFecha(valor);
+      if (!valor) return false;
+      var fecha = new Date(valor);
+      return !isNaN(fecha.getTime());
     }
   }, {
     key: "crearFecha",
-    value: function crearFecha(fecha) {
-      var partesFecha = fecha.split("-");
-      var day;
-      var month;
-      var year;
-
-      if (partesFecha[2].length === 4) {
-        day = Number(partesFecha[0]);
-        month = Number(partesFecha[1]);
-        year = Number(partesFecha[2]);
-      } else if (partesFecha[0].length === 4) {
-        year = Number(partesFecha[0]);
-        month = Number(partesFecha[1]);
-        year = Number(partesFecha[2]);
-      }
-
-      var fecha1 = new Date(year, month - 1, day);
-      return fecha1;
+    value: function crearFecha(valor) {
+      return new Date(valor);
     }
   }, {
     key: "validarTitulo",
     value: function validarTitulo(titulo) {
-      var isValid = false;
-
-      if (typeof titulo === "string" && titulo.length >= 1) {
-        isValid = true;
-      }
-
-      return isValid;
+      return typeof titulo === "string" && titulo.length >= 1;
     }
   }, {
     key: "validarNombrePersona",
     value: function validarNombrePersona(nombre) {
       var patronNombre = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/;
-      var isValid = false;
-
-      if (patronNombre.test(nombre) && nombre.length >= 3) {
-        isValid = true;
-      }
-
-      return isValid;
+      return patronNombre.test(nombre) && nombre.length >= 3;
     }
   }, {
     key: "validarDireccion",
     value: function validarDireccion(direccion) {
-      var isValid = false;
       var patronDireccion = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü0-9\s]+$/;
-
-      if (patronDireccion.test(direccion) && direccion.length >= 3) {
-        isValid = true;
-      }
-
-      return isValid;
+      return patronDireccion.test(direccion) && direccion.length >= 3;
     }
   }, {
     key: "validarPrecio",
     value: function validarPrecio(precio) {
-      var isValid = false;
-
-      if (this.validarReal(precio) && precio > 0) {
-        isValid = true;
-      }
-
-      return isValid;
+      return this.validarReal(precio) && Number(precio) > 0;
     }
   }, {
     key: "validarTamanoArchivo",
-    value: function validarTamanoArchivo(tamanoArchivo) {
-      var isValid = false;
-
-      if (tamanoArchivo > 0) {
-        isValid = true;
-      }
-
-      return isValid;
+    value: function validarTamanoArchivo(tamano) {
+      return this.validarReal(tamano) && tamano > 0;
     }
   }, {
     key: "validarPeso",
     value: function validarPeso(peso) {
-      var isValid = false;
-
-      if (peso > 0) {
-        isValid = true;
-      }
-
-      return isValid;
+      return this.validarReal(peso) && peso > 0;
     }
   }, {
     key: "validarStock",
     value: function validarStock(stock) {
-      var isValid = false;
-
-      if (stock > 0) {
-        isValid = true;
-      }
-
-      return isValid;
+      return this.validarEntero(stock) && stock >= 0;
     }
   }, {
     key: "validarDimensiones",
     value: function validarDimensiones(dimensiones) {
-      var isValid = false;
       var patronDimensiones = /^\d+x\d+x\d+$/;
-
-      if (patronDimensiones.test(dimensiones)) {
-        isValid = true;
-      }
-
-      return isValid;
+      return patronDimensiones.test(dimensiones);
     }
   }, {
     key: "esMesPromocion",
-    value: function esMesPromocion(fecha, array_meses_promocion) {
-      var isDate = validarFecha(fecha);
-      var date;
-      var isMonth = false;
-
-      if (isDate) {
-        date = crearFecha(fecha);
-        var month = date.getMonth();
-
-        if (array_meses_promocion.includes(month)) {
-          isMonth = true;
-        }
+    value: function esMesPromocion(fechaStr, array_meses_promocion) {
+      if (this.validarFecha(fechaStr)) {
+        var date = this.crearFecha(fechaStr);
+        return array_meses_promocion.includes(date.getMonth());
       }
 
-      return isMonth;
-    }
-  }, {
-    key: "validarFormato",
-    value: function validarFormato(formatoLeido, setFormatosValidos) {
-      var isFormat = false;
-
-      if (setFormatosValidos.has(formatoLeido)) {
-        isFormat = true;
-      }
-
-      return isFormat;
+      return false;
     }
   }, {
     key: "validarGenero",
-    value: function validarGenero(generoLeido, setGenerosLeidos) {
-      return setGenerosLeidos.has(generoLeido);
-    }
-  }, {
-    key: "validarPeso",
-    value: function validarPeso(peso) {
-      var isValid = false;
-
-      if (this.validarReal(peso) && peso > 0) {
-        isValid = true;
-      }
-
-      return isValid;
+    value: function validarGenero(generoLeido, setGenerosValidos) {
+      return setGenerosValidos.has(generoLeido);
     }
   }, {
     key: "validarDiasEnvio",
     value: function validarDiasEnvio(dias) {
-      var isValid = false;
-
-      if (this.validarEntero(dias) && dias >= 1 && dias <= 31) {
-        isValid = true;
-      }
-
-      return isValid;
+      return this.validarEntero(dias) && dias >= 1 && dias <= 31;
     }
   }]);
 

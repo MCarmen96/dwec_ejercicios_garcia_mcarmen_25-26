@@ -10,8 +10,7 @@ class Libros{
 
 
     existeLibroPorIsbn(isbnAbuscar){
-
-        return this.listaLibros.some(libro=>{libro.isbn===isbnAbuscar;})
+        return this.listaLibros.some(libro=>libro.isbn===isbnAbuscar);
     }
 
     insertarLibros(libros){
@@ -33,11 +32,9 @@ class Libros{
         return libroEncontrado;
     }
     buscarLibroPorTitulo(tituloAbuscar){
-
-        let librosPorTitulo=this.listaLibros.filter(libro=>{
-            return libro.titulo===tituloAbuscar;
-        });
-        return librosPorTitulo;
+        return this.listaLibros.filter(libro => 
+            libro.titulo.toLowerCase().includes(texto.toLowerCase())
+        );
     }
 
     modificarLibroPorIsbn(isbnAmodificar,mapaConInfo){

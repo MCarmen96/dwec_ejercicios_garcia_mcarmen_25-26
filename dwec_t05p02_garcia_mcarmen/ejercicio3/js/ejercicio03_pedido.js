@@ -29,7 +29,7 @@ class Pedido{
         this.precioTotalConEnvioConIVA=0;
         this.#descuento=0;
         this.abierto=true;
-        this.#cliente.insertarPedidoCliente(this);
+        this.cliente.insertarPedidoCliente(this);
     }
 
     static obtenerSiguienteId(){
@@ -108,10 +108,11 @@ class Pedido{
         if(typeof valor!=="boolean"){
             throw new Error("Abierto invalido");
         }
+        this.#abierto=valor;
     }
 
     hayLibros(){
-        return this.librosPedido.length>0;
+        return this.librosPedido.size>0;
     }
 
     mostrarDatosPedido(){
@@ -138,11 +139,15 @@ class Pedido{
         if(!(libro instanceof Libro)){
             throw new Error("El libro no es una instancia de la clase Libro");
         }
-        this.librosPedido.set(libro.isbn)
-        if(!(libro instanceof Ebook)){
-            this.librosPedido.set(libro,1);
-        }else{
-            this.librosPedido.set(libro,unidades);
+        // Si es Ebook, la unidad siempre es 1
+        let cantidad = (libro instanceof Ebook) ? 1 : unidades;
+
+        // Si el libro ya estaba, sumamos las unidades, si no, lo creamos
+        if (this.#librosPedido.has(libro)) {
+            let actual = this.#librosPedido.get(libro);
+            this.#librosPedido.set(libro, actual + cantidad);
+        } else {
+            this.#librosPedido.set(libro, cantidad);
         }
 
     }

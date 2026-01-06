@@ -20,61 +20,45 @@ class LeerDatos{
 }
 
 class LeerDatosForm extends LeerDatos {
-    
-    // La base: Lee el valor de cualquier input
     leer(id) {
         const elemento = document.getElementById(id);
-        if (!elemento) {
-            console.error(`Ojo: No existe ningún input con el id: ${id}`);
-            return "";
-        }
-        return elemento.value.trim();
+        return elemento ? elemento.value.trim() : "";
     }
 
-    // Para números (Edad, Unidades, etc.)
+    leerCadena(id, min = 1) {
+        const valor = this.leer(id);
+        if (valor.length < min) throw new Error(`Mínimo ${min} caracteres`);
+        return valor;
+    }
+
     leerEntero(id) {
         const valor = this.leer(id);
-        const entero = parseInt(valor);
-        if (isNaN(entero)) {
-            throw new Error("Debe ser un número entero");
-        }
-        return entero;
+        if (!Util.validarEntero(valor)) throw new Error("Debe ser un número entero");
+        return parseInt(valor);
     }
 
-    // Para precios o pesos (usando el Util que ya tienes)
-    leerReal(id) {
+    leerPrecio(id) {
         const valor = this.leer(id);
-        const real = parseFloat(valor);
-        if (isNaN(real)) {
-            throw new Error("Debe ser un número real");
-        }
-        return real;
+        if (!Util.validarPrecio(valor)) throw new Error("Precio no válido");
+        return parseFloat(valor);
     }
 
-    // Para nombres, apellidos, títulos (con longitud mínima)
-    leerCadena(id, longitud = 1) {
+    leerDimensiones(id) {
         const valor = this.leer(id);
-        if (valor.length < longitud) {
-            throw new Error(`Mínimo ${longitud} caracteres`);
-        }
+        if (!Util.validarDimensiones(valor)) throw new Error("Formato dimensiones: 00x00x00");
         return valor;
     }
 
-    // ¡Esta es vital para el DNI e ISBN!
-    leerCadenaPatron(id, patron, mensajeError) {
+    leerFecha(id) {
         const valor = this.leer(id);
-        if (!patron.test(valor)) {
-            throw new Error(mensajeError || "El formato no es correcto");
-        }
+        if (!Util.validarFecha(valor)) throw new Error("Fecha no válida");
         return valor;
     }
-
-    // Para los select (como el género literario o tipo de envío)
+    
+    // Método para capturar el valor de los Select (Género, etc.)
     leerDesplegable(id) {
         const valor = this.leer(id);
-        if (valor === "" || valor === "0") { // Suponiendo que '0' es la opción por defecto
-            throw new Error("Debes seleccionar una opción");
-        }
+        if (valor === "" || valor === "0") throw new Error("Selecciona una opción");
         return valor;
     }
 }
