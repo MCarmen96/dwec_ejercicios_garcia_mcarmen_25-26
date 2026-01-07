@@ -1,0 +1,59 @@
+extends layout
+block main
+    h1.mb-4.text-center Gestión de Libros y Autores
+
+    section#seccion-libros.mb-5
+        h3.mb-3 Insertar Nuevo Libro
+        form#formLibro.needs-validation(novalidate)
+            .row.g-3
+                .col-md-4
+                    label.form-label(for="isbn") ISBN
+                    input#isbn.form-control(type="text" required pattern="^[0-9]{13}$")
+                    .invalid-feedback ISBN obligatorio (13 números).
+                
+                .col-md-8
+                    label.form-label(for="titulo") Título
+                    input#titulo.form-control(type="text" required)
+
+                .col-md-4
+                    label.form-label(for="genero") Género Literario
+                    select#genero.form-select(required)
+                        option(value="") Seleccione un género...
+                        // Se carga por JS
+
+                .col-md-4
+                    label.form-label(for="precio") Precio (€)
+                    input#precio.form-control(type="number" step="0.01" min="0.01" required)
+
+                .col-md-4
+                    label.form-label(for="tipoLibro") Tipo de Libro
+                    select#tipoLibro.form-select(required)
+                        option(value="papel") Papel
+                        option(value="ebook") Ebook
+
+                // Campos específicos (se pueden ocultar/mostrar por JS)
+                .col-md-6#campo-papel
+                    label.form-label(for="peso") Peso (gr)
+                    input#peso.form-control(type="number")
+                
+                .col-md-6#campo-ebook.d-none
+                    label.form-label(for="url") URL Descarga
+                    input#url.form-control(type="url")
+
+                .col-md-12
+                    label.form-label(for="autoresSel") Seleccionar Autor(es) (Manten Ctrl para varios)
+                    select#autoresSel.form-select(multiple size="5")
+                        // Se carga por JS ordenado alfabéticamente
+
+                .col-md-12.mt-3.p-3.bg-light.border
+                    h5 ¿No está el autor? Crear uno nuevo:
+                    .row.g-2
+                        .col-md-10
+                            input#nuevoAutorNombre.form-control(type="text" placeholder="Nombre del nuevo autor")
+                        .col-md-2
+                            p#error-autor.text-danger.small.d-none Ya existe.
+
+            .mt-4.text-center
+                button.btn.btn-primary(type="submit") Guardar Libro
+        
+        p#error-isbn.text-danger.mt-2.d-none El ISBN ya existe.

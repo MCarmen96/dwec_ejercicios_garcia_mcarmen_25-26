@@ -31,7 +31,7 @@ class Clientes{
 
     buscarClientePorDNI(dniAbuscar){
         return this.listadoClientes.find(cliente => 
-        String(cliente.dni).trim() === String(dniAbuscar).trim()
+        String(cliente.dni).trim().toUpperCase() === String(dniAbuscar).trim().toUpperCase()
     );
     }
 

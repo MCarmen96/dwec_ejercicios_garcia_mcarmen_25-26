@@ -31,7 +31,7 @@ class Autores{
         return this.listadoAutores.find(autor => autor.id === idAbuscar) || null;
     }
     //buscarAutoresPorNombre (nombreAbuscar): devuelve un objeto autor por nombre. Si no lo encuentra devuelve null.
-    buscarAutoresPorNombre(nombreAbuscar){
+    buscarAutorPorNombre(nombreAbuscar){
         return this.#listadoAutores.find(autor => autor.nombre === nombreAbuscar) || null;
     }
     //obtenerCadenaAutoresMenu(): 

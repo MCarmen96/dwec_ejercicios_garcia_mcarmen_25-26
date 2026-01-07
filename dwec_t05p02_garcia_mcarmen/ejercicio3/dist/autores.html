@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalogo Libros</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/micss.css">
+</head>
+<body>   
+  <header>
+     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Libreria Carmen</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./catalogo.html">Home</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="./autores.html">Libros y Autores</a></li>
+                <li class="nav-item"><a class="nav-link" href="./clientes.html">Clientes</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Pedidos</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+  </header>
+  <main class="container pt-5">
+    <h1 class="mb-4 text-center">Gestión de Libros y Autores</h1>
+    <section class="mb-5" id="seccion-libros">
+      <h3 class="mb-3">Insertar Nuevo Libro</h3>
+      <form class="needs-validation" id="formLibro" novalidate="novalidate">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label" for="isbn">ISBN</label>
+            <input class="form-control" id="isbn" type="text" required="required" pattern="^[0-9]{13}$"/>
+            <div class="invalid-feedback">ISBN obligatorio (13 números).</div>
+          </div>
+          <div class="col-md-8">
+            <label class="form-label" for="titulo">Título</label>
+            <input class="form-control" id="titulo" type="text" required="required"/>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="genero">Género Literario</label>
+            <select class="form-select" id="genero" required="required">
+              <option value="">Seleccione un género...</option>
+              <!-- Se carga por JS-->
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="precio">Precio (€)</label>
+            <input class="form-control" id="precio" type="number" step="0.01" min="0.01" required="required"/>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label" for="tipoLibro">Tipo de Libro</label>
+            <select class="form-select" id="tipoLibro" required="required">
+              <option value="papel">Papel</option>
+              <option value="ebook">Ebook</option>
+            </select>
+          </div>
+          <!-- Campos específicos (se pueden ocultar/mostrar por JS)-->
+          <div class="col-md-6" id="campo-papel">
+            <label class="form-label" for="peso">Peso (gr)</label>
+            <input class="form-control" id="peso" type="number"/>
+          </div>
+          <div class="col-md-6 d-none" id="campo-ebook">
+            <label class="form-label" for="url">URL Descarga</label>
+            <input class="form-control" id="url" type="url"/>
+          </div>
+          <div class="col-md-12">
+            <label class="form-label" for="autoresSel">Seleccionar Autor(es) (Manten Ctrl para varios)</label>
+            <select class="form-select" id="autoresSel" multiple="multiple" size="5">
+              <!-- Se carga por JS ordenado alfabéticamente-->
+            </select>
+          </div>
+          <div class="col-md-12 mt-3 p-3 bg-light border">
+            <h5>¿No está el autor? Crear uno nuevo:</h5>
+            <div class="row g-2">
+              <div class="col-md-10">
+                <input class="form-control" id="nuevoAutorNombre" type="text" placeholder="Nombre del nuevo autor"/>
+              </div>
+              <div class="col-md-2">
+                <p class="text-danger small d-none" id="error-autor">Ya existe.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 text-center">
+          <button class="btn btn-primary" type="submit">Guardar Libro</button>
+        </div>
+      </form>
+      <p class="text-danger mt-2 d-none" id="error-isbn">El ISBN ya existe.</p>
+    </section>
+  </main>
+  <footer>
+         <div class="container">
+        <span class="text-body-secondary">Place sticky footer content here.</span>
+    </div>
+    <script src="../js/ejercicio03_libro.js"></script>
+    <script src="../js/ejercicio03_Libros.js"></script>
+    <script src="../js/ejercicio03_autor.js"></script>
+    <script src="../js/ejercicio03_autores.js"></script>
+    <script src="../js/ejercicio03_tipoEnvio.js"></script>
+    <script src="../js/ejercicio03_tiposEnvios.js"></script>
+    <script src="../js/ejercicio03_util.js"></script>
+    <script src="../js/ejercicio03_cliente.js"></script>
+    <script src="../js/ejercicio03_clientes.js"></script>
+    <script src="../js/ejercicio03_pedido.js"></script>
+    <script src="../js/ejercicio03_pedidos.js"></script>
+    <script src="../js/ejercicio03_tienda.js"></script>
+    <script src="../js/ejercicio03_leer_datos.js"></script>
+    <script src="../js/ejercicio03_cargarDatosDom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </footer>
+</body>

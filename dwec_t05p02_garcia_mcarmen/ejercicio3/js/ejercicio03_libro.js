@@ -32,7 +32,7 @@ class Libro {
     }
 
     get isbn() {
-        return this.#isbn;
+        return this.#isbn; 
     }
     set isbn(newIsbn) {
         this.#isbn = newIsbn;

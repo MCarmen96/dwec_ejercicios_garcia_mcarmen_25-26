@@ -102,6 +102,7 @@ class Tienda {
     obtenerLibrosOrdenados(lista) {
         return lista.toSorted((a, b) => a.titulo.localeCompare(b.titulo));
     }
+    
     mostrarCatalogoLibros(lista) {
 
         const librosOrdenados = lista.toSorted((a, b) => {
@@ -151,6 +152,10 @@ class Tienda {
         </td>
     `;
         return tr;
+    }
+
+    obtenerAutoresOrdenados(lista){
+        return lista.toSorted((a, b) => a.nombre.localeCompare(b.nombre));
     }
 }
 
