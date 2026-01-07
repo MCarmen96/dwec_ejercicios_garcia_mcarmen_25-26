@@ -19,14 +19,14 @@ class Pedido{
 
     constructor(cliente){
 
-        this.id=Pedido.obtenerSiguienteId();
-        this.cliente=cliente;
-        this.librosPedido=new Map();
-        this.fecha=new Date();
-        this.tipoEnvioPedido=null;
-        this.precioTotalSinEnvioSinIVA=0;
-        this.precioTotalConEnvioSinIVA=0;
-        this.precioTotalConEnvioConIVA=0;
+        this.#id=Pedido.obtenerSiguienteId();
+        this.#cliente=cliente;
+        this.#librosPedido=new Map();
+        this.#fecha=new Date();
+        this.#tipoEnvioPedido=null;
+        this.#precioTotalSinEnvioSinIVA=0;
+        this.#precioTotalConEnvioSinIVA=0;
+        this.#precioTotalConEnvioConIVA=0;
         this.#descuento=0;
         this.abierto=true;
         this.cliente.insertarPedidoCliente(this);
@@ -93,7 +93,7 @@ class Pedido{
         if(!Util.validarPrecio(precio)){
             throw new Error("Precio no valido");
         }
-        this.#precioTotalSinEnvioSinIVA=precio;
+        this.#precioTotalConEnvioConIVA=precio;
     }
     get descuento(){return this.#descuento}
     set descuento(newDescuento){

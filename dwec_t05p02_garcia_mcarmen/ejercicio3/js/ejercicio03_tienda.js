@@ -64,11 +64,11 @@ class Tienda {
         this.autores.insertarAutores(autoresPrueba);
 
         const arrayLibros = [
-            new LibroPapel(1111, "Los diarios de la boticaria", [this.autores.listadoAutores[0]], "Novela", 15.99, 10, '10x10x5', 500),
-            new Ebook(2222, "Kimetsu no yaiba", [this.autores.listadoAutores[1]], "Fantasia", 10.99, 12, "pdf"),
-            new LibroPapel(3333, "Spy family", [this.autores.listadoAutores[4]], "Ciencia Ficcion", 8.99, 10, '10x10x5', 120),
-            new LibroPapel(4444, "El imperio de los condenados", [this.autores.listadoAutores[2]], "Fantasia", 25.99, 10, '10x10x5', 200),
-            new Ebook(5555, "Nacidos de la bruma", [this.autores.listadoAutores[3]], "Ciencia Ficcion", 22.99, 12, "epub")
+            new LibroPapel(9784072981986, "Los diarios de la boticaria", [this.autores.listadoAutores[0]], "Novela", 15.99, 10, '10x10x5', 500),
+            new Ebook(2784072981986, "Kimetsu no yaiba", [this.autores.listadoAutores[1]], "Fantasia", 10.99, 12, "pdf"),
+            new LibroPapel(3784072981986, "Spy family", [this.autores.listadoAutores[4]], "Ciencia Ficcion", 8.99, 10, '10x10x5', 120),
+            new LibroPapel(4784072981986, "El imperio de los condenados", [this.autores.listadoAutores[2]], "Fantasia", 25.99, 10, '10x10x5', 200),
+            new Ebook(5784072981986, "Nacidos de la bruma", [this.autores.listadoAutores[3]], "Ciencia Ficcion", 22.99, 12, "epub")
 
         ];
 

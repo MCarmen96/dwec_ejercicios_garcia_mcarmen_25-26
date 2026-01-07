@@ -1,0 +1,87 @@
+
+extends layout
+block main
+.container.py-5
+    .row.justify-content-center
+      .col-lg-10
+        h2.text-center.mb-5.display-6 
+          i.bi.bi-cart-check.text-primary.me-2
+          | Gestión de Pedidos
+
+        #accordionPedidos.accordion.shadow-sm
+          //- ACORDEÓN 1: CLIENTES
+          .accordion-item
+            h2.accordion-header#headingOne
+              button.accordion-button.fw-bold(type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne")
+                span.badge.bg-primary.me-2 1
+                | Selección de Cliente
+            #collapseOne.accordion-collapse.collapse.show(data-bs-parent="#accordionPedidos")
+              .accordion-body.bg-light
+                .row.align-items-end.g-3
+                  .col-md-6
+                    label.form-label.small.fw-bold(for="dniBusqueda") DNI del Cliente
+                    input#dniBusqueda.form-control(type="text" placeholder="Ej: 12345678A")
+                  .col-md-6
+                    button#btnBuscarCliente.btn.btn-primary.w-100(type="button")
+                      i.bi.bi-search.me-2
+                      | Buscar Cliente
+                    button#btnDesmarcarCliente.btn.btn-outline-danger.w-100.d-none(type="button")
+                      i.bi.bi-x-circle.me-2
+                      | Cambiar Cliente
+
+          //- ACORDEÓN 2: LIBROS
+          .accordion-item
+            h2.accordion-header#headingTwo
+              button.accordion-button.collapsed.fw-bold(type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo")
+                span.badge.bg-secondary.me-2 2
+                | Selección de Libros
+            #collapseTwo.accordion-collapse.collapse(data-bs-parent="#accordionPedidos")
+              fieldset#fieldsetLibros.accordion-body(disabled)
+                .row.g-3
+                  .col-md-5
+                    label.form-label.small.fw-bold(for="isbnBusqueda") ISBN del Libro
+                    input#isbnBusqueda.form-control(type="text" placeholder="Ej: 978123...")
+                  .col-md-3
+                    label.form-label.small.fw-bold(for="unidadesLibro") Cantidad
+                    input#unidadesLibro.form-control(type="number" value="1" min="1")
+                  .col-md-4.d-flex.align-items-end
+                    button#btnAddLibro.btn.btn-success.w-100(type="button")
+                      i.bi.bi-plus-lg.me-2
+                      | Añadir al pedido
+
+          //- ACORDEÓN 3: ENVÍO
+          .accordion-item
+            h2.accordion-header#headingThree
+              button.accordion-button.collapsed.fw-bold(type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree")
+                span.badge.bg-secondary.me-2 3
+                | Tipo de Envío
+            #collapseThree.accordion-collapse.collapse(data-bs-parent="#accordionPedidos")
+              fieldset#fieldsetEnvio.accordion-body(disabled)
+                .row.align-items-end.g-3
+                  .col-md-8
+                    label.form-label.small.fw-bold Modalidad de entrega
+                    select#selectEnvio.form-select
+                      option(value="" selected disabled) Seleccione una opción...
+                      option(value="estandar") Estándar (48h) - 5.00€
+                      option(value="urgente") Urgente (24h) - 9.95€
+                      option(value="digital") Entrega Digital (Email) - 0.00€
+                  .col-md-4
+                    button#btnAplicarEnvio.btn.btn-info.w-100.text-white(type="button")
+                      | Aplicar Envío
+
+        //- SECCIÓN DE RESUMEN
+        .card.mt-5.border-0.shadow
+          .card-header.bg-dark.text-white.py-3
+            h5.card-title.mb-0.d-flex.justify-content-between.align-items-center
+              | Resumen de Compra
+              span#total-preview.badge.bg-success 0.00€
+          .card-body
+            #resumen-compra.min-vh-10
+              p.text-muted.text-center.py-4 No hay artículos añadidos todavía.
+            
+            hr.my-4
+            
+            .d-flex.justify-content-between
+              button#btnCancelarPedido.btn.btn-light.px-4(type="button") Cancelar
+              button#btnPagarPedido.btn.btn-primary.btn-lg.px-5(type="button" disabled)
+                | Confirmar y Pagar

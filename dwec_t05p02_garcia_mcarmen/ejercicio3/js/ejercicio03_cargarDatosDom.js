@@ -1,5 +1,7 @@
 let tienda;//global
-
+let clienteActual = null;
+let carritoTemporal = [];
+let envioSeleccionado = null;
 document.addEventListener("DOMContentLoaded", () => {
     tienda = Tienda.getInstancia("carmen");
     tienda.cargarDatosPrueba();
@@ -20,7 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
         configurarEventosFormulario();
         cargarGenerosDesdeSet();
         actualizarSelectAutores();
+    }
 
+    if(document.getElementById("accordionPedidos")){
+        inicializarSeccionCliente();
+        inicializarSeccionLibrosYPago();
+        configurarBotonEnvio();
     }
 
 
@@ -363,7 +370,234 @@ function configurarEventosFormulario() {
         }
     });
 }
+//pagina 4
+function inicializarSeccionCliente() {
+    const btnBuscar = document.getElementById("btnBuscarCliente");
+    const btnCambiar = document.getElementById("btnDesmarcarCliente");
+    const inputDni = document.getElementById("dniBusqueda");
+    
+    // Referencias a los contenedores que queremos bloquear
+    const fieldsetLibros = document.getElementById("fieldsetLibros");
+    const fieldsetEnvio = document.getElementById("fieldsetEnvio");
+    
+    // Referencias a los botones del acordeón para impedir que se abran
+    const btnAcordeonLibros = document.querySelector('[data-bs-target="#collapseTwo"]');
+    const btnAcordeonEnvio = document.querySelector('[data-bs-target="#collapseThree"]');
+
+    // ESTADO INICIAL: Bloqueamos la apertura de los acordeones 2 y 3
+    btnAcordeonLibros.setAttribute("disabled", "true");
+    btnAcordeonEnvio.setAttribute("disabled", "true");
+
+    btnBuscar.onclick = () => {
+        const dni = inputDni.value.trim();
+        const cliente = tienda.clientes.buscarClientePorDNI(dni);
+
+        if (cliente) {
+            clienteActual = cliente;
+            console.log("¿Es instancia de Cliente?:", cliente instanceof Cliente); 
+            console.log("Prototipo del objeto:", Object.getPrototypeOf(cliente));
+            if (!(cliente instanceof Cliente)) {
+                console.error("ALERTA: El objeto encontrado no es una instancia real de Cliente.");
+            }
+            // 1. Bloquear interfaz de búsqueda
+            inputDni.readOnly = true;
+            btnBuscar.classList.add("d-none");
+            btnCambiar.classList.remove("d-none");
+
+            // 2. HABILITAR acordeones (permitir que se abran)
+            btnAcordeonLibros.removeAttribute("disabled");
+            btnAcordeonEnvio.removeAttribute("disabled");
+
+            // 3. HABILITAR campos internos
+            fieldsetLibros.disabled = false;
+            fieldsetEnvio.disabled = false;
+
+            alert("Cliente verificado. Ya puede añadir libros al pedido.");
+        } else {
+            alert("Error: No se encontró ningún cliente con ese DNI.");
+        }
+    };
+
+    btnCambiar.onclick = () => {
+        // RESET TOTAL: Volvemos al estado bloqueado
+        clienteActual = null;
+        inputDni.readOnly = false;
+        inputDni.value = "";
+        btnBuscar.classList.remove("d-none");
+        btnCambiar.classList.add("d-none");
+
+        // Bloquear apertura y campos de nuevo
+        btnAcordeonLibros.setAttribute("disabled", "true");
+        btnAcordeonEnvio.setAttribute("disabled", "true");
+        fieldsetLibros.disabled = true;
+        fieldsetEnvio.disabled = true;
+        
+        // Opcional: Cerrar los acordeones si estaban abiertos
+        const collapseLibros = bootstrap.Collapse.getInstance(document.getElementById('collapseTwo'));
+        if (collapseLibros) collapseLibros.hide();
+        
+        limpiarCarrito();
+    };
+}
+
+function inicializarSeccionLibrosYPago() {
+    const btnAdd = document.getElementById("btnAddLibro");
+    const btnPagar = document.getElementById("btnPagarPedido");
+
+    btnAdd.onclick = () => {
+        const isbn = document.getElementById("isbnBusqueda").value.trim();
+        const isbnNumerico = Number(isbn); // Conversión necesaria
+        const unidades = parseInt(document.getElementById("unidadesLibro").value) || 1;
+        
+        const libro = tienda.libros.buscarLibroPorIsbn(isbnNumerico);
+
+        if (libro) {
+            carritoTemporal.push({ libro, unidades });
+            actualizarOpcionesEnvio();
+            actualizarResumen(); // Llama a tu función de resumen
+            btnPagar.disabled = false;
+            alert("Libro añadido: " + libro.titulo);
+        } else {
+            alert("Error: El ISBN no existe.");
+        }
+    };
+
+    // CONEXIÓN CLAVE: En lugar de definir la lógica aquí, llamamos a la función de abajo
+    btnPagar.onclick = finalizarPedido; 
+}
+
+function actualizarOpcionesEnvio() {
+    const selectEnvio = document.getElementById("selectEnvio");
+    // Comprobamos si hay libros de papel en el carrito
+    const tienePapel = carritoTemporal.some(item => item.libro instanceof LibroPapel);
+    const soloEbooks = carritoTemporal.every(item => item.libro instanceof Ebook);
+
+    // Limpiamos y rellenamos según contenido
+    selectEnvio.innerHTML = '<option value="" selected disabled>Seleccione modalidad...</option>';
+    
+    if (soloEbooks) {
+        selectEnvio.innerHTML += '<option value="digital">Entrega Digital (0.00€)</option>';
+    } else {
+        selectEnvio.innerHTML += '<option value="estandar">Estandar (48h) - 5.00€</option>';
+        selectEnvio.innerHTML += '<option value="urgente">Urgente (24h) - 9.95€</option>';
+    }
+}
 
 
+function finalizarPedido() {
+    // 1. Validaciones previas
+    if (!clienteActual) {
+        alert("Debe seleccionar un cliente primero.");
+        return;
+    }
+    if (carritoTemporal.length === 0) {
+        alert("El carrito está vacío. Añada al menos un libro.");
+        return;
+    }
+
+    const selectEnvio = document.getElementById("selectEnvio");
+    if (!selectEnvio.value) {
+        alert("Por favor, seleccione una modalidad de envío.");
+        return;
+    }
+
+    try {
+        // 2. CREACIÓN DEL PEDIDO
+        // Pasamos 'clienteActual' (la instancia encontrada por DNI)
+        const nuevoPedido = new Pedido(
+            clienteActual, 
+            carritoTemporal, 
+            selectEnvio.value
+        );
+        console.log(selectEnvio.value)
+        // 3. ASOCIACIÓN
+        // Usamos el método de tu clase Cliente para guardar el pedido
+        clienteActual.insertarPedidoCliente(nuevoPedido);
+        
+        // 4. FEEDBACK Y LIMPIEZA
+        alert(`¡Pedido #${nuevoPedido.id} realizado con éxito!\nTotal: ${nuevoPedido.precioTotalConEnvioConIVA}€`);
+        
+        // Reiniciamos la página para limpiar el formulario y estados
+        location.reload();
+
+    } catch (error) {
+        console.error("Error al procesar pedido:", error);
+        alert("No se pudo completar el pedido: " + error.message);
+    }
+}
+function limpiarCarrito() {
+    // 1. Vaciamos el array temporal
+    carritoTemporal = []; 
+    
+    // 2. Limpiamos los inputs de los acordeones
+    document.getElementById("isbnBusqueda").value = "";
+    document.getElementById("unidadesLibro").value = "1";
+    document.getElementById("selectEnvio").value = "";
+    
+    // 3. Actualizamos la vista para que el resumen diga "No hay artículos"
+    actualizarResumen();
+}
+function configurarBotonEnvio() {
+    const btnAplicar = document.getElementById("btnAplicarEnvio");
+    const selectEnvio = document.getElementById("selectEnvio");
+
+    btnAplicar.onclick = () => {
+        const valor = selectEnvio.value;
+        
+        if (!valor) {
+            alert("Selecciona una opción de envío");
+            return;
+        }
+
+        // Guardamos el valor globalmente
+        envioSeleccionado = valor;
+        
+        // RE-PINTAMOS el resumen para que aparezca la línea nueva
+        actualizarResumen(); 
+        alert("Envío aplicado: " + valor);
+    };
+}
+
+function actualizarResumen() {
+    const contenedor = document.getElementById("resumen-compra");
+    const totalBadge = document.getElementById("total-preview");
+    
+    if (carritoTemporal.length === 0) {
+        contenedor.innerHTML = "<p class='text-muted text-center'>No hay artículos.</p>";
+        totalBadge.textContent = "0.00€";
+        return;
+    }
+
+    let html = '<ul class="list-group list-group-flush">';
+    let totalAcumulado = 0;
+    
+    // 1. Líneas de libros
+    carritoTemporal.forEach((item) => {
+        const subtotal = item.libro.precio * item.unidades;
+        totalAcumulado += subtotal;
+        html += `<li class="list-group-item d-flex justify-content-between">
+                    ${item.libro.titulo} (x${item.unidades})
+                    <span>${subtotal.toFixed(2)}€</span>
+                 </li>`;
+    });
+
+    // 2. Línea de ENVÍO (Solo si el usuario ya pulsó el botón "Aplicar")
+    if (envioSeleccionado) {
+        let costeEnvio = 0;
+        if (envioSeleccionado === "estandar") costeEnvio = 5.00;
+        if (envioSeleccionado === "urgente") costeEnvio = 9.95;
+        // Digital es 0
+        
+        totalAcumulado += costeEnvio;
+        html += `<li class="list-group-item d-flex justify-content-between bg-light fw-bold text-primary">
+                    Envío (${envioSeleccionado})
+                    <span>${costeEnvio.toFixed(2)}€</span>
+                 </li>`;
+    }
+    
+    html += "</ul>";
+    contenedor.innerHTML = html;
+    totalBadge.textContent = totalAcumulado.toFixed(2) + "€";
+}
 
 
