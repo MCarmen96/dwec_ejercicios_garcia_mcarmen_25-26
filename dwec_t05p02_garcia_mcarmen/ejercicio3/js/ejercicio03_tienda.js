@@ -23,14 +23,14 @@ class Tienda {
             throw new Error("[Tienda] Use Tienda.getInstancia() en lugar de new Tienda()");
         }
 
-        
-        this.#nombre =nombreTienda;
+
+        this.#nombre = nombreTienda;
         //this.lectorDatosForm= new LeerDatosFrom();
-        this.#clientes= new Clientes();
-        this.#libros= new Libros();
-        this.#autores=new Autores();
-        //this.pedidos=new Pedidos();
-        this.#tiposEnvios=new tiposEnvios();
+        this.#clientes = new Clientes();
+        this.#libros = new Libros();
+        this.#autores = new Autores();
+        this.#pedidos=new Pedidos();
+        this.#tiposEnvios = new TiposEnvios();
 
     }
 
@@ -54,34 +54,34 @@ class Tienda {
 
     get pedidos() { return this.#pedidos; }
     set pedidos(pedidos) { this.#pedidos = pedidos; }
-        
 
 
-    cargarDatosPrueba(){
-        
-        const autoresPrueba=[new Autor('Natsu Hyūga'),new Autor('Koyoharu Gotouge'),new Autor('Jay Kristoff'),new Autor('Brandon Sanderson'),new Autor('Tatsuya Endo')]
-        
+
+    cargarDatosPrueba() {
+
+        const autoresPrueba = [new Autor('Natsu Hyuga'), new Autor('Koyoharu Gotouge'), new Autor('Jay Kristoff'), new Autor('Brandon Sanderson'), new Autor('Tatsuya Endo')]
+
         this.autores.insertarAutores(autoresPrueba);
 
         const arrayLibros = [
-                            new LibroPapel(1111, "Los diarios de la boticaria",[this.autores.listadoAutores[0]], "Novela", 15.99,10,'10x10x5',500),
-                            new Ebook(2222, "Kimetsu no yaiba",[this.autores.listadoAutores[1]],"Fantasia",10.99,12,"pdf"),
-                            new LibroPapel(3333, "Spy family",[this.autores.listadoAutores[4]], "Ciencia Ficcion", 8.99,10,'10x10x5',120),
-                            new LibroPapel(4444,"El imperio de los condenados",[this.autores.listadoAutores[2]],"Fantasia",25.99,10,'10x10x5',200),
-                            new Ebook(5555, "Nacidos de la bruma",[this.autores.listadoAutores[3]],"Ciencia Ficcion",22.99,12,"epub")
-                        
-                        ];
-        
+            new LibroPapel(1111, "Los diarios de la boticaria", [this.autores.listadoAutores[0]], "Novela", 15.99, 10, '10x10x5', 500),
+            new Ebook(2222, "Kimetsu no yaiba", [this.autores.listadoAutores[1]], "Fantasia", 10.99, 12, "pdf"),
+            new LibroPapel(3333, "Spy family", [this.autores.listadoAutores[4]], "Ciencia Ficcion", 8.99, 10, '10x10x5', 120),
+            new LibroPapel(4444, "El imperio de los condenados", [this.autores.listadoAutores[2]], "Fantasia", 25.99, 10, '10x10x5', 200),
+            new Ebook(5555, "Nacidos de la bruma", [this.autores.listadoAutores[3]], "Ciencia Ficcion", 22.99, 12, "epub")
+
+        ];
+
         this.libros.insertarLibros(arrayLibros);
-        
+
         autoresPrueba[0].insertarLibro(arrayLibros[0]);
         autoresPrueba[1].insertarLibro(arrayLibros[1]);
         autoresPrueba[2].insertarLibro(arrayLibros[2]);
         autoresPrueba[3].insertarLibro(arrayLibros[3]);
-        
-        
 
-        const clientesPrueba=[new Cliente(1,"Carmen","Av.Madrid"),new Cliente(2,"Carmen","Av.Madrid")];
+
+
+        const clientesPrueba = [new Cliente("12345678A", "Carmen", "AvMadrid"), new Cliente("87654321B", "Alberto", "AvAlamos")];
         this.clientes.insertarClientes(clientesPrueba);
 
         const pedidosPrueba = [
@@ -90,25 +90,28 @@ class Tienda {
         ];
 
         for (let i = 0; i < pedidosPrueba.length - 1; i++) {
-            clientesPrueba[i].agregarPedido(pedidosPrueba[i]);
+            clientesPrueba[i].insertarPedidoCliente(pedidosPrueba[i]);
         }
 
     }
 
 
-    mostrarCatalogoLibros(lista){
+    obtenerLibrosOrdenados(lista) {
+        return lista.toSorted((a, b) => a.titulo.localeCompare(b.titulo));
+    }
+    mostrarCatalogoLibros(lista) {
 
-        const librosOrdenados=lista.toSorted((a,b)=>{
+        const librosOrdenados = lista.toSorted((a, b) => {
             return a.titulo.localeCompare(b.titulo);
         });
 
-        let tableBody=document.createElement('tbody');
+        let tableBody = document.createElement('tbody');
         librosOrdenados.forEach(libro => {
-            let tr=document.createElement('tr');
-            tr.innerHTML=`
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
                 <td>${libro.isbn}</td>
                 <td>${libro.titulo}</td>
-                <td>${libro.autores.map(aut=>aut.nombre)}</td>
+                <td>${libro.autores.map(aut => aut.nombre)}</td>
                 <td>${libro.genero}</td>
                 <td>${libro.precio}</td>
                 <td>${(libro instanceof Ebook) ? "Ebook" : "Libro en Papel"}</td>

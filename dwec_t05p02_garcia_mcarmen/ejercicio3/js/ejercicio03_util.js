@@ -31,17 +31,30 @@ class Util {
         return patronNombre.test(nombre) && nombre.length >= 3;
     }
 
-    static validarDireccion(direccion) {
-        let patronDireccion = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü0-9\s]+$/;
-        return patronDireccion.test(direccion) && direccion.length >= 3;
+    static validarDireccion(direccion){
+        let isValid=false;
+        let patronDireccion=/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü0-9\s]+$/;
+
+        if(patronDireccion.test(direccion)&&direccion.length>=3){
+            isValid=true;
+        }
+
+        return isValid;
     }
 
     static validarPrecio(precio) {
-        return this.validarReal(precio) && Number(precio) > 0;
+        return this.validarReal(precio) && Number(precio) >= 0;
     }
 
     static validarTamanoArchivo(tamano) {
         return this.validarReal(tamano) && tamano > 0;
+    }
+    static validarFormato(formatoLeido,setFormatosValidos){
+        let isFormat=false;
+        if(setFormatosValidos.has(formatoLeido)){
+            isFormat=true;
+        }
+        return isFormat;
     }
 
     static validarPeso(peso) {

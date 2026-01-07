@@ -53,18 +53,35 @@ function () {
   }, {
     key: "validarDireccion",
     value: function validarDireccion(direccion) {
+      var isValid = false;
       var patronDireccion = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü0-9\s]+$/;
-      return patronDireccion.test(direccion) && direccion.length >= 3;
+
+      if (patronDireccion.test(direccion) && direccion.length >= 3) {
+        isValid = true;
+      }
+
+      return isValid;
     }
   }, {
     key: "validarPrecio",
     value: function validarPrecio(precio) {
-      return this.validarReal(precio) && Number(precio) > 0;
+      return this.validarReal(precio) && Number(precio) >= 0;
     }
   }, {
     key: "validarTamanoArchivo",
     value: function validarTamanoArchivo(tamano) {
       return this.validarReal(tamano) && tamano > 0;
+    }
+  }, {
+    key: "validarFormato",
+    value: function validarFormato(formatoLeido, setFormatosValidos) {
+      var isFormat = false;
+
+      if (setFormatosValidos.has(formatoLeido)) {
+        isFormat = true;
+      }
+
+      return isFormat;
     }
   }, {
     key: "validarPeso",

@@ -1,6 +1,6 @@
 console.log("T04 - Ejercicio 0X");
 
-class cliente{
+class Cliente{
 
     #dni;
     #nombreCompleto;

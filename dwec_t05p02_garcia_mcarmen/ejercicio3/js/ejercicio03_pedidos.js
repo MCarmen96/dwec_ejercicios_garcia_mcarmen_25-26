@@ -1,4 +1,4 @@
-class Pedidos {
+class Pedidos{
     #listadoPedidos;
 
     constructor() {

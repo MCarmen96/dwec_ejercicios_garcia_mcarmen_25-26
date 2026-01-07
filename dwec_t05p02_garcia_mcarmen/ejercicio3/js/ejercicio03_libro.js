@@ -59,14 +59,14 @@ class Libro {
     }
     set autores(newAutor) {
 
-        if (Array.isArray(newAutores)) {
-            newAutores.forEach(autor => {
+        if (Array.isArray(newAutor)) {
+            newAutor.forEach(autor => {
                 // Validamos que cada elemento del array sea de la clase Autor
                 if (!(autor instanceof Autor)) {
                     throw new Error("El parámetro enviado contiene elementos que no son Autores");
                 }
             });
-            this.#autores = newAutores;
+            this.#autores = newAutor;
         } else {
             throw new Error("El parámetro enviado NO es un array");
         }
