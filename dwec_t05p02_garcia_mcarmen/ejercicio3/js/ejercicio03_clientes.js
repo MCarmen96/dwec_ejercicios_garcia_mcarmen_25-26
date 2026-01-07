@@ -30,9 +30,9 @@ class Clientes{
     }
 
     buscarClientePorDNI(dniAbuscar){
-        let clienteEncontrado=this.listadoClientes.find(cliente=>{
-            return cliente.dni===dniAbuscar;
-        })
+        return this.listadoClientes.find(cliente => 
+        String(cliente.dni).trim() === String(dniAbuscar).trim()
+    );
     }
 
     borrarClientePorDNI(dniAborrar){

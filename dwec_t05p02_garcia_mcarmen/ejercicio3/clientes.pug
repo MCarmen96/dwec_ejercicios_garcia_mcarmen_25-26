@@ -1,65 +1,47 @@
 extends layout
 block main
     h1.mb-4.text-center Gestión de clientes
-    //formulario
+    
     section#formulario-clientes.mb-5
         h3.mb-3 Añadir nuevo cliente
-
+        // novalidate para que Bootstrap gestione la validación HTML5
         form#formCliente.needs-validation(novalidate)
             .row.g-3
-                .col-md-6
+                .col-md-4
                     label.form-label(for="dni") DNI
-                    input#dni.form-control(
-                        type="text"
-                        required
-                        pattern="^[0-9]{8}[A-Za-z]$"
-                        placeholder="12345678A"
-                    )
-                    .invalid-feedback DNI no válido
-
-                .col-md-6
-                    label.form-label(for="nombre") Nombre
+                    input#dni.form-control(type="text" required pattern="^[0-9]{8}[A-Z]$")
+                    .invalid-feedback DNI obligatorio (8 números y letra mayúscula).
+                .col-md-4
+                    label.form-label(for="nombre") Nombre Completo
                     input#nombre.form-control(type="text" required)
-
-                .col-md-6
-                    label.form-label(for="email") Email
-                    input#email.form-control(type="email" required)
-
-                .col-md-6
-                    label.form-label(for="telefono") Teléfono
-                    input#telefono.form-control(type="tel" required)
-
+                    .invalid-feedback El nombre es obligatorio.
+                .col-md-4
+                    label.form-label(for="direccion") Dirección
+                    input#direccion.form-control(type="text" required)
+                    .invalid-feedback La dirección es obligatoria.
             .mt-4.text-center
                 button.btn.btn-success(type="submit") Insertar cliente
+        
+        // Error de DNI único (Controlado por JS)
+        p#mensaje-dni.text-danger.mt-2.d-none El DNI ya existe en el sistema.
 
-        p#mensaje-dni.text-danger.mt-2.d-none
-            | El DNI ya existe en el sistema.
-
-    //tabla clienters
     section
         h3.mb-3.text-center Lista de clientes
-
         .table-responsive
-            table#tabla-clientes.table.table-hover.table-bordered.align-middle
+            table#tabla-clientes.table.table-hover.table-bordered
                 thead.table-dark
                     tr
                         th DNI
                         th Nombre
-                        th Email
-                        th Teléfono
+                        th Dirección
                         th.text-center Acciones
                 tbody
-                    // Se rellena por JS
+        
+        // Botón para subir arriba (Requisito)
+        .text-end.mt-2
+            a.btn.btn-sm.btn-secondary(href="#formulario-clientes") Subir al formulario
 
-    //PEDIDOS
-
+    // Panel de pedidos oculto
     section#panel-pedidos.mt-5.d-none
         h3.mb-4.text-center Pedidos del cliente
-
         .row#gPedidos
-            // Cards de pedidos por JS
-
-    
-    .text-center.mt-5
-        a.btn.btn-secondary(href="#formulario-clientes")
-            | Subir al formulario

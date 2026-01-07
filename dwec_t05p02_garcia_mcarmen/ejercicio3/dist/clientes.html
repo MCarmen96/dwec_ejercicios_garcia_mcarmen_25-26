@@ -32,63 +32,57 @@
   </header>
   <main class="container pt-5">
     <h1 class="mb-4 text-center">Gestión de clientes</h1>
-    <!--formulario-->
     <section class="mb-5" id="formulario-clientes">
       <h3 class="mb-3">Añadir nuevo cliente</h3>
+      <!-- novalidate para que Bootstrap gestione la validación HTML5-->
       <form class="needs-validation" id="formCliente" novalidate="novalidate">
         <div class="row g-3">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label class="form-label" for="dni">DNI</label>
-            <input class="form-control" id="dni" type="text" required="required" pattern="^[0-9]{8}[A-Za-z]$" placeholder="12345678A"/>
-            <div class="invalid-feedback">DNI no válido</div>
+            <input class="form-control" id="dni" type="text" required="required" pattern="^[0-9]{8}[A-Z]$"/>
+            <div class="invalid-feedback">DNI obligatorio (8 números y letra mayúscula).</div>
           </div>
-          <div class="col-md-6">
-            <label class="form-label" for="nombre">Nombre</label>
+          <div class="col-md-4">
+            <label class="form-label" for="nombre">Nombre Completo</label>
             <input class="form-control" id="nombre" type="text" required="required"/>
+            <div class="invalid-feedback">El nombre es obligatorio.</div>
           </div>
-          <div class="col-md-6">
-            <label class="form-label" for="email">Email</label>
-            <input class="form-control" id="email" type="email" required="required"/>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label" for="telefono">Teléfono</label>
-            <input class="form-control" id="telefono" type="tel" required="required"/>
+          <div class="col-md-4">
+            <label class="form-label" for="direccion">Dirección</label>
+            <input class="form-control" id="direccion" type="text" required="required"/>
+            <div class="invalid-feedback">La dirección es obligatoria.</div>
           </div>
         </div>
         <div class="mt-4 text-center">
           <button class="btn btn-success" type="submit">Insertar cliente</button>
         </div>
       </form>
+      <!-- Error de DNI único (Controlado por JS)-->
       <p class="text-danger mt-2 d-none" id="mensaje-dni">El DNI ya existe en el sistema.</p>
     </section>
-    <!--tabla clienters-->
     <section>
       <h3 class="mb-3 text-center">Lista de clientes</h3>
       <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle" id="tabla-clientes">
+        <table class="table table-hover table-bordered" id="tabla-clientes">
           <thead class="table-dark">
             <tr>
               <th>DNI</th>
               <th>Nombre</th>
-              <th>Email</th>
-              <th>Teléfono</th>
+              <th>Dirección</th>
               <th class="text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- Se rellena por JS-->
-          </tbody>
+          <tbody></tbody>
         </table>
       </div>
+      <!-- Botón para subir arriba (Requisito)-->
+      <div class="text-end mt-2"><a class="btn btn-sm btn-secondary" href="#formulario-clientes">Subir al formulario</a></div>
     </section>
-    <!--PEDIDOS-->
+    <!-- Panel de pedidos oculto-->
     <section class="mt-5 d-none" id="panel-pedidos">
       <h3 class="mb-4 text-center">Pedidos del cliente</h3>
-      <div class="row" id="gPedidos">
-        <!-- Cards de pedidos por JS-->
-      </div>
+      <div class="row" id="gPedidos"></div>
     </section>
-    <div class="text-center mt-5"><a class="btn btn-secondary" href="#formulario-clientes">Subir al formulario</a></div>
   </main>
   <footer>
          <div class="container">
@@ -103,6 +97,8 @@
     <script src="../js/ejercicio03_util.js"></script>
     <script src="../js/ejercicio03_cliente.js"></script>
     <script src="../js/ejercicio03_clientes.js"></script>
+    <script src="../js/ejercicio03_pedido.js"></script>
+    <script src="../js/ejercicio03_pedidos.js"></script>
     <script src="../js/ejercicio03_tienda.js"></script>
     <script src="../js/ejercicio03_leer_datos.js"></script>
     <script src="../js/ejercicio03_cargarDatosDom.js"></script>

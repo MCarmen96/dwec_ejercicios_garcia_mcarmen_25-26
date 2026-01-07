@@ -4,9 +4,17 @@ document.addEventListener("DOMContentLoaded",()=>{
     tienda=Tienda.getInstancia("carmen");
     tienda.cargarDatosPrueba();
 
-    pintarTabla(tienda.libros.listaLibros);
 
-    activarBuscador();
+
+    if (document.getElementById("table-libros")) {
+        pintarTabla(tienda.libros.listaLibros);
+        activarBuscador();
+    }
+    
+    if (document.getElementById("tabla-clientes")) {
+        actualizarVistaClientes();
+        configurarFormularioClientes();
+    }
 
 
 });
@@ -25,8 +33,6 @@ function cargarModalLibro(libro){
         libro.stock ?? "Ilimitado";
 
 }
-
-
 
 function activarBotonesDetalle() {
     const botonesDetalle = document.querySelectorAll(".btn-detalle");
@@ -52,6 +58,8 @@ function activarBotonesDetalle() {
 // JS PRINCIPAL
 function pintarTabla(libros) {
     const tabla = document.getElementById("table-libros");
+    // si no existe la tabla de libros no estoy en la primera pagina y me salgo de la funcion pra quie no explote
+    if(!tabla)return;
     let tbody = tabla.querySelector("tbody");
     
     if (!tbody) {
@@ -86,6 +94,8 @@ function pintarTabla(libros) {
 
 function activarBuscador() {
     const inputBuscar = document.getElementById("buscador");
+    // igual que antes si el elemento no esta es que no estoy en esa pagina y salgo de la funcion
+    if(!inputBuscar)return;
     const mensajeVacio = document.getElementById("mensaje-vacio");
 
     inputBuscar.addEventListener("input", () => {
@@ -102,4 +112,124 @@ function activarBuscador() {
         pintarTabla(librosFiltrados);
     });
 }
+
+function actualizarVistaClientes() {
+    const tbody = document.querySelector("#tabla-clientes tbody");
+    if (!tbody) return; // Guarda de seguridad por si no estamos en la página
+    
+    tbody.innerHTML = "";
+
+    // REQUISITO: Orden inverso (el último es el primero)
+    const clientesOrdenados = tienda.clientes.listadoClientes.toReversed();
+
+    clientesOrdenados.forEach(cliente => {
+        // Usamos el método que ya tienes en Tienda
+        tbody.appendChild(tienda.obtenerFilaCliente(cliente));
+    });
+
+    // IMPORTANTE: Siempre activar eventos después de pintar
+    activarEventosBotones();
+}
+
+
+function configurarFormularioClientes() {
+    const form = document.getElementById("formCliente");
+    const mensajeDni = document.getElementById("mensaje-dni");
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        mensajeDni.classList.add("d-none");
+
+        // 1. REQUISITO: Validación HTML5 (usando Bootstrap)
+        if (!form.checkValidity()) {
+            e.stopPropagation();
+            form.classList.add("was-validated");
+            return;
+        }
+
+        const dni = document.getElementById("dni").value.trim();
+        const nombre = document.getElementById("nombre").value.trim();
+        const direccion = document.getElementById("direccion").value.trim();
+
+        // 2. REQUISITO: Verificación JS de DNI ÚNICO
+        if (tienda.clientes.existeClientePorDNI(dni)) {
+            mensajeDni.classList.remove("d-none");
+            // Quitamos la clase de validación para que el usuario vea el error específico del DNI
+            document.getElementById("dni").classList.add("is-invalid");
+            return;
+        }
+
+        // 3. Inserción y actualización automática de la tabla
+        try {
+            const nuevo = new Cliente(dni, nombre, direccion);
+            tienda.clientes.insertarClientes([nuevo]);
+            
+            form.reset();
+            form.classList.remove("was-validated");
+            document.getElementById("dni").classList.remove("is-invalid");
+            
+            actualizarVistaClientes(); // Se actualiza la tabla al insertar
+            alert("Cliente insertado con éxito");
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+}
+
+/**
+ * Asigna eventos a los botones de la tabla (Borrar y Ver Pedidos)
+ */
+function activarEventosBotones() {
+    document.querySelectorAll(".btn-ver-pedidos").forEach(btn => {
+        btn.onclick = function() {
+            const dniBusqueda = this.dataset.dni; // El DNI que viene del botón
+            const clienteEncontrado = tienda.clientes.buscarClientePorDNI(dniBusqueda);
+
+            if (clienteEncontrado) {
+                pintarCardsPedidos(clienteEncontrado);
+            } else {
+                console.error("No se encontró al cliente con DNI:", dniBusqueda);
+                alert("Error: No se encuentra la información de este cliente.");
+            }
+        };
+    });
+}
+
+/**
+ * Muestra los pedidos del cliente seleccionado en el panel inferior
+ */
+function pintarCardsPedidos(cliente) {
+
+    if (!cliente) {
+        console.error("Error: Se ha intentado pintar pedidos de un cliente inexistente.");
+        return;
+    }
+
+    const panel = document.getElementById("panel-pedidos");
+    const contenedor = document.getElementById("gPedidos");
+    
+    panel.classList.remove("d-none"); // Quitamos el "oculto"
+    contenedor.innerHTML = ""; // Limpiamos lo anterior
+
+    if (cliente.listaPedidos.length === 0) {
+        contenedor.innerHTML = "<p class='text-center'>Este cliente no tiene pedidos.</p>";
+    } else {
+        cliente.listaPedidos.forEach(pedido => {
+            const card = document.createElement("div");
+            card.className = "col-md-4 mb-3";
+            card.innerHTML = `
+                <div class="card shadow-sm h-100 border-primary">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Pedido #${pedido.id}</h5>
+                        <p class="card-text">Total: <strong>${pedido.precioTotalConEnvioConIVA}€</strong></p>
+                        <p class="small text-muted">Fecha: ${pedido.fecha.toLocaleDateString()}</p>
+                    </div>
+                </div>`;
+            contenedor.appendChild(card);
+        });
+    }
+    
+
+}
+
 

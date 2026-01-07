@@ -29,7 +29,7 @@ class Tienda {
         this.#clientes = new Clientes();
         this.#libros = new Libros();
         this.#autores = new Autores();
-        this.#pedidos=new Pedidos();
+        this.#pedidos = new Pedidos();
         this.#tiposEnvios = new TiposEnvios();
 
     }
@@ -80,22 +80,25 @@ class Tienda {
         autoresPrueba[3].insertarLibro(arrayLibros[3]);
 
 
+        // 1. CLIENTES: Usa DNI reales para que el buscador no falle
+        const c1 = new Cliente("12345678A", "Carmen", "AvMadrid");
+        const c2 = new Cliente("87654321B", "Alberto", "AvAlamos");
+        this.clientes.insertarClientes([c1, c2]);
 
-        const clientesPrueba = [new Cliente("12345678A", "Carmen", "AvMadrid"), new Cliente("87654321B", "Alberto", "AvAlamos")];
-        this.clientes.insertarClientes(clientesPrueba);
+        // 2. PEDIDOS: Creamos los pedidos asociados a esos objetos
+        const p1 = new Pedido(c1);
+        const p2 = new Pedido(c2);
 
-        const pedidosPrueba = [
-            new Pedido(clientesPrueba[0]),
-            new Pedido(clientesPrueba[1]),
-        ];
+        // 3. LIBROS EN PEDIDOS: Añadimos contenido
+        // Usamos el método exacto que tengas en tu clase Pedido
+        p1.insertarLibros(this.libros.listaLibros[0], 1);
+        p2.insertarLibros(this.libros.listaLibros[1], 2);
 
-        for (let i = 0; i < pedidosPrueba.length - 1; i++) {
-            clientesPrueba[i].insertarPedidoCliente(pedidosPrueba[i]);
-        }
+        this.pedidos.insertarPedidos([p1, p2]);
 
     }
 
-
+    // pagina 1 catalogo
     obtenerLibrosOrdenados(lista) {
         return lista.toSorted((a, b) => a.titulo.localeCompare(b.titulo));
     }
@@ -131,5 +134,23 @@ class Tienda {
     }
 
 
+
+    obtenerFilaCliente(cliente) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+        <td>${cliente.dni}</td>
+        <td>${cliente.nombreCompleto}</td>
+        <td>${cliente.direccion}</td>
+        <td class="text-center">
+            <button class="btn btn-sm btn-primary btn-ver-pedidos" data-dni="${cliente.dni}">
+                <i class="bi bi-eye"></i> Ver Pedidos
+            </button>
+            <button class="btn btn-sm btn-danger btn-borrar-cliente" data-dni="${cliente.dni}">
+                <i class="bi bi-trash"></i> Borrar
+            </button>
+        </td>
+    `;
+        return tr;
+    }
 }
 
