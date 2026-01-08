@@ -1,6 +1,7 @@
 let tienda;//global
 let clienteActual = null;
 let carritoTemporal = [];
+
 let envioSeleccionado = null;
 document.addEventListener("DOMContentLoaded", () => {
     tienda = Tienda.getInstancia("carmen");

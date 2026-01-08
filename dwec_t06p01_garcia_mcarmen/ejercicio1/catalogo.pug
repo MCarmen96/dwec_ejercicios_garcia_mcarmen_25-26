@@ -1,0 +1,12 @@
+extends layout
+block main
+    h1.mb-4.text-center  ⚡️ Harry Potter ⚡️
+    .row.mb-3
+        .col-md-6.mx-auto
+            .input-group
+                input#buscador.form-control(type="text" placeholder="Buscar personaje...")
+                button#btnBuscar.btn.btn-primary(type="button") Buscar
+    p#mensaje-vacio.text-center.text-muted.d-none
+        | No se han encontrado libros que coincidan con la búsqueda.
+    div#contendor-personajes.container-fluid 
+        
