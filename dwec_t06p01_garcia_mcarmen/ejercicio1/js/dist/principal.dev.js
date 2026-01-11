@@ -1,8 +1,16 @@
 "use strict";
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 console.log("T0X - Ejercicio 0X");
 document.addEventListener("DOMContentLoaded", function _callee() {
-  var datos, buttonBuscar;
+  var datos, inputTexto;
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -12,8 +20,8 @@ document.addEventListener("DOMContentLoaded", function _callee() {
 
         case 2:
           datos = _context.sent;
-          buttonBuscar = document.getElementById("btnBuscar");
-          buttonBuscar.addEventListener('click', function () {
+          inputTexto = document.getElementById("buscador");
+          inputTexto.addEventListener('input', function () {
             buscadorPersonaje(datos);
           });
           cargarTarjetasPersonajes(datos);
@@ -60,20 +68,33 @@ function cargarDatos() {
 }
 
 function buscadorPersonaje(datos) {
-  var contentError = document.createElement("div");
-  var inputBuscar = document.getElementById("buscador").value;
+  var pError = document.getElementById("mensaje-vacio");
+  var contenedor = document.getElementById("contendor-personajes");
+  var inputBuscar = document.getElementById("buscador").value.trim(); // 1. Si el campo está vacío
 
   if (inputBuscar === "") {
-    var p = document.getElementById("mensaje-vacio");
-    contentError.classList.add('alert alert-danger');
-    contentError.setAttribute("role", "alert");
-    p.innerHTML = "<h1>Error campo vacio</h1>";
-    contentError.appendChild(p);
+    pError.classList.remove('d-none'); // Lo mostramos
+
+    pError.classList.add('alert', 'alert-danger', 'text-danger'); // Le damos estilo de error
+
+    pError.innerHTML = "<strong>Error:</strong> El campo de b\xFAsqueda est\xE1 vac\xEDo.";
+    contenedor.innerHTML = ""; // Limpiamos la tabla
+
+    return; // Salimos de la función
+  } // 2. Si hay texto, ocultamos el error y buscamos
+
+
+  pError.classList.add('d-none');
+  pError.classList.remove('alert', 'alert-danger');
+  var personajeEncontrado = datos.filter(function (personaje) {
+    return personaje.name.toLowerCase().includes(inputBuscar.toLowerCase());
+  }); // 3. Si no hay resultados tras filtrar
+
+  if (personajeEncontrado.length === 0) {
+    pError.classList.remove('d-none');
+    pError.innerHTML = "No se han encontrado personajes que coincidan con \"".concat(inputBuscar, "\".");
+    contenedor.innerHTML = "";
   } else {
-    // * me deveulve el array con el obejto encontrado
-    var personajeEncontrado = datos.filter(function (personaje) {
-      return personaje.name.toLowerCase().includes(inputBuscar.toLowerCase());
-    });
     pintarTablaPersonaje(personajeEncontrado);
   }
 }
@@ -120,8 +141,36 @@ function pintarTablaPersonaje(personajes) {
   contenedorTabla.appendChild(tabla);
 }
 
+function obtenerOchoPorCasa(datos) {
+  var casas = ["Gryffindor", "Slytherin", "Hufflepuff", "Ravenclaw"];
+  var seleccionados = [];
+  casas.forEach(function (casa) {
+    // 1. Filtramos todos los personajes que pertenecen a esa casa
+    var personajesDeLaCasa = datos.filter(function (p) {
+      return p.house === casa;
+    }); // 2. Los mezclamos aleatoriamente
+
+    personajesDeLaCasa.sort(function () {
+      return 0.5 - Math.random();
+    }); // 3. Cogemos los 2 primeros y los metemos al saco
+
+    seleccionados.push.apply(seleccionados, _toConsumableArray(personajesDeLaCasa.slice(0, 2)));
+  });
+  return seleccionados;
+}
+
 function cargarTarjetasPersonajes(datos) {
-  var objetosMezclados = datos.sort(function () {
-    return 0.5 - Math.random();
-  }); //const ochoPersonajes=objetosMezclados.sclice(0,8);
+  var contenedor = document.getElementById("card-personajes"); // O el ID de tu sección de bienvenida
+  // Mostramos un Spinner (puedes usar uno de Bootstrap)
+
+  contenedor.innerHTML = "\n        <div class=\"text-center my-5\" id=\"spinner\">\n            <div class=\"spinner-border text-primary\" role=\"status\">\n                <span class=\"visually-hidden\">Loading...</span>\n            </div>\n            <p>Cargando personajes m\xE1gicos...</p>\n        </div>"; // Simulamos la espera de 2 segundos
+
+  setTimeout(function () {
+    var ochoElegidos = obtenerOchoPorCasa(datos);
+    contenedor.innerHTML = '<div class="row row-cols-1 row-cols-md-4 g-4" id="grid-cards"></div>';
+    var grid = document.getElementById("grid-cards");
+    ochoElegidos.forEach(function (p) {
+      grid.innerHTML += "\n                <div class=\"col\">\n                    <div class=\"card h-100 shadow\">\n                        <img src=\"".concat(p.image || 'https://via.placeholder.com/200x300?text=No+Photo', "\" class=\"card-img-top\" alt=\"").concat(p.name, "\" style=\"height: 300px; object-fit: cover;\">\n                        <div class=\"card-body\">\n                            <h5 class=\"card-title\">").concat(p.name, "</h5>\n                            <p class=\"card-text\">\n                                <strong>Casa:</strong> ").concat(p.house, "<br>\n                                <strong>Patronus:</strong> ").concat(p.patronus || 'Desconocido', "<br>\n                                <strong>Especie:</strong> ").concat(p.species, "<br>\n                                <strong>Nacimiento:</strong> ").concat(p.yearOfBirth || 'N/A', "\n                            </p>\n                        </div>\n                    </div>\n                </div>");
+    });
+  }, 2000);
 }

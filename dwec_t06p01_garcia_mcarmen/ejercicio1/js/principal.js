@@ -2,9 +2,9 @@ console.log("T0X - Ejercicio 0X");
 document.addEventListener("DOMContentLoaded", async () => {
     let datos = await cargarDatos();
 
-    let buttonBuscar = document.getElementById("btnBuscar");
+    let inputTexto = document.getElementById("buscador");
 
-    buttonBuscar.addEventListener('click', function () {
+    inputTexto.addEventListener('input', function () {
 
         buscadorPersonaje(datos);
 
@@ -27,27 +27,38 @@ async function cargarDatos() {
 }
 
 function buscadorPersonaje(datos) {
-    const contentError=document.createElement("div");
+    const pError = document.getElementById("mensaje-vacio");
+    const contenedor = document.getElementById("contendor-personajes");
+    let inputBuscar = document.getElementById("buscador").value.trim();
 
-    let inputBuscar = document.getElementById("buscador").value;
+    // 1. Si el campo está vacío
     if (inputBuscar === "") {
-        
-        const p=document.getElementById("mensaje-vacio");
-        contentError.classList.add('alert alert-danger');
-        contentError.setAttribute("role","alert");
-        p.innerHTML=`<h1>Error campo vacio</h1>`;
-        contentError.appendChild(p)
-    } else {
-        // * me deveulve el array con el obejto encontrado
-        let personajeEncontrado = datos.filter(personaje =>
-            personaje.name.toLowerCase().includes(inputBuscar.toLowerCase())
-        );
-
-        pintarTablaPersonaje(personajeEncontrado);
+        pError.classList.remove('d-none'); // Lo mostramos
+        pError.classList.add('alert', 'alert-danger', 'text-danger'); // Le damos estilo de error
+        pError.innerHTML = `<strong>Error:</strong> El campo de búsqueda está vacío.`;
+        contenedor.innerHTML = ""; // Limpiamos la tabla
+        return; // Salimos de la función
     }
 
+    // 2. Si hay texto, ocultamos el error y buscamos
+    pError.classList.add('d-none');
+    pError.classList.remove('alert', 'alert-danger');
 
+    let personajeEncontrado = datos.filter(personaje =>
+        personaje.name.toLowerCase().includes(inputBuscar.toLowerCase())
+    );
+
+    // 3. Si no hay resultados tras filtrar
+    if (personajeEncontrado.length === 0) {
+        pError.classList.remove('d-none');
+        pError.innerHTML = `No se han encontrado personajes que coincidan con "${inputBuscar}".`;
+        contenedor.innerHTML = "";
+    } else {
+        pintarTablaPersonaje(personajeEncontrado);
+    }
 }
+
+
 
 function pintarTablaPersonaje(personajes) {
     let contenedorTabla = document.getElementById("contendor-personajes");
@@ -113,14 +124,60 @@ function pintarTablaPersonaje(personajes) {
     tabla.appendChild(bodyTable);
     contenedorTabla.appendChild(tabla);
 }
+function obtenerOchoPorCasa(datos) {
+    const casas = ["Gryffindor", "Slytherin", "Hufflepuff", "Ravenclaw"];
+    let seleccionados = [];
+
+    casas.forEach(casa => {
+        // 1. Filtramos todos los personajes que pertenecen a esa casa
+        let personajesDeLaCasa = datos.filter(p => p.house === casa);
+
+        // 2. Los mezclamos aleatoriamente
+        personajesDeLaCasa.sort(() => 0.5 - Math.random());
+
+        // 3. Cogemos los 2 primeros y los metemos al saco
+        seleccionados.push(...personajesDeLaCasa.slice(0, 2));
+    });
+
+    return seleccionados;
+}
 
 function cargarTarjetasPersonajes(datos) {
 
-    const objetosMezclados = datos.sort(function () { return 0.5 - Math.random() });
+    const contenedor = document.getElementById("card-personajes"); // O el ID de tu sección de bienvenida
 
-    //const ochoPersonajes=objetosMezclados.sclice(0,8);
+    // Mostramos un Spinner (puedes usar uno de Bootstrap)
+    contenedor.innerHTML = `
+        <div class="text-center my-5" id="spinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>Cargando personajes mágicos...</p>
+        </div>`;
 
+    // Simulamos la espera de 2 segundos
+    setTimeout(() => {
+        const ochoElegidos = obtenerOchoPorCasa(datos);
+        contenedor.innerHTML = '<div class="row row-cols-1 row-cols-md-4 g-4" id="grid-cards"></div>';
+        const grid = document.getElementById("grid-cards");
 
+        ochoElegidos.forEach(p => {
+            grid.innerHTML += `
+                <div class="col">
+                    <div class="card h-100 shadow">
+                        <img src="${p.image || 'https://via.placeholder.com/200x300?text=No+Photo'}" class="card-img-top" alt="${p.name}" style="height: 300px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">${p.name}</h5>
+                            <p class="card-text">
+                                <strong>Casa:</strong> ${p.house}<br>
+                                <strong>Patronus:</strong> ${p.patronus || 'Desconocido'}<br>
+                                <strong>Especie:</strong> ${p.species}<br>
+                                <strong>Nacimiento:</strong> ${p.yearOfBirth || 'N/A'}
+                            </p>
+                        </div>
+                    </div>
+                </div>`;
+        });
+    }, 2000);
 }
-
 
