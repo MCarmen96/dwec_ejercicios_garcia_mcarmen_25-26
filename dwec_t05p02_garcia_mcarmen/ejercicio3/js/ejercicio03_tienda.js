@@ -1,5 +1,5 @@
 class Tienda {
-    // ===== Propiedad estática =====
+  
     static instancia = null;
     #nombre;
     #libros;
@@ -9,16 +9,15 @@ class Tienda {
     #pedidos;
     #lectorDatosForm;
 
-    // ===== Método estático Singleton =====
+    
     static getInstancia(nombreTienda) {
         if (Tienda.instancia === null) {
             Tienda.instancia = new Tienda(nombreTienda);
         }
         return Tienda.instancia;
     }
-    // ===== Constructor =====
+
     constructor(nombreTienda) {
-        // Evitar instanciación directa
         if (Tienda.instancia !== null) {
             throw new Error("[Tienda] Use Tienda.getInstancia() en lugar de new Tienda()");
         }
@@ -68,7 +67,7 @@ class Tienda {
             new Ebook(2784072981986, "Kimetsu no yaiba", [this.autores.listadoAutores[1]], "Fantasia", 10.99, 12, "pdf"),
             new LibroPapel(3784072981986, "Spy family", [this.autores.listadoAutores[4]], "Ciencia Ficcion", 8.99, 10, '10x10x5', 120),
             new LibroPapel(4784072981986, "El imperio de los condenados", [this.autores.listadoAutores[2]], "Fantasia", 25.99, 10, '10x10x5', 200),
-            new Ebook(5784072981986, "Nacidos de la bruma", [this.autores.listadoAutores[3]], "Ciencia Ficcion", 22.99, 12, "epub")
+            new Ebook(5784072981986, "Nacidos de la bruma", [this.autores.listadoAutores[3],this.autores.listadoAutores[1]], "Ciencia Ficcion", 22.99, 12, "epub")
 
         ];
 
@@ -80,17 +79,14 @@ class Tienda {
         autoresPrueba[3].insertarLibro(arrayLibros[3]);
 
 
-        // 1. CLIENTES: Usa DNI reales para que el buscador no falle
         const c1 = new Cliente("12345678A", "Carmen", "AvMadrid");
         const c2 = new Cliente("87654321B", "Alberto", "AvAlamos");
         this.clientes.insertarClientes([c1, c2]);
 
-        // 2. PEDIDOS: Creamos los pedidos asociados a esos objetos
+
         const p1 = new Pedido(c1);
         const p2 = new Pedido(c2);
 
-        // 3. LIBROS EN PEDIDOS: Añadimos contenido
-        // Usamos el método exacto que tengas en tu clase Pedido
         p1.insertarLibros(this.libros.listaLibros[0], 1);
         p2.insertarLibros(this.libros.listaLibros[1], 2);
 

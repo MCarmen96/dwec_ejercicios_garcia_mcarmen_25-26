@@ -39,7 +39,8 @@ function cargarModalLibro(libro) {
     document.getElementById("detalle-isbn").textContent = libro.isbn;
     document.getElementById("detalle-titulo").textContent = libro.titulo;
     document.getElementById("detalle-autor").textContent =
-        libro.autores.map(a => a.nombre).join(", ");
+    libro.autores.map(a => a.nombre)
+        ;
     document.getElementById("detalle-genero").textContent = libro.genero;
     document.getElementById("detalle-precio").textContent = libro.precio + " €";
     document.getElementById("detalle-tipo").textContent =
@@ -191,9 +192,7 @@ function configurarFormularioClientes() {
     });
 }
 
-/**
- * Asigna eventos a los botones de la tabla (Borrar y Ver Pedidos)
- */
+
 function activarEventosBotones() {
     document.querySelectorAll(".btn-ver-pedidos").forEach(btn => {
         btn.onclick = function () {
@@ -210,9 +209,7 @@ function activarEventosBotones() {
     });
 }
 
-/**
- * Muestra los pedidos del cliente seleccionado en el panel inferior
- */
+
 function pintarCardsPedidos(cliente) {
 
     if (!cliente) {
@@ -223,8 +220,8 @@ function pintarCardsPedidos(cliente) {
     const panel = document.getElementById("panel-pedidos");
     const contenedor = document.getElementById("gPedidos");
 
-    panel.classList.remove("d-none"); // Quitamos el "oculto"
-    contenedor.innerHTML = ""; // Limpiamos lo anterior
+    panel.classList.remove("d-none"); 
+    contenedor.innerHTML = ""; 
 
     if (cliente.listaPedidos.length === 0) {
         contenedor.innerHTML = "<p class='text-center'>Este cliente no tiene pedidos.</p>";
@@ -248,7 +245,7 @@ function pintarCardsPedidos(cliente) {
 }
 
 
-// REQUISITO: Géneros desde JS (usando el SET de tu clase Util/Libro)
+
 function cargarGenerosDesdeSet() {
     const selectGenero = document.getElementById("genero");
     if (!selectGenero) return;
@@ -264,13 +261,13 @@ function cargarGenerosDesdeSet() {
     });
 }
 
-// REQUISITO: Lista múltiple de autores ordenada alfabéticamente
+
 function actualizarSelectAutores() {
     const selectAutores = document.getElementById("autoresSel");
     if (!selectAutores) return;
 
     selectAutores.innerHTML = "";
-    // REUTILIZACIÓN: Usamos tu nueva función de la clase Tienda
+
     const autoresOrdenados = tienda.obtenerAutoresOrdenados(tienda.autores.listadoAutores);
 
     autoresOrdenados.forEach(autor => {
@@ -284,7 +281,7 @@ function actualizarSelectAutores() {
 function configurarEventosFormulario() {
     const form = document.getElementById("formLibro");
 
-    // Control de visibilidad Ebook/Papel
+    
     document.getElementById("tipoLibro").addEventListener("change", (e) => {
         document.getElementById("campo-papel").classList.toggle("d-none", e.target.value === "ebook");
         document.getElementById("campo-ebook").classList.toggle("d-none", e.target.value === "papel");
@@ -301,19 +298,19 @@ function configurarEventosFormulario() {
         const nombreNuevoAutor = document.getElementById("nuevoAutorNombre").value.trim();
         const tipo = document.getElementById("tipoLibro").value;
 
-        // 1. REQUISITO: Validar ISBN único con tu gestor
+        // isbn unico
         if (tienda.libros.existeLibroPorIsbn(isbn)) {
             document.getElementById("error-isbn").classList.remove("d-none");
             return;
         }
 
-        // 2. REQUISITO: Validar Autor nuevo único
+        //  Autor nuevo único
         if (nombreNuevoAutor && tienda.autores.existeAutorPorNombre(nombreNuevoAutor)) {
             document.getElementById("error-autor").classList.remove("d-none");
             return;
         }
 
-        // 3. Validación HTML5 (Bootstrap)
+        // Validación HTML5 (Bootstrap)
         if (!form.checkValidity()) {
             form.classList.add("was-validated");
             return;
@@ -322,18 +319,18 @@ function configurarEventosFormulario() {
         try {
             let autorAsignado;
 
-            // REQUISITO: Si hay autor nuevo, se crea y el libro solo tiene ese autor
+            // si hay autor nuevo, se crea y el libro solo tiene ese autor
             if (nombreNuevoAutor) {
                 autorAsignado = new Autor(nombreNuevoAutor);
                 tienda.autores.insertarAutores([autorAsignado]);
                 autorAsignado = [autorAsignado];
             } else {
-                // REQUISITO: Selección múltiple (convertimos nombres a objetos Autor)
+                // Selección múltiple (convertimos nombres a objetos Autor)
                 const seleccionados = Array.from(document.getElementById("autoresSel").selectedOptions);
                 autorAsignado = seleccionados.map(opt => tienda.autores.buscarAutorPorNombre(opt.value));
             }
 
-            // Crear el libro según el tipo (Herencia)
+            // Crear el libro según el tipo 
             const titulo = document.getElementById("titulo").value;
             const precio = parseFloat(document.getElementById("precio").value);
             const genero = document.getElementById("genero").value;
@@ -344,29 +341,30 @@ function configurarEventosFormulario() {
                 const dimensiones = "20x15x3"; // Añade valores por defecto si faltan en el form
                 const stock = 10;
 
-                // ORDEN CORRECTO: isbn, titulo, autores, genero, precio, peso, dimensiones, stock
+                //  isbn, titulo, autores, genero, precio, peso, dimensiones, stock
                 nuevoLibro = new LibroPapel(isbn, titulo, autorAsignado, genero, precio, peso, dimensiones, stock);
                 console.log(nuevoLibro)
             } else {
                 const tamano = 500;
                 const formato = "pdf";
 
-                // ORDEN CORRECTO: isbn, titulo, autores, genero, precio, tamano, formato
-                // Cambiado 'LibroEbook' por 'Ebook' que es el nombre de tu clase
+                //  isbn, titulo, autores, genero, precio, tamano, formato
+    
                 nuevoLibro = new Ebook(isbn, titulo, autorAsignado, genero, precio, tamano, formato);
                 console.log(nuevoLibro)
             }
 
-            // 4. Inserción final en la tienda
+            //Inserción final en la tienda
             tienda.libros.insertarLibros([nuevoLibro]);
 
             alert("Libro y autores guardados correctamente");
+            console.log(nuevoLibro)
             form.reset();
             form.classList.remove("was-validated");
-            actualizarSelectAutores(); // Refrescamos la lista por si hubo autor nuevo
+            actualizarSelectAutores(); 
 
         } catch (error) {
-            // Aquí capturamos errores de validación de tus clases (ej. Precio no válido)
+
             alert("Error: " + error.message);
         }
     });
@@ -377,15 +375,15 @@ function inicializarSeccionCliente() {
     const btnCambiar = document.getElementById("btnDesmarcarCliente");
     const inputDni = document.getElementById("dniBusqueda");
     
-    // Referencias a los contenedores que queremos bloquear
+    //  contenedores que quiero bloquear
     const fieldsetLibros = document.getElementById("fieldsetLibros");
     const fieldsetEnvio = document.getElementById("fieldsetEnvio");
     
-    // Referencias a los botones del acordeón para impedir que se abran
+    //  botones del acordeón para impedir que se abran
     const btnAcordeonLibros = document.querySelector('[data-bs-target="#collapseTwo"]');
     const btnAcordeonEnvio = document.querySelector('[data-bs-target="#collapseThree"]');
 
-    // ESTADO INICIAL: Bloqueamos la apertura de los acordeones 2 y 3
+    
     btnAcordeonLibros.setAttribute("disabled", "true");
     btnAcordeonEnvio.setAttribute("disabled", "true");
 
@@ -400,7 +398,7 @@ function inicializarSeccionCliente() {
             if (!(cliente instanceof Cliente)) {
                 console.error("ALERTA: El objeto encontrado no es una instancia real de Cliente.");
             }
-            // 1. Bloquear interfaz de búsqueda
+            
             inputDni.readOnly = true;
             btnBuscar.classList.add("d-none");
             btnCambiar.classList.remove("d-none");
@@ -409,7 +407,7 @@ function inicializarSeccionCliente() {
             btnAcordeonLibros.removeAttribute("disabled");
             btnAcordeonEnvio.removeAttribute("disabled");
 
-            // 3. HABILITAR campos internos
+            
             fieldsetLibros.disabled = false;
             fieldsetEnvio.disabled = false;
 
@@ -420,7 +418,7 @@ function inicializarSeccionCliente() {
     };
 
     btnCambiar.onclick = () => {
-        // RESET TOTAL: Volvemos al estado bloqueado
+        // Volvemos al estado bloqueado
         clienteActual = null;
         inputDni.readOnly = false;
         inputDni.value = "";
@@ -433,9 +431,7 @@ function inicializarSeccionCliente() {
         fieldsetLibros.disabled = true;
         fieldsetEnvio.disabled = true;
         
-        // Opcional: Cerrar los acordeones si estaban abiertos
-        const collapseLibros = bootstrap.Collapse.getInstance(document.getElementById('collapseTwo'));
-        if (collapseLibros) collapseLibros.hide();
+        
         
         limpiarCarrito();
     };
@@ -447,7 +443,7 @@ function inicializarSeccionLibrosYPago() {
 
     btnAdd.onclick = () => {
         const isbn = document.getElementById("isbnBusqueda").value.trim();
-        const isbnNumerico = Number(isbn); // Conversión necesaria
+        const isbnNumerico = Number(isbn); 
         const unidades = parseInt(document.getElementById("unidadesLibro").value) || 1;
         
         const libro = tienda.libros.buscarLibroPorIsbn(isbnNumerico);
@@ -463,7 +459,7 @@ function inicializarSeccionLibrosYPago() {
         }
     };
 
-    // CONEXIÓN CLAVE: En lugar de definir la lógica aquí, llamamos a la función de abajo
+    
     btnPagar.onclick = finalizarPedido; 
 }
 
@@ -486,7 +482,7 @@ function actualizarOpcionesEnvio() {
 
 
 function finalizarPedido() {
-    // 1. Validaciones previas
+    // Validaciones previas
     if (!clienteActual) {
         alert("Debe seleccionar un cliente primero.");
         return;
@@ -503,23 +499,38 @@ function finalizarPedido() {
     }
 
     try {
-        // 2. CREACIÓN DEL PEDIDO
-        // Pasamos 'clienteActual' (la instancia encontrada por DNI)
+        // CREACIÓN DEL PEDIDO
+        let precio;
+        let envio;
+        let precioIva=12.99;
+        let descuento=0;
+
+        if(selectEnvio.value==="estandar"){
+            envio="estandar";
+            precio=5;
+        }else if(selectEnvio.value==="urgente"){
+            envio="urgente";
+            precio=9.95;
+        }
+    
         const nuevoPedido = new Pedido(
             clienteActual, 
             carritoTemporal, 
-            selectEnvio.value
+            precioIva,
+            precioIva,
+            precio,
+            descuento,
+            envio
+
         );
         console.log(selectEnvio.value)
+        console.log(nuevoPedido);
         // 3. ASOCIACIÓN
         // Usamos el método de tu clase Cliente para guardar el pedido
         clienteActual.insertarPedidoCliente(nuevoPedido);
         
-        // 4. FEEDBACK Y LIMPIEZA
         alert(`¡Pedido #${nuevoPedido.id} realizado con éxito!\nTotal: ${nuevoPedido.precioTotalConEnvioConIVA}€`);
-        
-        // Reiniciamos la página para limpiar el formulario y estados
-        location.reload();
+        console.log(nuevoPedido);
 
     } catch (error) {
         console.error("Error al procesar pedido:", error);
@@ -553,7 +564,7 @@ function configurarBotonEnvio() {
         // Guardamos el valor globalmente
         envioSeleccionado = valor;
         
-        // RE-PINTAMOS el resumen para que aparezca la línea nueva
+    
         actualizarResumen(); 
         alert("Envío aplicado: " + valor);
     };
@@ -572,17 +583,17 @@ function actualizarResumen() {
     let html = '<ul class="list-group list-group-flush">';
     let totalAcumulado = 0;
     
-    // 1. Líneas de libros
+ 
     carritoTemporal.forEach((item) => {
         const subtotal = item.libro.precio * item.unidades;
         totalAcumulado += subtotal;
         html += `<li class="list-group-item d-flex justify-content-between">
                     ${item.libro.titulo} (x${item.unidades})
                     <span>${subtotal.toFixed(2)}€</span>
-                 </li>`;
+                </li>`;
     });
 
-    // 2. Línea de ENVÍO (Solo si el usuario ya pulsó el botón "Aplicar")
+   
     if (envioSeleccionado) {
         let costeEnvio = 0;
         if (envioSeleccionado === "estandar") costeEnvio = 5.00;

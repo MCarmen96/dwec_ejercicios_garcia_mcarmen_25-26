@@ -37,7 +37,6 @@ class Pedido{
     }
 
     get id(){return this.#id}
-    
     set id(newId){
         this.#id=newId;
     }

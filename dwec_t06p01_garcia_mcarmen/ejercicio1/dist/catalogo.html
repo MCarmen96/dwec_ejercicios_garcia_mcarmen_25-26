@@ -21,16 +21,23 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="./catalogo.html">Home</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="./autores.html">Libros y Autores</a></li>
-                <li class="nav-item"><a class="nav-link" href="./clientes.html">Clientes</a></li>
-                <li class="nav-item"><a class="nav-link" href="./pedidos.html">Pedidos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#personajes">Personajes aleatorios</a></li>
+                <li class="nav-item"><a class="nav-link" href="#favoritos">Favoritos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#quiens-somos">Quines somos</a></li>
             </ul>
         </div>
         
     </div>
 </nav>
+
+
   </header>
   <main class="container pt-5">
+    <div class="position-fixed top-50 start-50 translate-middle bg-dark text-white p-4 rounded shadow text-center" id="aviso-cookies" hidden="hidden" style="z-index: 9999; min-width: 300px;">
+      <h5 class="mb-3">Aviso de Cookies</h5>
+      <p class="mb-3">Usamos cookies de sesión para mejorar tu experiencia.</p>
+      <button class="btn btn-primary w-100" id="btn-aceptar">Aceptar</button>
+    </div>
     <h1 class="mb-4 text-center"> ⚡️ Harry Potter ⚡️</h1>
     <div class="row mb-3">
       <div class="col-md-6 mx-auto">
@@ -42,7 +49,15 @@
     </div>
     <p class="text-center text-muted d-none" id="mensaje-vacio">No se han encontrado libros que coincidan con la búsqueda.</p>
     <div class="container-fluid" id="contendor-personajes"> </div>
+    <div id="contenedor-mensaje"></div>
+    <h1 class="container-fluid text-center" id="personajes">Personajes aleatorios</h1>
     <div class="container-fluid" id="card-personajes"></div>
+    <div class="cotainer-fluid text-center" id="content-favorite">
+      <h1 class="text-center" id="favoritos">Personajes favoritos❤️</h1>
+    </div>
+    <div id="quienes-somos">
+      <h1 class="text-center">Quienes somos </h1>
+    </div>
   </main>
   <footer>
          <div class="container">

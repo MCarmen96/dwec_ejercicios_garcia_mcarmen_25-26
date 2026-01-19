@@ -1,5 +1,10 @@
 extends layout
 block main
+    //- El atributo hidden hará que no se vea hasta que JS lo cambie
+div#aviso-cookies.position-fixed.top-50.start-50.translate-middle.bg-dark.text-white.p-4.rounded.shadow.text-center(hidden style="z-index: 9999; min-width: 300px;")
+    h5.mb-3 Aviso de Cookies
+    p.mb-3 Usamos cookies de sesión para mejorar tu experiencia.
+    button#btn-aceptar.btn.btn-primary.w-100 Aceptar
     h1.mb-4.text-center  ⚡️ Harry Potter ⚡️
     .row.mb-3
         .col-md-6.mx-auto
@@ -9,5 +14,11 @@ block main
     p#mensaje-vacio.text-center.text-muted.d-none
         | No se han encontrado libros que coincidan con la búsqueda.
     div#contendor-personajes.container-fluid 
-    
+    div#contenedor-mensaje
+    h1.container-fluid.text-center#personajes Personajes aleatorios
     div#card-personajes.container-fluid
+    div#content-favorite.cotainer-fluid.text-center
+        h1#favoritos.text-center Personajes favoritos❤️
+    div#quienes-somos
+        h1.text-center Quienes somos 
+    
