@@ -1,4 +1,4 @@
-console.log("T04 - Ejercicio 01");
+console.log("T04 - LIBRO");
 
 class Libro{
 
@@ -31,7 +31,7 @@ class Libro{
         this.#precioOriginal=this.precio;
     }
 
-    get isbn(){
+    get Isbn(){
         return this.#isbn;
     }
     
@@ -41,7 +41,7 @@ class Libro{
     }
     set titulo(newTitulo){
         if(!Util.validarTitulo(newTitulo)){
-            throw new Error("El valor d etitulo no cumple los requisitos");
+            throw new Error("El valor de titulo no cumple los requisitos");
         }
         this.#titulo=newTitulo;
     }
@@ -52,7 +52,7 @@ class Libro{
     set autores(newAutor){
 
         if(!Array.isArray(newAutor)){
-            throw new Error("El nuevo autor no es un array");
+            throw new Error("[ErrorLibro]El nuevo autor no es un array");
         }else if(newAutor.length===0){
             throw new Error("El libro debe tener al menos un autor.");
         }

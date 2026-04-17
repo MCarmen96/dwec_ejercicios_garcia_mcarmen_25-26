@@ -1,224 +1,257 @@
 console.log("T04-Util");
 
-class Util{
+class Util {
 
 
-    static validarEntero(valor){
-        let isValid=false;
-        if(Number.isInteger(valor)){
-            isValid=true;
+    static validarEntero(valor) {
+        let isValid = false;
+        if (Number.isInteger(valor)) {
+            isValid = true;
         }
         return isValid;
     }
 
-    static validarReal(valor){
-        let isValid=false;
-        if(typeof valor === 'number' && !Number.isNaN(valor)){
-            isValid=true;
+    static validarReal(valor) {
+        let isValid = false;
+        if (typeof valor === 'number' && !Number.isNaN(valor)) {
+            isValid = true;
         }
         return isValid;
     }
 
-    static validarRango(number,min,max){
-        let isValid=false;
-        if(number>=min&&number<=max){
-            isValid=true
+     static validarDiasEnvio(dias) {
+        let isValid = false;
+        if (this.validarEntero(dias)) {
+            return this.validarRango(dias,1,31);
         }
         return isValid;
     }
 
-    static validarCadenaNoVacia(cadena){
-        //if (typeof cadena !== "string") return false;
-        return cadena.trim().length >1;
+    static validarProcentaje(numProcentaje) {
+        let isValid = false;
+        if (this.validarReal(numProcentaje)) {
+            return this.validarRango(numProcentaje,0,100);
+        }
+        return isValid;
     }
+
+    static validarRango(number, min, max) {
+        let isValid = false;
+        if (number >= min && number <= max) {
+            isValid = true
+        }
+        return isValid;
+    }
+
+
+    static validarCadenaNoVacia(cadena) {
+        if (typeof cadena !== "string") return false;
+        return cadena.trim().length >=1;
+    }
+
     //modificar funcion 1 tiene que comprobar que es un formato de fecha correctp
-    static validarCadenaFecha(valor){
+    static validarCadenaFecha(fecha) {
 
-        let validFormat=false;
-        let day;
-        let month;
-        let year;
+        let validFormat = false;
         let partesFecha;
 
-        if(valor.includes("-")){
-            partesFecha=valor.split("-");
-            validFormat=true;
-        }else{
-            validFormat=false;
+        if (fecha.includes("-")) {
+            partesFecha = fecha.split("-");
+            validFormat = true;
+        } else {
+            validFormat = false;
         }
 
-        if(partesFecha.length==3){
-            validFormat=true;
-        }
-
-        if(partesFecha[2].length===4){
-            day=Number(partesFecha[0]);
-            month=Number(partesFecha[1]);
-            year=Number(partesFecha[2]);
-        }else if(partesFecha[0].length===4){
-            year=Number(partesFecha[0]);
-            month=Number(partesFecha[1]);
-            year=Number(partesFecha[2]);
-        }else{
-            validFormat=false;
-        }
-
-        if(!Number.isInteger(day)||!Number.isInteger(month)||!Number.isInteger(year)){
-            validFormat=false;
-        }
-
-        let fecha=new Date(year,month-1,day);
-
-        if(fecha.getFullYear()===year&&fecha.getMonth()===month-1&&fecha.getDate()===day){
-            validFormat=false;
+        if (partesFecha.length == 3) {
+            validFormat = true;
         }
 
         return validFormat;
 
     }
 
-    static validarFecha(valor) {
-        return validarCadenaFecha(valor);
+    static validarFecha(fecha) {
+        let isValid = false;
+        isValid = this.validarCadenaFecha(fecha);
+        let day;
+        let month;
+        let year;
+        let partesFecha;
+        if (isValid) {
+
+            partesFecha = fecha.split("-");
+            if (partesFecha[2].length === 4) {
+                day = Number(partesFecha[0]);
+                month = Number(partesFecha[1]);
+                year = Number(partesFecha[2]);
+            } else if (partesFecha[0].length === 4) {
+                year = Number(partesFecha[0]);
+                month = Number(partesFecha[1]);
+                day = Number(partesFecha[2]);
+            }
+
+            if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) {
+                isValid = false;
+            } else {
+                let fechaAcomprobar = new Date(year, month - 1, day);
+
+                if (fechaAcomprobar.getFullYear() !== year || fechaAcomprobar.getMonth() !== month - 1 || fechaAcomprobar.getDate() !== day) {
+                    isValid = false;
+                }
+            }
+        }
+        return isValid;
     }
 
-    static crearFecha(fecha){
+    static crearFechaDesdeCadena(cadenaFecha) {
 
-       /*  const partesFecha=fecha.split("-");
+        const partesFecha = cadenaFecha.split("-");
         let day;
         let month;
         let year;
 
-        if(partesFecha[2].length===4){
-            day=Number(partesFecha[0]);
-            month=Number(partesFecha[1]);
-            year=Number(partesFecha[2]);
-        }else if(partesFecha[0].length===4){
-            year=Number(partesFecha[0]);
-            month=Number(partesFecha[1]);
-            year=Number(partesFecha[2]);
-        }
-        let fecha=new Date(year,month-1,day);
 
-        return fecha; */
-    }
-
-    static validarTitulo(titulo){
-        let isValid=false;
-
-        if(typeof titulo==="string" && titulo.length>=1){
-            isValid=true;
-        }
-        return isValid;
-    }
-
-    static validarNombrePersona(nombre){
-        let patronNombre=/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/;
-        let isValid=false;
-        if(patronNombre.test(nombre)&& nombre.length>=3){
-            isValid=true;
-        }
-        return isValid;
-    }
-
-    static validarDireccion(direccion){
-        let isValid=false;
-        let patronDireccion=/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü0-9\s]+$/;
-
-        if(patronDireccion.test(direccion)&&direccion.length>=3){
-            isValid=true;
-        }
-
-        return isValid;
-    }
-
-    static validarPrecio(precio){
-        let isValid=false;
-        let comprobacion=validarReal(precio);
-        if(comprobacion&&precio>0){
-            isValid=true;
-        }
-        return isValid;
-    }
-
-    static validarTamanoArchivo(tamanoArchivo){
-
-        let isValid=false;
-        if(tamanoArchivo>0){
-            isValid=true;
-        }
-        return isValid;
-    }
-
-    static validarPeso(peso){
-        let isValid=false;
-        if(peso>0){
-            isValid=true;
-        }
-        return isValid;
-    }
-
-    static validarStock(stock){
-        let isValid=false;
-        if(stock>0){
-            isValid=true;
-        }
-        return isValid;
-    }
-
-    static validarDimensiones(dimensiones){
-        let isValid=false;
-        let patronDimensiones=/^\d+x\d+x\d+$/;
-        if(patronDimensiones.test(dimensiones)){
-            isValid=true;
-        }
-        return isValid;
-    }
-
-    static esMesPromocion(fecha,array_meses_promocion){
-
-        let isDate=validarFecha(fecha);
-        let date;
-        let isMonth=false;
-
-        if(isDate){
-            date=crearFecha(fecha);
-            let month=date.getMonth();
-            if(array_meses_promocion.includes(month)){
-                isMonth=true;
+        if (this.validarFecha(cadenaFecha)) {
+            if (partesFecha[2].length === 4) {
+                day = Number(partesFecha[0]);
+                month = Number(partesFecha[1]);
+                year = Number(partesFecha[2]);
+            } else if (partesFecha[0].length === 4) {
+                year = Number(partesFecha[0]);
+                month = Number(partesFecha[1]);
+                day = Number(partesFecha[2]);
             }
+            return new Date(year, month - 1, day);
+        }
+        return null;
+
+    }
+
+    static validarTitulo(titulo) {
+        return this.validarCadenaNoVacia(titulo);
+    }
+
+    static validarNombrePersona(nombre) {
+
+        let isValid = false;
+        if (this.validarCadenaNoVacia(nombre)) {
+            const patronNombre = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/;
+            if (nombre.length >= 3 && patronNombre.test(nombre)) {
+                isValid = true;
+            }
+        }
+
+        return isValid;
+    }
+
+    static validarDireccion(direccion) {
+        let isValid = false;
+        if (this.validarCadenaNoVacia(direccion)) {
+            let patronDireccion = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü0-9\s]+$/;
+            if (direccion.length >= 3 && patronDireccion.test(direccion)) {
+                isValid = true;
+            }
+        }
+        return isValid;
+    }
+    static validarDimensiones(dimensiones) {
+        let isValid = false;
+        
+        if(this.validarCadenaNoVacia(dimensiones)){
+            let patronDimensiones = /^\d+x\d+x\d+$/;
+            if (patronDimensiones.test(dimensiones)) {
+                isValid = true;
+            }
+        }
+        
+        return isValid;
+    }
+
+    static validarPrecio(precio) {
+        let isValid = false;
+       
+        if(this.validarReal(Number(precio))){
+            precio=Number(precio);
+            
+            if(precio>0){
+                isValid=true;
+            }
+        }
+        
+        return isValid;
+    }
+
+    static validarTamanoArchivo(tamanoArchivo) {
+        let isValid = false;
+
+        if(this.validarReal(Number(tamanoArchivo))){
+            tamanoArchivo=Number(tamanoArchivo);
+            
+            if(tamanoArchivo>0){
+                isValid=true;
+            }
+        }
+        
+        return isValid;
+    }
+
+    static validarPeso(peso) {
+        let isValid = false;
+       
+        if(this.validarReal(Number(peso))){
+            peso=Number(peso);
+            
+            if(this.validarRango(peso,0,Infinity)){
+                isValid=true;
+            }
+        }
+        return isValid;
+    }
+
+    static validarStock(stock) {
+        let isValid = false;
+        if(this.validarEntero(Number(stock))){
+            stock=Number(stock);
+            
+            if(this.validarRango(stock,0,Infinity)){
+                isValid=true;
+            }
+        }
+        return isValid;
+    }
+
+  
+
+    static esMesPromocion(fecha, array_meses_promocion) {
+        let isMonth = false;
+        const fechaNueva=this.crearFechaDesdeCadena(fecha);
+        if (fechaNueva!=null) {
+            let month = fechaNueva.getMonth();
+            return array_meses_promocion.includes(month)
         }
         return isMonth;
 
     }
 
-    static validarFormato(formatoLeido,setFormatosValidos){
-        let isFormat=false;
-        if(setFormatosValidos.has(formatoLeido)){
-            isFormat=true;
+    static validarFormato(formatoLeido, setFormatosValidos) {
+        let isFormat = false;
+        if(this.validarCadenaNoVacia(formatoLeido)){
+            return setFormatosValidos.has(formatoLeido);
         }
+       
         return isFormat;
     }
 
-    static validarGenero(generoLeido,setGenerosLeidos){
-
-        return setGenerosLeidos.has(generoLeido);
-
-    }
-
-    static validarPeso(peso){
-        let isValid=false;
-        if(validarReal(peso)&&peso>0){
-            isValid=true;
+    static validarGenero(generoLeido, setGenerosLeidos) {
+        let isFormat = false;
+        if(this.validarCadenaNoVacia(generoLeido)){
+             return setGenerosLeidos.has(generoLeido);
         }
-        return isValid;
+       return isFormat;
+
     }
 
-    static validarDiasEnvio(dias){
-        let isValid=false;
-        if(validarEntero(dias)&&dias>=1&&dias<=31){
-            isValid=true;
-        }
-        return isValid;
-    }
-    
+
+   
+
 }

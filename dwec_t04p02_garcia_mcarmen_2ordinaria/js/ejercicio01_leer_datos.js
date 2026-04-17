@@ -1,4 +1,4 @@
-console.log("T04 - LeerDATOS");
+console.log("T04 - LEERDATOS patrón 'Strategy' ");
 
 class LeerDatos {
 
@@ -138,10 +138,6 @@ class LeerDatosPrompt extends LeerDatos {
             throw new Error("[LeerDatosPrompt]-> Entrada cancelada por el usuario.");
         }
 
-        if (cadena.trim() === "") {
-            throw new Error("[LeerDatosPrompt]->El valor no puede estar vacío.");
-        }
-
         if (!Util.validarCadenaNoVacia(cadena)) {
             throw new Error("[LeerDatosPrompt]-> El valor introducido no tiene la longitud minima");
         }
@@ -157,14 +153,11 @@ class LeerDatosPrompt extends LeerDatos {
             throw new Error("[LeerDatosPrompt]-> Entrada cancelada por el usuario.");
         }
 
-        if (cadena.trim() === "") {
-            throw new Error("[LeerDatosPrompt]->El valor no puede estar vacío.");
-        }
         if (!Util.validarCadenaNoVacia(cadena)) {
             throw new Error("[LeerDatosPrompt]-> El valor introducido no tiene la longitud minima");
         }
 
-        if (cadena.trim().length < longitud) {
+        if (cadena.length < longitud) {
             throw new Error("[LeerDatosPrompt]->La cadena introducida no tiene la longitud minima de " + longitud);
         }
 
@@ -172,25 +165,11 @@ class LeerDatosPrompt extends LeerDatos {
     }
 
     leerCadena3(mensaje_o_id, longitud, cadenaPatron) {
-        let cadena = prompt(mensaje_o_id);
-
-        if (cadena === null) {
-            throw new Error("[LeerDatosPrompt]-> Entrada cancelada por el usuario.");
-        }
-
-        if (cadena.trim() === "") {
-            throw new Error("[LeerDatosPrompt]->El valor no puede estar vacío.");
-        }
-        if (!Util.validarCadenaNoVacia(cadena)) {
-            throw new Error("[LeerDatosPrompt]-> El valor introducido no es un de tipo String");
-        }
-
-        if (cadena.length < longitud) {
-            throw new Error("[LeerDatosPrompt]->La cadena introducida no tiene la longitud minima de:" + longitud);
-        }
+        
+        let cadena=this.leerCadena2(mensaje_o_id,longitud);
 
         if (!cadenaPatron.test(cadena)) {
-            throw new Error("[LeerDatosPrompt]-> El valor introducido no tiene la longitud minima");
+            throw new Error("[LeerDatosPrompt]-> El valor introducido no cumple el patron: "+cadenaPatron);
         }
 
         return cadena;
