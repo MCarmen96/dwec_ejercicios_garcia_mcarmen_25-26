@@ -45,15 +45,7 @@ function pruebas(){
   ;
   console.log(autor1.tieneLibros());
   
-  const libroPrueba=new LibroPapel(11111,"Los diarios de la boticaria",autor1,"novela",12.99,12,"20x15x3",102);
-  //console.log(libroPrueba.getisbn()); */
-
-
   const listadoAutores=new Autores();
- 
-  const autor1=new Autor("carmen");
-  const autor2=new Autor("juan");
-  const autores=[autor2,autor1];
   console.log("Insertar: "+listadoAutores.insertarAutores(autores));  
   console.log("Buscar por nombre:"+listadoAutores.buscarAutoresPorNombre("juan").nombre);
 
@@ -62,4 +54,61 @@ function pruebas(){
   }
   console.log("Buscar por id:"+listadoAutores.buscarAutoresPorId(1).nombre); 
   console.log("Menu:\n"+listadoAutores.obtenerCadenaAutoresMenu());
+
+  const libro=new Libro(11111,"Los diarios de la boticaria",[autor1,autor2],"Novela",100);
+  libro.aplicarDescuentoLibro(10);
+  libro.aplicarDescuentoLibro(20);
+  
+  console.log(ebook.mostrarDatosLibro());
+  ebook.convertirFormato("epub");
+  
+  console.log(ebook.modificarLibro(modificacion));
+  console.log(ebook.mostrarDatosLibro());
+   console.log(libroPapel.stock);
+  //libroPrueba.ampliarStock(5);
+  console.log(libroPapel.stock);
+  console.log(libroPapel.avisoStockMinimo());
+  console.log(libroPapel.mostrarDatosLibro());
+  console.log(libroPapel.comprobarDisponibilidad());
+  const modificacion=new Map([
+    ["titulo","Nunca noche"],
+    ["autor",[autor1]],
+    ["genero","Novela"],
+    ["precio",15],
+    ["peso",15]
+  ]);
+  libroPapel.modificarLibro(modificacion);
+  console.log(libroPapel.mostrarDatosLibro());
+  libroPapel.reducirStock()
+  //console.log(libro.mostrarDatosLibro());
+  //console.log(libroPrueba.getisbn());
+  // 
+   */
+  
+
+  const autor1=new Autor("Jay Kristof");
+  const autor2=new Autor("Carmen");
+  const autores=[autor2,autor1];
+  const libroPapel=new LibroPapel(11111,"Los diarios de la boticaria",[autor1],"Novela",12.99,12,"20x15x3",0);
+  const ebook=new Ebook(2222,"El imperio de los condenados",[autor1,autor2],"Terror",12,102,"pdf");
+  
+  const libros=new Libros();
+  const modificacion=new Map([
+    ["titulo","Nunca noche"],
+    ["autor",[autor1]],
+    ["genero","Novela"],
+    ["precio",15],
+    ["peso",15]
+  ]);
+
+  console.log("Libros insertados="+libros.insertarLibros([libroPapel,ebook]));
+  console.log("Datos libros insertados=\n"+libros.obtenerCadenaLibrosMenu());
+  console.log("Existe libro isbn="+libros.existeLibroPorIsbn(2222));
+  console.log("Buscar libro isbn="+libros.buscarLibroPorIsbn(2222).titulo);
+  const librosEncontrados=libros.buscarLibroPorTitulo("El imperio de los condenados");
+  console.log("Buscar libro por titulo="+librosEncontrados[0].titulo);
+  console.log("Modificaion libro="+libros.modificarLibroPorIsbn(2222,modificacion));
+  console.log(ebook.mostrarDatosLibro())
+
+ 
 }

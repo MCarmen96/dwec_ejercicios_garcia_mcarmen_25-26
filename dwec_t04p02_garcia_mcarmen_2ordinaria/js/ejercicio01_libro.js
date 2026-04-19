@@ -1,15 +1,15 @@
 console.log("T04 - LIBRO");
 
-class Libro{
+class Libro {
 
     #isbn;
     #titulo;
-    #autor;
+    #autores;
     #genero;
     #precio;
     #precioOriginal;
 
-    static GENEROS_LITERARIOS=new Set([
+    static GENEROS_LITERARIOS = new Set([
         "Novela",
         "Poesia",
         "Ensayo",
@@ -22,318 +22,316 @@ class Libro{
         "Infantil",
     ]);
 
-    constructor(isbn,titulo,autores,genero,precio){
-        this.isbn=isbn;
-        this.titulo=titulo;
-        this.autores=autores;
-        this.genero=genero;
-        this.precio=precio;
-        this.#precioOriginal=this.precio;
+    constructor(isbn, titulo, autores, genero, precio) {
+        this.#isbn = isbn;
+        this.titulo = titulo;
+        this.autores = autores;
+        this.genero = genero;
+        this.precio = precio;
     }
 
-    get Isbn(){
+    get isbn() {
         return this.#isbn;
     }
-    
 
-    get titulo(){
+    get titulo() {
         return this.#titulo;
     }
-    set titulo(newTitulo){
-        if(!Util.validarTitulo(newTitulo)){
+    set titulo(newTitulo) {
+        if (!Util.validarTitulo(newTitulo)) {
             throw new Error("El valor de titulo no cumple los requisitos");
         }
-        this.#titulo=newTitulo;
+        this.#titulo = newTitulo;
     }
 
-    get autores(){
-        return this.#autor;
+    get autores() {
+        return this.#autores;
     }
-    set autores(newAutor){
-
-        if(!Array.isArray(newAutor)){
+    set autores(newAutores) {
+        if (!Array.isArray(newAutores)) {
             throw new Error("[ErrorLibro]El nuevo autor no es un array");
-        }else if(newAutor.length===0){
+        } else if (newAutores.length === 0) {
             throw new Error("El libro debe tener al menos un autor.");
-        }
-
-        const objetosAutor=newAutor.every(autor=>autor instanceof Autor);
-
-        if(!objetosAutor){
+        } else if (!newAutores.every(autor => autor instanceof Autor)) {
             throw new Error("Todos los elemento que tiene que ser la clase autor");
-            
         }
-        
-        this.#autor=newAutor;
+
+        this.#autores = newAutores;
     }
 
-    get genero(){
+    get genero() {
         return this.#genero;
     }
-    set genero(newGenero){
+    set genero(newGenero) {
 
-        if(!Util.validarGenero(newGenero,Libro.GENEROS_LITERARIOS)){
+        if (!Util.validarGenero(newGenero, Libro.GENEROS_LITERARIOS)) {
             throw new Error("El genero no esta permitido");
         }
-        this.#genero=newGenero;
+        this.#genero = newGenero;
     }
 
-    get precio(){
+    get precio() {
         return this.#precio;
     }
+    set precio(newPrecio) {
 
-    set precio(newPrecio){
-
-        if(!Util.validarPrecio(newPrecio)){
+        if (!Util.validarPrecio(newPrecio)) {
             throw new Error("El precio no es un valor valido");
         }
-        this.precio=newPrecio;
+        this.#precio = newPrecio;
+        this.#precioOriginal = newPrecio;
     }
 
-    mostrarDatosLibro(){
+    modificarLibro(mapaInfo) {
+        throw new Error("Metodo no implementado ModificarLibro");
+    }
+
+    mostrarDatosLibro() {
         // autor es un array tengo que acceder a el como un array 
-        return `·Titulo: ${this.titulo}\n·Autor: ${this.autores}\n·Genero: ${this.genero}\n·Precio: ${this.precio}\n·Isbn:${this.isbn}`;
+        return `·Titulo: ${this.titulo}\n·Autor: ${this.autores.map(autor => autor.nombre)}\n·Genero: ${this.genero}\n·Precio: ${this.precio}\n·Isbn:${this.isbn}`;
+        //return `Autor:\n-${this.nombre}, \nId: ${this.id}\n ·Libros:(${this.libros.map(libro=>libro.titulo)})`;
     }
 
-    deshacerDescuentoLibro(){
+    deshacerDescuentoLibro() {
 
-        if(this.#precioOriginal!=this.precio){
+        if (this.#precioOriginal != this.precio) {
             //tengo que hacer e get y el set de precio Original
-            this.precio=this.#precioOriginal;
+            this.precio = this.#precioOriginal;
         }
     }
 
-    aplicarDescuentoLibro(descuento){
-        if(descuento<=0||descuento>100){
+    aplicarDescuentoLibro(descuento) {
+        if (!Util.validarReal(descuento)) {
             throw new Error("el descuento no es valido");
-            
-        }
 
-        if(this.#precioOriginal!=this.precio){
+        } else if (!Util.validarRango(descuento, 0, 100)) {
+            throw new Error("el descuento no es valido por rango");
+        }
+        if (this.#precioOriginal != this.precio) {
             this.deshacerDescuentoLibro();
         }
-    
-        this.precio=this.precio-(this.precio*(descuento/100));
+        let auxPrecio = this.#precioOriginal;
+        this.precio = this.precio - (this.precio * (descuento / 100));
+        this.#precioOriginal = auxPrecio;
     }
-    
+
 }
 
-class Ebook extends Libro{
+class Ebook extends Libro {
 
 
     #tamanoArchivo;
     #formato;
 
-    static FORMATOS=new Set([
+    static FORMATOS = new Set([
         "pdf",
         "epub",
         "mobi"
     ]);
 
 
-    constructor(isbn,titulo,autor,genero,precio,tamanoArchivo,formato){
-        super(isbn,titulo,autor,genero,precio)
-        this.tamanoArchivo=tamanoArchivo;
-        this.formato=formato;
+    constructor(isbn, titulo, autor, genero, precio, tamanoArchivo, formato) {
+        super(isbn, titulo, autor, genero, precio)
+        this.tamanoArchivo = tamanoArchivo;
+        this.formato = formato;
     }
 
-    get tamanoArchivo(){
+    get tamanoArchivo() {
         return this.#tamanoArchivo;
     }
 
-    set tamanoArchivo(newTamano){
+    set tamanoArchivo(newTamano) {
 
-        if(!Util.validarTamanoArchivo(newTamano)){
+        if (!Util.validarTamanoArchivo(newTamano)) {
             throw new Error("El tamaño del archivo no es valido");
         }
-        this.#tamanoArchivo=newTamano;
+        this.#tamanoArchivo = newTamano;
     }
 
-    get formato(){
+    get formato() {
         return this.#formato;
     }
 
-    set formato(newFormato){
+    set formato(newFormato) {
 
-        if(!Util.validarFormato(newFormato,Ebook.FORMATOS)){
+        if (!Util.validarFormato(newFormato, Ebook.FORMATOS)) {
             throw new Error("El formato no es valido");
         }
 
-        this.#formato=newFormato;
+        this.#formato = newFormato;
     }
 
-    descargar(){
-        console.log("Descargando....");
+    descargar() {
+        return "Descargando....";
     }
 
-    convertirFormato(newFormato){
-
-        if(Util.validarFormato(newFormato,Ebook.FORMATOS)){
-            this.formato=newFormato;
-        }else{
-            throw new Error("El formato no es valido");
-        }
+    convertirFormato(newFormato) {
+        this.formato = newFormato;
     }
 
-    mostrarDatosLibro(){
+    mostrarDatosLibro() {
         //modificar como mostrar el autor es un array
-        return `${super.mostrarDatosLibro()}, ·Tamaño Archivo: ${this.tamanoArchivo}\n ·Formato:${this.formato}`; 
+        return `${super.mostrarDatosLibro()},\n·Tamaño Archivo: ${this.tamanoArchivo}\n·Formato:${this.formato}`;
     }
 
-    comprobarDisponibilidad(){
+    comprobarDisponibilidad() {
         return true;
     }
 
-    modificarLibro(mapainfo){
-
-        for(const [clave,valor] of mapainfo){
-            if(clave==="isbn"){
-                throw new Error("El isbn no se puede cambiar");
-            }
-
-            switch(clave.toLowerCase()){
+    modificarLibro(mapainfo) {
+        let modificado = false;
+        if (mapainfo.has("isbn")) {
+            throw new Error("El isbn no se puede cambiar");
+        }
+        for (const [clave, valor] of mapainfo) {
+            switch (clave.toLowerCase()) {
                 case "titulo":
-                    this.titulo=valor;
+                    this.titulo = valor;
+                    modificado = true;
                     break;
-                case "autor"||"autores":
-                    this.autores=valor;
+                case "autor" || "autores":
+                    this.autores = valor;
+                    modificado = true;
                     break;
                 case "genero":
-                    this.genero=valor;
+                    this.genero = valor;
+                    modificado = true;
                     break;
                 case "precio":
-                    this.precio=valor;
+                    this.precio = valor;
+                    modificado = true;
                     break;
                 case "tamaño":
-                    this.tamanoArchivo=valor;
+                    this.tamanoArchivo = valor;
+                    modificado = true;
                     break;
                 case "formato":
-                    this.formato=valor;
-                    break;               
+                    this.formato = valor;
+                    modificado = true;
+                    break;
             }
+
         }
+
+        return modificado;
 
     }
 }
 
-class LibroPapel extends Libro{
+class LibroPapel extends Libro {
     #peso;
     #dimensiones;
     #stock;
 
-    static minimoStock=5;
+    static MINIMOSTOCK = 5;
 
-    constructor(isbn,titulo,autor,genero,precio,peso,dimensiones,stock){
-        super(isbn,titulo,autor,genero,precio);
-        this.peso=peso;
-        this.dimensiones=dimensiones;
-        this.stock=stock;
+    constructor(isbn, titulo, autor, genero, precio, peso, dimensiones, stock) {
+        super(isbn, titulo, autor, genero, precio);
+        this.peso = peso;
+        this.dimensiones = dimensiones;
+        this.stock = stock;
     }
 
-    get peso(){
+    get peso() {
         return this.#peso;
     }
-    set peso(newPeso){
+    set peso(newPeso) {
 
-        if(!Util.validarPeso(newPeso)){
+        if (!Util.validarPeso(newPeso)) {
             throw new Error("Peso no valido");
         }
-        this.#peso=newPeso;
+        this.#peso = newPeso;
     }
 
-    get dimensiones(){
+    get dimensiones() {
         return this.#dimensiones;
     }
-    set dimensiones(newDimensiones){
+    set dimensiones(newDimensiones) {
 
-        if(!Util.validarDimensiones(newDimensiones)){
+        if (!Util.validarDimensiones(newDimensiones)) {
             throw new Error("Peso no valido");
         }
-        this.dimensiones=newDimensiones;
+        this.#dimensiones = newDimensiones;
     }
 
-    get stock(){
+    get stock() {
         return this.#stock;
     }
-    set stock(newStock){
-        
-        if(!Util.validarEntero(newStock)){
-            throw new Error("Numero de stcok no valido");
+    set stock(newStock) {
+
+        if (!Util.validarEntero(newStock)) {
+            throw new Error("Numero de stoCk no valido");
         }
-        this.#stock=newStock;
+        this.#stock = newStock;
     }
 
-    embalar(){
+    embalar() {
         return "Embalando.......";
     }
-
-    reducirStock(){
-
-        this.stock-=1;
-    }
-
-    ampliarStock(numUnidades){
-
-        if(Util.validarEntero(numUnidades)){
-            this.stock+=numUnidades;
+    reducirStock() {
+        if(this.stock===0){
+            this.stock=0;
+        }else{
+            this.stock = this.stock - 1;
         }
         
     }
+    ampliarStock(numUnidades) {
 
-    avisoStockMinimo(){
-        let noHayStock=false;
-        if(this.stock<LibroPapel.minimoStock){
-            noHayStock=true;
+        if (Util.validarEntero(numUnidades)) {
+            this.stock = this.stock + numUnidades;
         }
 
-        return noHayStock;
+    }
+    avisoStockMinimo() {
+        return this.stock < LibroPapel.MINIMOSTOCK;
+    }
+    mostrarDatosLibro() {
+        return `${super.mostrarDatosLibro()}, \n·Peso Libro: ${this.peso}\n·Dimensiones:${this.dimensiones}\n·Stock:${this.stock}`;
     }
 
-    mostrarDatosLibro(){
-        //modificar como mostrar el autor es un array
-        return `${super.mostrarDatosLibro()}, ·Peso Libro: ${this.peso}\n ·Dimensiones:${this.dimensiones}\n ·Stock:${this.stock}`; 
+    comprobarDisponibilidad() {
+        return this.stock > 0;
     }
 
-    comprobarDisponibilidad(){
-        let hayStock=false;
-        if(this.stock>0){
-            hayStock=true;
+    modificarLibro(mapainfo) {
+        if (mapainfo.has("isbn")) {
+            throw new Error("El isbn no se puede cambiar");
         }
-
-        return hayStock;
-    }
-
-    modificarLibro(mapainfo){
-
-        for(const [clave,valor] of mapainfo){
-            if(clave==="isbn"){
-                throw new Error("El isbn no se puede cambiar");
-            }
-
-            switch(clave.toLowerCase()){
+        let modificado=false;
+        for (const [clave, valor] of mapainfo) {
+            switch (clave.toLowerCase()) {
                 case "titulo":
-                    this.titulo=valor;
+                    this.titulo = valor;
+                    modificado=true;
                     break;
-                case "autor"||"autores":
-                    this.autores=valor;
+                case "autor" || "autores":
+                    this.autores = valor;
+                    modificado=true;
                     break;
                 case "genero":
-                    this.genero=valor;
+                    this.genero = valor;
+                    modificado=true;
                     break;
                 case "precio":
-                    this.precio=valor;
+                    this.precio = valor;
+                    modificado=true;
                     break;
                 case "peso":
-                    this.peso=valor;
+                    this.peso = valor;
+                    modificado=true;
                     break;
                 case "dimensiones":
-                    this.dimensiones=valor;
-                    break;  
+                    this.dimensiones = valor;
+                    modificado=true;
+                    break;
                 case "stock":
-                    this.stock=valor;
-                    break;                 
+                    this.stock = valor;
+                    modificado=true;
+                    break;
             }
         }
+        return modificado;
 
     }
 }

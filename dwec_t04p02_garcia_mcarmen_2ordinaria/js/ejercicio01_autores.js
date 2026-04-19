@@ -2,7 +2,7 @@ console.log("T04 - AUTORES");
 
 class Autores{
 
-    #listadoAutores;//tienes que ser privada'????
+    #listadoAutores;
 
     constructor(){
         this.#listadoAutores=[];
