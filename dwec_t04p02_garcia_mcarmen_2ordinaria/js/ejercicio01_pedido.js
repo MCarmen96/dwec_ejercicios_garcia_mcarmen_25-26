@@ -11,25 +11,22 @@ class Pedido{
     #tipoEnvioPedido;
     #precioTotalSinEnvioSinIVA;
     #precioTotalConEnvioSinIVA;
-    #precioTotalConEnvioConIVA;
     #descuento;
     #abierto;
 
     static ultimoIdAsignado=0;
-
+    
     constructor(cliente){
 
         this.#id=Pedido.obtenerSiguienteId();
         this.cliente=cliente;
-        this.librosPedido=new Map([]);
+        this.librosPedido=new Map();
         this.fecha=new Date();
         this.tipoEnvioPedido=null;
         this.precioTotalSinEnvioSinIVA=0;
         this.precioTotalConEnvioSinIVA=0;
-        this.precioTotalConEnvioConIVA=0;
-        this.#descuento=0;
+        this.descuento=0;
         this.abierto=true;
-        this.#cliente.insertarPedidoCliente(this);
     }
 
     get id(){return this.#id}
@@ -84,13 +81,7 @@ class Pedido{
         }
         this.#precioTotalConEnvioSinIVA=precio;
     }
-    get precioTotalConEnvioConIVA(){return this.#precioTotalConEnvioConIVA}
-    set precioTotalConEnvioConIVA(precio){
-        if(!Util.validarPrecio(precio)){
-            throw new Error("Precio no valido");
-        }
-        this.#precioTotalSinEnvioSinIVA=precio;
-    }
+
     get descuento(){return this.#descuento}
     set descuento(newDescuento){
         if(!Util.validarPrecio(newDescuento)){
@@ -104,29 +95,36 @@ class Pedido{
         if(typeof valor!=="boolean"){
             throw new Error("Abierto invalido");
         }
+        this.#abierto=valor;
     }
 
     hayLibros(){
-        return this.librosPedido.length>0;
+        return this.librosPedido.size>0;
     }
 
     mostrarDatosPedido(){
 
         let datos=`Pedido: ${this.id}\n`;
 
-        this.librosPedido.forEach(libro => {
+        this.librosPedido.forEach((unidades,libro) => {
             if(libro instanceof Ebook){
-                datos+=`${libro.nombre} Ebook\n`;
+                datos+=`${libro.nombre} Ebook Unidades${unidades}\n`;
             }else if(libro instanceof LibroPapel){
-                datos+=`${libro.nombre} Libro Papel\n`;
+                datos+=`${libro.nombre} Libro Papel Unidades${unidades}\n`;
             }
             
         });
-
-        datos+=`-Envio:${this.tipoEnvioPedido}\n`;
+        if(this.tipoEnvioPedido===null){
+            datos+="Envio: no tiene envio";
+        }else{
+            datos+=`-Envio:${this.tipoEnvioPedido.nombre}\n`;
+        }
+        
         datos+=`-Precio sin iva y sin envio:${this.precioTotalSinEnvioSinIVA}\n`;
-        datos+=`-Precio con envio: ${this.precioTotalConEnvioSinIVA}`;
-        datos+=`-Precio total:${this.precioTotalConEnvioConIVA}`;
+        datos+=`-Precio sin iva y con envio: ${this.precioTotalConEnvioSinIVA}`;
+        datos+=`-Precio total (con iva y con envio):${this.calcularTotalConIva()}`;
+
+        return datos;
     }
 
     insertarLibros(libro,unidades){
@@ -134,21 +132,59 @@ class Pedido{
         if(!(libro instanceof Libro)){
             throw new Error("El libro no es una instancia de la clase Libro");
         }
-        this.librosPedido.set(libro.isbn)
         if(!(libro instanceof Ebook)){
             this.librosPedido.set(libro,1);
+            this.precioTotalSinEnvioSinIVA+=libro.precio;
         }else{
             this.librosPedido.set(libro,unidades);
+            this.precioTotalSinEnvioSinIVA+=libro.precio*unidades;
         }
-
     }
 
-    /*establecerTipoEnvio(){
-        if()
+    establecerTipoEnvio(tipoEnvio){
+        let isValid=false;
+        let peso=0;
+        if(tipoEnvio instanceof TipoEnvio){
+            if(this.librosPedido.size>0){
+                this.librosPedido.forEach((valor,libro)=>{
+                    if(libro instanceof LibroPapel){
+                        peso+=libro.peso*valor;
+                    }
+                });
+                if(peso>0){
+                    if(peso<=tipoEnvio.pesoMax){
+                        isValid=true;
+                        this.tipoEnvioPedido=tipoEnvio;
+                        this.precioTotalConEnvioSinIVA=this.precioTotalSinEnvioSinIVA+tipoEnvio.precioSinIVA;
+                    }else{
+                        isValid=false;// si el peso de los lirbos supera el maximo de peso del envio
+                    }
+                }else{
+                    isValid=false;// SI todos los libros del pedido son ebooks
+                }
+            }else{
+                isValid=false;// SI no hay libros en lo pedido
+            }
+        }else{
+            isValid=false;// SI LA INSTANCIO NO ES DE TIPO ENVIO
+        }
+        return isValid;
     }
 
-    calcularTotal(){
-        this.librosPedido.get('');
-    }*/
+
+    calcularTotalConIva(iva){
+        let total=0;
+        this.librosPedido.forEach((unidades,libro) => {
+            total+=libro.precio*unidades;
+        });
+        total+=this.tipoEnvio.precio;
+
+        if(this.precioTotalConEnvioSinIVA==total){
+            total=this.precioTotalConEnvioSinIVA+(this.precioTotalConEnvioSinIVA*iva);
+        }else{
+            throw new Error("Error inesperado en el total del precio");
+        }
+        return total;
+    }
 
 }

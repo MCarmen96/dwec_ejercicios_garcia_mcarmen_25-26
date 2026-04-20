@@ -10,7 +10,7 @@ class TipoEnvio{
         this.nombre=nombre;
         this.diasMaxEntrega=dias;
         this.pesoMax=peso;
-        this.precioSinIVA=precio
+        this.precioSinIVA=precio;// el precio del envio
     }
 
     get nombre(){return this.#nombre};
