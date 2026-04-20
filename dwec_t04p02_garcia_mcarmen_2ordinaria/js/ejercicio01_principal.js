@@ -86,7 +86,7 @@ function pruebas(){
    */
   
 
-  const autor1=new Autor("Jay Kristof");
+ /*  const autor1=new Autor("Jay Kristof");
   const autor2=new Autor("Carmen");
   const autores=[autor2,autor1];
   const libroPapel=new LibroPapel(11111,"Los diarios de la boticaria",[autor1],"Novela",12.99,12,"20x15x3",0);
@@ -108,7 +108,37 @@ function pruebas(){
   const librosEncontrados=libros.buscarLibroPorTitulo("El imperio de los condenados");
   console.log("Buscar libro por titulo="+librosEncontrados[0].titulo);
   console.log("Modificaion libro="+libros.modificarLibroPorIsbn(2222,modificacion));
-  console.log(ebook.mostrarDatosLibro())
+  console.log(ebook.mostrarDatosLibro()); */
 
- 
+
+  /* const tipoEnvio=new TipoEnvio("urgente",5,10,5);
+  const tipoEnvio2=new TipoEnvio("normal",2,12,5);
+  console.log(tipoEnvio.mostrarDatosTipoEnvio());
+  
+  const envios=new TiposEnvios();
+
+  
+  console.log("Envios insertados: "+envios.insertarTipos([tipoEnvio,tipoEnvio2]));
+  console.log("Existe por nombre: "+envios.existeTipoPorNombre("urgente"));
+  console.log("Buscar por nombre: "+envios.buscarTiposPorNombre("normal").nombre);
+  console.log("Datos envio: "+envios.obtenerCadenaTiposMenu()); */
+
+  const cliente=new Cliente("111111111","Carmen","Av.Madrid-10");
+  const cliente2=new Cliente("11dfd1111","Carmen","Av.Madrid-10");
+  console.log(cliente.mostrarDatosCliente());
+  console.log(cliente.mostrarDatosPedidoCliente());
+  console.log(cliente.mostrarDatosPedidoAbiertoCliente());
+
+  const listadoClientes=new Clientes();
+  console.log("Cliente insertado: "+listadoClientes.insertarClientes([cliente,cliente2]));
+  console.log("Cliente encontrado por dni: "+listadoClientes.buscarClientePorDNI("111111111").nombreCompleto);
+  console.log("Cliente existe: "+listadoClientes.existeClientePorDNI("111111111"));
+  console.log("Cliente borrado: "+listadoClientes.borrarClientePorDNI("111111111"));
+  console.log(listadoClientes.obtenerCadenaClientesMenu());
+
+
+  
+
+
+
 }

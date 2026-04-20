@@ -269,12 +269,9 @@ class LibroPapel extends Libro {
         return "Embalando.......";
     }
     reducirStock() {
-        if(this.stock===0){
-            this.stock=0;
-        }else{
+        if(this.stock>0){
             this.stock = this.stock - 1;
         }
-        
     }
     ampliarStock(numUnidades) {
 

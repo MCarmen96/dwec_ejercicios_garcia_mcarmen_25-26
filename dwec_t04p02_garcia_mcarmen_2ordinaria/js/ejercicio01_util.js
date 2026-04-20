@@ -19,7 +19,7 @@ class Util {
         return isValid;
     }
 
-     static validarDiasEnvio(dias) {
+    static validarDiasEnvio(dias) {
         let isValid = false;
         if (this.validarEntero(dias)) {
             return this.validarRango(dias,1,31);
@@ -147,8 +147,7 @@ class Util {
     static validarDireccion(direccion) {
         let isValid = false;
         if (this.validarCadenaNoVacia(direccion)) {
-            let patronDireccion = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü0-9\s]+$/;
-            if (direccion.length >= 3 && patronDireccion.test(direccion)) {
+            if (direccion.length >= 3) {
                 isValid = true;
             }
         }

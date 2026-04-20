@@ -1,21 +1,21 @@
-console.log("T04 - Ejercicio 0X");
+console.log("T04 - Tipo envio");
 
 class TipoEnvio{
     #nombre;//NO PUEDE HABER 2 IGUALES
     #diasMaxEntrega;
     #pesoMax;
-    #preciosSinIVA;
+    #precioSinIVA;
 
     constructor(nombre,dias,peso,precio){
         this.nombre=nombre;
         this.diasMaxEntrega=dias;
         this.pesoMax=peso;
-        this.preciosSinIVA=precio
+        this.precioSinIVA=precio
     }
 
     get nombre(){return this.#nombre};
     set nombre(newNombre){
-        if(newNombre===""){
+        if(!Util.validarCadenaNoVacia(newNombre)){
             throw new Error("El nombre no puede estar vacio");
         }
         this.#nombre=newNombre;
@@ -36,15 +36,15 @@ class TipoEnvio{
         this.#pesoMax=newPeso;
     }
 
-    get preciosSinIVA(){return this.#preciosSinIVA};
-    set preciosSinIVA(newPrecio){
+    get precioSinIVA(){return this.#precioSinIVA};
+    set precioSinIVA(newPrecio){
         if(!Util.validarPrecio(newPrecio)){
             throw new Error("El precio nuevo no es valido");
         }
-        this.#preciosSinIVA=newPrecio;
+        this.#precioSinIVA=newPrecio;
     }
 
     mostrarDatosTipoEnvio(){
-        return `${this.nombre}\n ${this.diasMaxEntrega}\n ${this.pesoMax}\n ${this.preciosSinIVA}`;
+        return `-DatosEnvio\nNombre:${this.nombre}\nDias maximo:${this.diasMaxEntrega}\nPesoMax:${this.pesoMax}\nPrecioSinIva:${this.precioSinIVA}`;
     }
 }

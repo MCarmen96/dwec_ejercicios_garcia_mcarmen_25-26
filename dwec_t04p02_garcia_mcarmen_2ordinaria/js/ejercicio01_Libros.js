@@ -21,8 +21,10 @@ class Libros{
         if(libros instanceof Array){
                 libros.forEach(libro => {
                 if((libro instanceof LibroPapel || libro instanceof Ebook) && !this.existeLibroPorIsbn(libro.isbn)){
-                    librosCount++;
                     this.listaLibros.push(libro);
+                    librosCount++;
+                }else{
+                    console.log("Fallo al añadir libro=> "+libro.titulo)
                 }
             });
         }else{
@@ -30,7 +32,6 @@ class Libros{
         }
         
         // por cada elemento de libros llamo a existeLibroPorIsbn() devuelve true si existe
-        
         return librosCount;
     }
     //buscarLibroPorIsbn(isbnAbuscar): devuelve un objeto libro por isbn. Si no lo encuentra devuelve null.
@@ -59,15 +60,10 @@ class Libros{
         let modifica=false;
         const libroEncontrado=this.buscarLibroPorIsbn(isbnAmodificar);
         if(libroEncontrado!=null){
-            if(libroEncontrado instanceof LibroPapel){
-                libroEncontrado.modificarLibro(mapaConInfo);
-                modifica=true;
-            }else if(libroEncontrado instanceof Ebook){
-                libroEncontrado.modificarLibro(mapaConInfo);
-                modifica=true;
-            }
+            libroEncontrado.modificarLibro(mapaConInfo);
+            modifica=true;
         }else{
-            console.log("Libro no encontrado")
+            console.log("Libro no encontrado");
         }
         return modifica;
     }
