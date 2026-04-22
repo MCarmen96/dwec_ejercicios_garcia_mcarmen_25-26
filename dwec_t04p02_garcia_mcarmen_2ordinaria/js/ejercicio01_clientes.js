@@ -42,6 +42,7 @@ class Clientes{
         let puedoBorrar=false;
         let encontrado=this.buscarClientePorDNI(dniAborrar);
         if(encontrado){
+            //The indexOf() method searches an array for an element value and returns its position.
             let position=this.listadoClientes.indexOf(encontrado);
             this.listadoClientes.splice(encontrado,1);
             puedoBorrar=true;

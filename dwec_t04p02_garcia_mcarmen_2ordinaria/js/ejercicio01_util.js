@@ -46,7 +46,7 @@ class Util {
         return cadena.trim().length >= 1;
     }
 
-    //modificar funcion 1 tiene que comprobar que es un formato de fecha correctp
+    
     static validarCadenaFecha(fecha) {
         let validFormat = false;
         let partesFecha;
@@ -126,8 +126,8 @@ class Util {
         if (!(objFecha instanceof Date) || isNaN(objFecha)) {
             throw new Error("La fecha no es válida.");
         }
-
-        let dia = String(objFecha.getDate()).padStart(2, "0");
+        
+        let dia = String(objFecha.getDate()).padStart(2, "0");//padStart(longitudDeseada,textoRelleno(pordefecto es un espacio))
         let mes = String(objFecha.getMonth() + 1).padStart(2, "0");
         let anio = objFecha.getFullYear();
 

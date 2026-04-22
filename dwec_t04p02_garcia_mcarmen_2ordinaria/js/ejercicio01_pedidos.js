@@ -91,14 +91,47 @@ class Pedidos {
 
 class PedidosTienda extends Pedidos {
     constructor() {
-        super();
+        super(listadoPedidos);
     }
-
-    existePedidoPorID(idAbuscar) {}
-
-    buscarPedidoPorId(idAbuscar) {}
-
-    cerrarPedidoPorId(idAbuscar) {}
-
-    borrarPedidos(pedidosAborrar) {}
+    //existePedidoPorID(idAbuscar): devuelve true o false si ya existe el pedido.
+    existePedidoPorID(idAbuscar) {
+        return this.listadoPedidos.some(pedido => pedido.id === idAbuscar);
+    }
+    //buscarPedidoPorId (idAbuscar): devuelve un objeto pedido por id. Si no encuentra ningún pedido con ese id, devuelve null.
+    buscarPedidoPorId(idAbuscar) {
+        let pedidoEncontrado = this.listadoPedidos.find(pedido => {
+            return pedido.id === idAbuscar;
+        })
+        return pedidoEncontrado;
+    }
+    //cerrarPedidoPorId (idAbuscar): cierra un pedido por id. Devuelve true / false si lo ha podido cerrar o no.
+    cerrarPedidoPorId(idAbuscar) {
+        let pedidoEncontrado = this.buscarPedidoPorId(idAbuscar);
+        if (pedidoEncontrado) {
+            pedidoEncontrado.abierto = false;
+            return true;
+        }
+        return false;
+    }
+    //borrarPedidos (pedidosAborrar): devuelve true / false si puede o no borrar todos los pedidos que recibe en un array. Usa splice().
+    borrarPedidos(pedidosAborrar) {
+        let borro=true;
+        if (pedidosAborrar instanceof Array) {
+            for (const pedido of pedidosAborrar) {
+                if (pedido instanceof Pedido) {
+                    const encontrado = this.buscarPedidoPorId(pedido.id);//verifico que esta en mi lista
+                    if (encontrado) {//si esta
+                        let posicion = this.listadoPedidos.indexOf(encontrado);// cojo su posicion
+                        this.listadoPedidos.splice(encontrado, 1);
+                    }else{
+                        borro=false;
+                    }
+                }else{
+                    borro=false;
+                }
+            }
+        } else {
+            borro=false;
+        }
+    }
 }

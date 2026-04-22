@@ -70,12 +70,12 @@ class Pedido {
     get fecha() {
         return this.#fecha;
     }
-    set fecha(newFecha) {
+    /* set fecha(newFecha) {
         if (!Util.validarFecha(newFecha)) {
             throw new Error("Fecha invalida");
         }
         this.#fecha = newFecha;
-    }
+    } */
 
     get tipoEnvioPedido() {
         return this.#tipoEnvioPedido;

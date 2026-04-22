@@ -29,7 +29,6 @@ class Tienda {
         }
 
         this.nombreTienda = nombre;
-
         this.#libros = new Libros();
         this.#autores = new Autores();
         this.#tiposEnvios = new TiposEnvios();
