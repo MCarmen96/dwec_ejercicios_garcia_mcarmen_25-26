@@ -12,8 +12,8 @@ function main() {
         // Lógica principal: crear libros, clientes, ventas, etc
         // a través de Tienda.
         // Invocar métodos que pueden lanzar errores.
+        console.log(Libro.GENEROS_LITERARIOS);
         pruebas();
-
         const tienda = Tienda.getInstancia("Librería Prieto");
         tienda.cargarDatosPrueba();
         tienda.iniciar();
@@ -169,11 +169,25 @@ function pruebas() {
 
     const pedido2 = new Pedido(cliente1);
 
-    const pedidos1 = new Pedidos();
+    /* const pedidos1 = new Pedidos();
 
     console.log(pedidos1.mostrarDatosPedidos());
     pedidos1.insertarPedidos([pedido1]);
     pedidos1.insertarUnPedido(pedido2);
 
-    console.log(pedidos1.mostrarDatosPedidosAbiertos());
+    console.log(pedidos1.mostrarDatosPedidosAbiertos()); */
+
+    const pedidosTienda=new PedidosTienda();
+
+    console.log("Pedidos insertados="+pedidosTienda.insertarPedidos([pedido1,pedido2]));
+
+    if(pedidosTienda.existePedidoPorID(1)){
+      console.log("EL PEDIDO EXISTE");
+    }else{
+      console.log("EL PEDIDO NO EXISTE");
+    }
+
+    console.log(pedidosTienda.buscarPedidoPorId(7));
+    console.log(pedidosTienda.cerrarPedidoPorId(1));
+    console.log(pedidosTienda.borrarPedidos([pedido1,pedido2]));
 }

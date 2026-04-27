@@ -175,6 +175,18 @@ class LeerDatosPrompt extends LeerDatos {
         return cadena;
     }
 
+    leerCadena4(mensaje_o_id){
+        let cadena = prompt(mensaje_o_id);
+
+        if (cadena === null) {
+            throw new Error("[LeerDatosPrompt]-> Entrada cancelada por el usuario.");
+        }
+
+
+
+        return cadena;
+    }
+
     leerCadena1Hasta(mensaje_o_id) {
         let cadena;
         let isValid = false;
@@ -226,6 +238,22 @@ class LeerDatosPrompt extends LeerDatos {
         return cadena;
     }
 
+    leerCadena4Hasta(mensaje_o_id) {
+        let cadena;
+        let isValid = false;
+        do {
+            try {
+                cadena = this.leerCadena4(mensaje_o_id);
+                isValid = true;
+
+            } catch (error) {
+                console.log("[LeerDatosPrompt]->Error leer cadena hasta " + error);
+            }
+
+        } while (!isValid);
+
+        return cadena;
+    }
 }
 
 

@@ -91,7 +91,7 @@ class Pedidos {
 
 class PedidosTienda extends Pedidos {
     constructor() {
-        super(listadoPedidos);
+        super();
     }
     //existePedidoPorID(idAbuscar): devuelve true o false si ya existe el pedido.
     existePedidoPorID(idAbuscar) {
@@ -119,10 +119,9 @@ class PedidosTienda extends Pedidos {
         if (pedidosAborrar instanceof Array) {
             for (const pedido of pedidosAborrar) {
                 if (pedido instanceof Pedido) {
-                    const encontrado = this.buscarPedidoPorId(pedido.id);//verifico que esta en mi lista
-                    if (encontrado) {//si esta
-                        let posicion = this.listadoPedidos.indexOf(encontrado);// cojo su posicion
-                        this.listadoPedidos.splice(encontrado, 1);
+                    let posicion = this.listadoPedidos.indexOf(pedido);// si el pedido no esta en mi lista devuelve -1
+                    if (posicion>=0) {//si la posicion es mayor es que esta en mi lista
+                        this.listadoPedidos.splice(posicion, 1);// acuerdate que sobreescribe el array original 
                     }else{
                         borro=false;
                     }
@@ -133,5 +132,6 @@ class PedidosTienda extends Pedidos {
         } else {
             borro=false;
         }
+        return borro;
     }
 }

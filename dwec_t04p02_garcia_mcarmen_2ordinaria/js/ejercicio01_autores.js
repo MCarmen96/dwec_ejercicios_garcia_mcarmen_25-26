@@ -57,14 +57,18 @@ class Autores{
     //*Devuelve una cadena con el listado numerado de los autores en orden alfabético y entre paréntesis el número de libros escritos.
     obtenerCadenaAutoresMenu(){
         let cadenaAutores="";
-
-        const ordenadoAlfabeAutores=this.listadoAutores.toSorted((a,b)=>{
-            return a.nombre.localeCompare(b.nombre);
-        });
-        //con el map me genero un array con los libros de cada autor
-        ordenadoAlfabeAutores.forEach((autor,index)=>{
-            cadenaAutores+=`${(index+1)}.${autor.nombre}. ·Libros=>${(autor.libros.length)}\n`;
-        });
+        if(this.hayAutores()){
+                this.listadoAutores.sort((a,b)=>{
+                return a.nombre.localeCompare(b.nombre);
+            });
+            //con el map me genero un array con los libros de cada autor
+            this.listadoAutores.forEach((autor,index)=>{
+                cadenaAutores+=`${(index+1)}.${autor.nombre}. ·Libros=>${(autor.libros.length)}\n`;
+            });
+        }else{
+            cadenaAutores="No hay autores";
+        }
+        
         return cadenaAutores;
     }
 

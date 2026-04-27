@@ -28,6 +28,10 @@ class Libro {
         this.autores = autores;
         this.genero = genero;
         this.precio = precio;
+
+        for (const autor of autores) {
+            autor.insertarLibro(this);
+        }
     }
 
     get isbn() {

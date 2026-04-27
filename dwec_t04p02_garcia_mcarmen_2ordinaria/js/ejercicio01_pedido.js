@@ -23,7 +23,7 @@ class Pedido {
     constructor(cliente) {
         this.#id = Pedido.obtenerSiguienteId();
         this.cliente = cliente;
-        this.librosPedido = new Map();
+        this.librosPedido = new Map();// tambien podria asignarselo directamente a la propiedad privada
         //this.fecha = new Date(); No puedes usar el setter porque el setter espera una cadena fecha.
         this.#fecha = new Date();
         // También se puede asignar directamente al atributo privado porque
@@ -198,22 +198,23 @@ class Pedido {
         }
 
         if (libro instanceof Ebook) {
-            if (!this.librosPedido.has(libro)) {
+            if (!this.librosPedido.has(libro)) {// si esta en el mapa
                 this.precioTotalSinEnvioSinIVA += libro.precio;
             }
-            this.librosPedido.set(libro, 1);
+            this.librosPedido.set(libro, 1);// el set del map busca la calve y si esta ya esa clave sobrescribe su valor 
         } else {
             let unidadesOriginal = 0;
             if (this.librosPedido.has(libro)) {
-                unidadesOriginal = this.librosPedido.get(libro);
+                unidadesOriginal = this.librosPedido.get(libro);// este get es el del mapa que me da el vlor de la clave
             }
-            if (unidades > libro.stock + unidadesOriginal) {
-                throw new Error("No hay stock suficiente");
+            if (unidades > libro.stock + unidadesOriginal) {// comprueba la simulacion del stock con las unidades que ya habia pedidas para ver si puede efectuarse el pedido con las nuevas unidades pedidas
+                throw new Error("No hay stock suficiente");// si no paramos no se pueden pedir
             }
-            if (this.librosPedido.has(libro)) {
+            if (this.librosPedido.has(libro)) {// aqui cambiamos el stock al que teniamos antes
                 libro.stock += unidadesOriginal;
-                this.precioTotalSinEnvioSinIVA -= libro.precio * unidadesOriginal;
+                this.precioTotalSinEnvioSinIVA -= libro.precio * unidadesOriginal;// y lo restamos tambien del precio que habiamos sumado antes
             }
+            // y aqui e es donde efectuamos el pedido con las unidades pedidas
             this.librosPedido.set(libro, unidades);
             libro.stock -= unidades;
             this.precioTotalSinEnvioSinIVA += libro.precio * unidades;
@@ -232,6 +233,7 @@ class Pedido {
         }
         let isValid = false;
         let peso = 0;
+
         if (tipoEnvio instanceof TipoEnvio) {
             if (this.librosPedido.size > 0) {
                 this.librosPedido.forEach((unidades, libro) => {
@@ -240,8 +242,10 @@ class Pedido {
                     }
                 });
                 if (peso > 0) {
+                    //si no supera el peso max el tipo de envio
                     if (peso <= tipoEnvio.pesoMax) {
                         isValid = true;
+                        // establezco el tipo de envio a mi pedido
                         this.tipoEnvioPedido = tipoEnvio;
                         //this.precioTotalConEnvioSinIVA = this.precioTotalSinEnvioSinIVA + tipoEnvio.precioSinIVA;
                     } else {

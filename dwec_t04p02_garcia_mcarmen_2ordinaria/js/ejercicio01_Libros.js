@@ -36,9 +36,13 @@ class Libros{
     }
     //buscarLibroPorIsbn(isbnAbuscar): devuelve un objeto libro por isbn. Si no lo encuentra devuelve null.
     buscarLibroPorIsbn(isbnAbuscar){
+        
         let libroEncontrado=this.listaLibros.find(libro=>{
-            return libro.isbn===isbnAbuscar;// aqui como si estpy haciendoe el return en la funcion flecha si lleva las llaves
+            return libro.isbn==isbnAbuscar;// aqui como si estpy haciendoe el return en la funcion flecha si lleva las llaves
         });
+        if(libroEncontrado===undefined){
+            libroEncontrado=null;
+        }
         return libroEncontrado;
     }
     //buscarLibroPorTitulo(tituloAbuscar): devuelve un array de objetos libro por título. Si no encuentra ninguna coincidencia devuelve el array vacío.
@@ -71,7 +75,8 @@ class Libros{
     obtenerCadenaLibrosMenu(){
         let cadenaTituloLibros="";
         let numero=1;
-        const ordenadoAlfabPorTitulo=this.listaLibros.toSorted((a,b)=>{
+        if(this.listaLibros.length>=0){
+            const ordenadoAlfabPorTitulo=this.listaLibros.toSorted((a,b)=>{
             return a.titulo.localeCompare(b.titulo);
         });
 
@@ -84,6 +89,10 @@ class Libros{
                 cadenaTituloLibros+=`${numero++}.${libro.titulo} (Desconocido))\n`;
             }
         });
+        }else{
+            cadenaTituloLibros="No hay libros en el catalogo de la tienda";
+        }
+        
         return cadenaTituloLibros;
     } 
     
