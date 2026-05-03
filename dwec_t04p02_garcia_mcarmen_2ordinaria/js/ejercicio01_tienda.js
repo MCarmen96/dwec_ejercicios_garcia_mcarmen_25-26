@@ -61,11 +61,18 @@ class Tienda {
         const autor1 = new Autor("Carmen");
         const autor2 = new Autor("Jay Kristof");
         const autor3 = new Autor("Brandon Sanderson");
-        const ebook1 = new Ebook(222, "El imperio de los condenados", [autor1, autor2], "Terror", 20, 20, "pdf");
-        const libroPapel = new LibroPapel(111, "Los diarios de la boticaria", [autor1], "Novela", 12.99, 12, "20x15x3", 0);
+        const ebook1 = new Ebook(222, "El imperio de los condenados", [autor1, autor2], "Terror", 20.00, 20.00, "pdf");
+        const libroPapel = new LibroPapel(111, "Los diarios de la boticaria", [autor1], "Novela", 30.00, 1.00, "20x15x3", 30);
         this.#libros.insertarLibros([libroPapel, ebook1]);
         this.#autores.insertarAutores([autor1, autor2, autor3]);
 
+        const tipoEnvio = new TipoEnvio("urgente", 1, 10, 1);
+        const tipoEnvio2 = new TipoEnvio("normal", 2, 20, 2);
+
+        const cliente = new Cliente("111", "Hugo", "Av.Madrid-10");
+        const cliente2 = new Cliente("11dfd1111", "Carmen", "Av.Madrid-10");
+        this.#tiposEnvios.insertarTipos([tipoEnvio, tipoEnvio2]);
+        this.#clientes.insertarClientes([cliente, cliente2]);
     }
     iniciar() {
         let opcion = -1;
@@ -98,21 +105,38 @@ class Tienda {
         switch (opcionMarcada) {
             case 1:
                 try {
+                    console.log("Has elegido:1.Mostrar catalogo libros disponibles");
                     this.mostrarCatalogoLibrosDisponibles();
 
                 } catch (Error) {
-                    console.error("Error en la opcion 1: " + error)
+                    console.error("Error en la opcion 1: " + error);
                 }
                 break;
             case 2:
                 try {
+                    console.log("Has elegido:2.Insertar libros o modificar");
                     this.pedirYcrearLibro();
                 } catch (Error) {
-                    console.error("Error en la opcion 2: " + error)
+                    console.error("Error en la opcion 2: " + error);
                 }
                 break;
+            case 3:
+                try {
+                    console.log("Has elegido:3.Actualizar stock");
+                    this.actualizarStockLibros();
+                } catch (Error) {
+                    console.error("Error en la opcion 2: " + error);
+                }
+                break;
+            case 8:
+                try {
+                    console.log("Has elegido:8.Hacer pedido");
+                    this.hacerPedidoPorCliente();
+                } catch (Error) {
+                    console.error("Error en la opcion 8: " + error);
+                }
             default:
-                console.log("error inesperado")
+                console.log("error inesperado");
         }
     }
 
@@ -223,7 +247,6 @@ class Tienda {
         let precio;
         let peso;
         let formato;
-        let peso;
         let dimensiones;
         let stock;
         // no has controlado las excepciones ocn try 
@@ -235,7 +258,6 @@ class Tienda {
                 console.log("Que campos quieres modificar elige por numero segun el campo: ");
                 console.log("1.Titulo\n2.Autores\n3.Genero\n4.precio\n5.Tamaño Ebook\n6.Formato\n7.Salir");
                 campoElegido = this.#lector.leerEntero("Introduce la opcion: ");
-
                 switch (campoElegido) {
                     case 1:
                         let titulo = this.#lector.leerCadena1Hasta("Introduce el nuevo titulo: ");
@@ -255,31 +277,31 @@ class Tienda {
                             autorSelect = this.#autores.listadoAutores[opcionAutor - 1];
                             autoresSelecionados.push(autorSelect);
                         }
-                        ebookMap.set("autores",autoresSelecionados);
+                        ebookMap.set("autores", autoresSelecionados);
                         break;
                     case 3:
                         do {
                             console.log(Libro.GENEROS_LITERARIOS);
                             genero = this.#lector.leerCadena1("Escribe el genero del libro");
                         } while (!Libro.GENEROS_LITERARIOS.has(genero) || genero != "");
-                        ebookMap.set("genero",genero);
+                        ebookMap.set("genero", genero);
                         break;
                     case 4:
                         precio = this.#lector.leerRealHasta("Introduce el precio del libro: ");
-                        ebookMap.set("precio",precio);
+                        ebookMap.set("precio", precio);
                         break;
                     case 5:
                         do {
                             peso = this.#lector.leerReal("Introduce el tamaño del ebook");
                         } while (!Util.validarTamanoArchivo(peso));
-                        ebookMap.set("peso",peso);
+                        ebookMap.set("peso", peso);
                         break;
                     case 6:
                         do {
                             console.log(Ebook.FORMATOS);
                             formato = this.#lector.leerCadena1("Elige el formato:")
                         } while (!Util.validarFormato(formato, Ebook.FORMATOS));
-                        ebookMap.set("formato",formato);
+                        ebookMap.set("formato", formato);
                         break;
                     case 7:
                         console.log("SALIENDO...");
@@ -287,24 +309,31 @@ class Tienda {
                     default:
                         console.log("Opcion no valida..");
                 }
+                if (libro.modificarLibro(ebookMap)) {
+                    console.log("Campo modificado correctamente");
+                } else {
+                    console.log("Error campo no modificado");
+                }
 
-                libro.modificarLibro(ebookMap);
-            } while (campoElegido < 1 || campoElegido > 7);
+            } while (campoElegido != 7);
+
         } else if (libro instanceof LibroPapel) {
             const libroMap = new Map();
             console.log("Se va a modificar el Ebook: " + libro.titulo);
             let campoElegido = -1;
             do {
                 console.log("Que campos quieres modificar elige por numero segun el campo: ");
-                console.log("1.Titulo\n2.Autores\n3.Genero\n4.precio\n5.Peso\n6.Dimensiones\n7.Stock");
+                console.log("1.Titulo\n2.Autores\n3.Genero\n4.precio\n5.Peso\n6.Dimensiones\n7.Stock\n8.Salir");
                 campoElegido = this.#lector.leerEntero("Introduce la opcion: ");
 
                 switch (campoElegido) {
                     case 1:
+                        console.log("Has elegido modificar titulo");
                         let titulo = this.#lector.leerCadena1Hasta("Introduce el nuevo titulo: ");
                         libroMap.set("titulo", titulo);
                         break;
                     case 2:
+                        console.log("Has elegido modificar autores");
                         let opcion;
                         let autorSelect;
                         do {
@@ -318,43 +347,54 @@ class Tienda {
                             autorSelect = this.#autores.listadoAutores[opcionAutor - 1];
                             autoresSelecionados.push(autorSelect);
                         }
-                        libroMap.set("autores",autoresSelecionados);
+                        libroMap.set("autores", autoresSelecionados);
                         break;
                     case 3:
+                        console.log("Has elegido modificar genero");
                         do {
                             console.log(Libro.GENEROS_LITERARIOS);
                             genero = this.#lector.leerCadena1("Escribe el genero del libro");
                         } while (!Libro.GENEROS_LITERARIOS.has(genero) || genero != "");
-                        libroMap.set("genero",genero);
-    
+                        libroMap.set("genero", genero);
+
                         break;
                     case 4:
                         precio = this.#lector.leerRealHasta("Introduce el precio del libro: ");
-                        libroMap.set("precio",precio);
+                        libroMap.set("precio", precio);
                         break;
                     case 5:
                         do {
                             peso = this.#lector.leerReal("Introduce el peso del libro");
                         } while (!Util.validarPeso(peso));
-                        libroMap.set("peso",peso);
+                        libroMap.set("peso", peso);
                         break;
                     case 6:
                         do {
                             dimensiones = this.#lector.leerCadena1("Introduce las dimensiones del libro:")
                         } while (!Util.validarDimensiones(dimensiones));
-                        libroMap.set("dimensiones",dimensiones);
+                        libroMap.set("dimensiones", dimensiones);
                         break;
                     case 7:
                         do {
                             stock = this.#lector.leerEntero("Introduce el stock del libro:");
                         } while (!Util.validarStock(stock));
-                        libroMap.set("stock",stock);
+                        libroMap.set("stock", stock);
+                        break;
+                    case 8:
+                        console.log("SALIENDO...");
                         break;
                     default:
                         console.log("Opcion no valida..");
                 }
-                libro.modificarLibro(libroMap);
-            } while (campoElegido < 1 || campoElegido > 8);
+
+                if (libro.modificarLibro(libroMap)) {
+                    console.log("Campo modificado correctamente");
+                    console.log(libro.mostrarDatosLibro());
+                } else {
+                    console.log("Error campo no modificado");
+                }
+
+            } while (campoElegido != 8);
 
         }
 
@@ -370,7 +410,43 @@ class Tienda {
         console.log(this.#libros.obtenerCadenaLibrosMenu());
     }
 
-    actualizarStockLibros() { }
+    actualizarStockLibros() {
+
+        let libroActualizar;
+        let unidadesNuevas;
+        let opcion;
+        do {
+            try {
+                do {
+                    console.log("Libros de la tienda:\n" + this.#libros.obtenerCadenaLibrosMenu() + "\n0.Salir");
+                    opcion = this.#lector.leerEntero("Introduce el numero del libro a modificar su stock");
+
+                } while (opcion > this.#libros.listaLibros.length);
+
+            } catch (Error) {
+                console.error("Error al mostrar los libros y pedir eliger libro " + error);
+            }
+            
+            libroActualizar = this.#libros.listaLibros[opcion - 1];
+            if (libroActualizar instanceof LibroPapel) {
+                console.log("Has elegido: " + libroActualizar.titulo + "\nStock actual:" + libroActualizar.stock);
+                try {
+                    console.log("Introduce las unidades a incrementar el stock del libro ");
+                    unidadesNuevas = this.#lector.leerEnteroHasta("Introduce las unidades a incrementar el stock del libro");
+
+                } catch (Error) {
+                    console.error("Error pedir la unidades a incrementar " + error);
+                }
+                libroActualizar.ampliarStock(unidadesNuevas);
+                console.log("Has incrementado en " + unidadesNuevas + " el stock del libro: " + libroActualizar.titulo);
+                console.log("Stock despues del incremento:" + libroActualizar.stock);
+            }else{
+                console.log("Un lirbo ebook no tiene stock con lo cual no se puede actualizar");
+            }
+
+        } while (opcion != 0);
+
+    }
 
     notificacionesStockLibrosMinimo() { }
 
@@ -378,7 +454,71 @@ class Tienda {
 
     borrarCliente() { }
 
-    hacerPedidoPorCliente() { }
+    hacerPedidoPorCliente() {
+        let dniCliente;
+        let existeDni = false;
+        do {
+            dniCliente = this.#lector.leerCadena1("Introduce el dni del cliente para realizar el pedido:");
+            existeDni = this.#clientes.existeClientePorDNI(dniCliente);
+            if (!existeDni) {
+                console.log("EL dni no existe ");
+            }
+        } while (!existeDni);
+        let clienteEncontrado = this.#clientes.buscarClientePorDNI(dniCliente);
+        const pedidoActual = new Pedido(clienteEncontrado);
+
+        console.log("Cliente encontrado: " + clienteEncontrado.nombreCompleto);
+        let opcion;
+        let alMenosUnPapel = false;
+        let libroElegido = false;
+        do {
+            console.log("Libros de la tienda:")
+            console.log(this.#libros.obtenerCadenaLibrosMenu() + "\n0.Salir");
+            opcion = this.#lector.leerEntero("Introduce el valor del libro a elegir:");
+
+            if (opcion != 0) {
+                let libro = this.#libros.listaLibros[opcion - 1];
+                console.log("Libro elegido: " + libro.titulo);
+
+                if (libro instanceof Ebook) {
+                    libroElegido = true;
+                    pedidoActual.insertarLibro(libro, 1);// del ebook solo se puede adquirir 1 und
+
+                } else if (libro.stock > 0) {
+                    libroElegido = true;
+                    console.log("Stock del libro: " + libro.titulo + " Stock->" + (libro.stock));
+                    let unidades;
+
+                    do {
+                        unidades = this.#lector.leerEntero("Introduce las unidades del libro a adquirir");
+                        if (unidades < libro.stock && unidades != 0) {
+                            pedidoActual.insertarLibro(libro, unidades);
+                            alMenosUnPapel = true;
+                        } else {
+                            console.log("No hay unidades suficientes");
+                        }
+                    } while (unidades == 0 || unidades > libro.stock);
+
+                }
+            }
+        } while (!libroElegido);
+
+        let tipoEnvioSelecionado;
+        let tipoEnvio;
+        if (alMenosUnPapel) {
+            do {
+                console.log("Tipos de envios actuales: ");
+                console.log(this.#tiposEnvios.obtenerCadenaTiposMenu());
+                tipoEnvioSelecionado = this.#lector.leerEntero("Elige el tipo de envio: ");
+
+            } while (tipoEnvioSelecionado == 0 || tipoEnvioSelecionado > this.#tiposEnvios.length);
+            tipoEnvio = this.#tiposEnvios.tiposEnvios[tipoEnvioSelecionado - 1];
+            pedidoActual.establecerTipoEnvio(tipoEnvio);
+        }
+
+        console.log("Datos del pedido: " + pedidoActual.mostrarDatosPedido());
+        this.#pedidosTienda.insertarUnPedido(pedidoActual);
+    }
 
     mostrarPedidoPorID() { }
 

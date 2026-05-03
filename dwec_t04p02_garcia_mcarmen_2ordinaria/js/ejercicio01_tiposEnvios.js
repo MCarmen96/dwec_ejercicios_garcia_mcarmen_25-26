@@ -40,10 +40,10 @@ class TiposEnvios{
     //obtenerCadenaTiposMenu(): Devuelve una cadena con el listado numerado de los tipos de gastos en orden de precio mayor a menos y entre paréntesis el precio.
     obtenerCadenaTiposMenu(){
         let cadenaTiposEnvios="";
-        const ordenadoPorPrecio=this.tiposEnvios.toSorted((a,b)=>{
+        this.tiposEnvios.sort((a,b)=>{
             return a.precioSinIva-b.precioSinIva;
         });
-        ordenadoPorPrecio.forEach((tipo,index)=>{
+        this.tiposEnvios.forEach((tipo,index)=>{
             return cadenaTiposEnvios+=`\n${(index+1)}.${tipo.nombre} PrecioSinIva:(${tipo.precioSinIVA})`;
         });
 

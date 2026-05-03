@@ -76,15 +76,15 @@ class Libros{
         let cadenaTituloLibros="";
         let numero=1;
         if(this.listaLibros.length>=0){
-            const ordenadoAlfabPorTitulo=this.listaLibros.toSorted((a,b)=>{
+            this.listaLibros.sort((a,b)=>{
             return a.titulo.localeCompare(b.titulo);
         });
 
-        ordenadoAlfabPorTitulo.forEach(libro=>{
+        this.listaLibros.forEach(libro=>{
             if(libro instanceof Ebook){
-                cadenaTituloLibros+=`${numero++}.${libro.titulo} (Ebook))\n`;
+                cadenaTituloLibros+=`${numero++}.${libro.titulo} (Ebook)\n`;
             }else if(libro instanceof LibroPapel){
-                cadenaTituloLibros+=`${numero++}.${libro.titulo} (Libro en papel))\n`;
+                cadenaTituloLibros+=`${numero++}.${libro.titulo} (Libro en papel)\n`;
             }else{
                 cadenaTituloLibros+=`${numero++}.${libro.titulo} (Desconocido))\n`;
             }
