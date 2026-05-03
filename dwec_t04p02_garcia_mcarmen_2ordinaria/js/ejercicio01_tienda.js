@@ -63,7 +63,9 @@ class Tienda {
         const autor3 = new Autor("Brandon Sanderson");
         const ebook1 = new Ebook(222, "El imperio de los condenados", [autor1, autor2], "Terror", 20.00, 20.00, "pdf");
         const libroPapel = new LibroPapel(111, "Los diarios de la boticaria", [autor1], "Novela", 30.00, 1.00, "20x15x3", 30);
-        this.#libros.insertarLibros([libroPapel, ebook1]);
+        const libroPapel2= new LibroPapel(333, "Nunca Noche", [autor2], "Novela", 30.00, 1.00, "20x15x3", 2);
+        const libroPapel3= new LibroPapel(444, "Solo levaling", [autor2], "Novela", 30.00, 1.00, "20x15x3", 0);
+        this.#libros.insertarLibros([libroPapel, ebook1,libroPapel2,libroPapel3]);
         this.#autores.insertarAutores([autor1, autor2, autor3]);
 
         const tipoEnvio = new TipoEnvio("urgente", 1, 10, 1);
@@ -125,7 +127,15 @@ class Tienda {
                     console.log("Has elegido:3.Actualizar stock");
                     this.actualizarStockLibros();
                 } catch (Error) {
-                    console.error("Error en la opcion 2: " + error);
+                    console.error("Error en la opcion 3: " + error);
+                }
+                break;
+            case 4:
+                try {
+                    console.log("Has elegido:4.Ver stock bajo minimo");
+                    this.notificacionesStockLibrosMinimo();
+                } catch (Error) {
+                    console.error("Error en la opcion 4: " + error);
                 }
                 break;
             case 8:
@@ -426,7 +436,7 @@ class Tienda {
             } catch (Error) {
                 console.error("Error al mostrar los libros y pedir eliger libro " + error);
             }
-            
+
             libroActualizar = this.#libros.listaLibros[opcion - 1];
             if (libroActualizar instanceof LibroPapel) {
                 console.log("Has elegido: " + libroActualizar.titulo + "\nStock actual:" + libroActualizar.stock);
@@ -440,7 +450,7 @@ class Tienda {
                 libroActualizar.ampliarStock(unidadesNuevas);
                 console.log("Has incrementado en " + unidadesNuevas + " el stock del libro: " + libroActualizar.titulo);
                 console.log("Stock despues del incremento:" + libroActualizar.stock);
-            }else{
+            } else {
                 console.log("Un lirbo ebook no tiene stock con lo cual no se puede actualizar");
             }
 
@@ -448,7 +458,26 @@ class Tienda {
 
     }
 
-    notificacionesStockLibrosMinimo() { }
+    notificacionesStockLibrosMinimo() {
+        let bajoMinimo= "Libros Bajo Minimo\n";
+        let sinStock="Libros sin Stock\n"
+
+        this.#libros.listaLibros.forEach(libro => {
+            if (libro instanceof LibroPapel) {
+                if (libro.avisoStockMinimo()) {
+                    bajoMinimo+= libro.titulo+"\n";
+                } else{
+                    if(!libro.comprobarDisponibilidad()){
+                        sinStock+=libro.titulo+"\n";
+                    }else{
+                        sinStock+="NO hay libros sin stock"
+                    }
+                }
+            }
+        });
+
+        console.log(bajoMinimo+"\n"+sinStock);
+    }
 
     mostrarPedidosAbiertoCliente() { }
 
@@ -484,7 +513,7 @@ class Tienda {
                     libroElegido = true;
                     pedidoActual.insertarLibro(libro, 1);// del ebook solo se puede adquirir 1 und
 
-                } else if (libro.stock > 0) {
+                } else if (libro.stock > 0) {// ! AQUI DEBERIA USAR EL METODO DE DISPONIBILIDAD DE LIBROPAPEL NO HACERLO A MANO ¡¡CORREGIR!!
                     libroElegido = true;
                     console.log("Stock del libro: " + libro.titulo + " Stock->" + (libro.stock));
                     let unidades;
