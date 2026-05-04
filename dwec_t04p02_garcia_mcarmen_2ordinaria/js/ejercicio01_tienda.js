@@ -63,9 +63,9 @@ class Tienda {
         const autor3 = new Autor("Brandon Sanderson");
         const ebook1 = new Ebook(222, "El imperio de los condenados", [autor1, autor2], "Terror", 20.00, 20.00, "pdf");
         const libroPapel = new LibroPapel(111, "Los diarios de la boticaria", [autor1], "Novela", 30.00, 1.00, "20x15x3", 30);
-        const libroPapel2= new LibroPapel(333, "Nunca Noche", [autor2], "Novela", 30.00, 1.00, "20x15x3", 2);
-        const libroPapel3= new LibroPapel(444, "Solo levaling", [autor2], "Novela", 30.00, 1.00, "20x15x3", 0);
-        this.#libros.insertarLibros([libroPapel, ebook1,libroPapel2,libroPapel3]);
+        const libroPapel2 = new LibroPapel(333, "Nunca Noche", [autor2], "Novela", 30.00, 1.00, "20x15x3", 2);
+        const libroPapel3 = new LibroPapel(444, "Solo levaling", [autor2], "Novela", 30.00, 1.00, "20x15x3", 0);
+        this.#libros.insertarLibros([libroPapel, ebook1, libroPapel2, libroPapel3]);
         this.#autores.insertarAutores([autor1, autor2, autor3]);
 
         const tipoEnvio = new TipoEnvio("urgente", 1, 10, 1);
@@ -136,6 +136,22 @@ class Tienda {
                     this.notificacionesStockLibrosMinimo();
                 } catch (Error) {
                     console.error("Error en la opcion 4: " + error);
+                }
+                break;
+            case 6:
+                try {
+                    console.log("Has elegido:6.Mostrar pedidos(abiertos) clientes");
+                    this.mostrarPedidosAbiertoCliente();
+                } catch (Error) {
+                    console.error("Error en la opcion 6: " + error);
+                }
+                break;
+            case 7:
+                try {
+                    console.log("Has elegido:7.Borrar cliente por dni");
+                    this.borrarCliente();
+                } catch (Error) {
+                    console.error("Error en la opcion 6: " + error);
                 }
                 break;
             case 8:
@@ -411,7 +427,9 @@ class Tienda {
     }
     pedirYcrearVariosLibros() { }
 
-    pedirYcrearCliente() { }
+    pedirYcrearCliente() {
+
+    }
 
     pedirYcrearVariosClientes() { }
 
@@ -459,29 +477,76 @@ class Tienda {
     }
 
     notificacionesStockLibrosMinimo() {
-        let bajoMinimo= "Libros Bajo Minimo\n";
-        let sinStock="Libros sin Stock\n"
+        let bajoMinimo = "Libros Bajo Minimo\n";
+        let sinStock = "Libros sin Stock\n"
 
         this.#libros.listaLibros.forEach(libro => {
             if (libro instanceof LibroPapel) {
                 if (libro.avisoStockMinimo()) {
-                    bajoMinimo+= libro.titulo+"\n";
-                } else{
-                    if(!libro.comprobarDisponibilidad()){
-                        sinStock+=libro.titulo+"\n";
-                    }else{
-                        sinStock+="NO hay libros sin stock"
+                    bajoMinimo += libro.titulo + "\n";
+                } else {
+                    if (!libro.comprobarDisponibilidad()) {
+                        sinStock += libro.titulo + "\n";
+                    } else {
+                        sinStock += "NO hay libros sin stock"
                     }
                 }
             }
         });
 
-        console.log(bajoMinimo+"\n"+sinStock);
+        console.log(bajoMinimo + "\n" + sinStock);
     }
 
-    mostrarPedidosAbiertoCliente() { }
+    mostrarPedidosAbiertoCliente() {
+        let cliente;
+        let dniCliente;
+        let encontrado=false;
+        try {
+            do {
+                dniCliente = this.#lector.leerCadena1("Introduce el dni del cliente para ver sus pedidos abiertos: ");
+                
+                cliente=this.#clientes.buscarClientePorDNI(dniCliente);
+                if(cliente!=null){
+                    encontrado=true;
+                }
 
-    borrarCliente() { }
+            } while (!encontrado);
+        }catch(Error){
+            console.error("Error en pedir dni cliente: " + error);
+        }
+
+        console.log("Pedidos abiertos del cliente "+cliente.nombreCompleto+"\n");
+        console.log(cliente.mostrarPedidosAbiertoCliente());
+    }
+
+    borrarCliente() { 
+        let cliente;
+        let dniCliente;
+        let encontrado=false;
+        try {
+            do {
+                dniCliente = this.#lector.leerCadena1("Introduce el dni del cliente a eliminar: ");
+                
+                cliente=this.#clientes.listadoClientes.buscarClientePorDNI(dniCliente);
+                if(cliente!=null){
+                    encontrado=true;
+                }
+
+            } while (!encontrado);
+        }catch(Error){
+            console.error("Error en pedir dni cliente: " + error);
+        }
+
+        try{
+            if(this.#clientes.listadoClientes.borrarCliente(dniCliente)){
+                console.log("Cliente con dni "+dniCliente+" eliminado con exito");
+            }else{
+                console.log("Cliente con dni "+dniCliente+"no s eha podido eliminar");
+            }
+        }catch(Error){
+            console.error("Error al borrar el  cliente: " + error);
+        }
+    }
 
     hacerPedidoPorCliente() {
         let dniCliente;
