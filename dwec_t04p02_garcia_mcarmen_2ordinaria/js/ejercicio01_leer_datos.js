@@ -254,6 +254,29 @@ class LeerDatosPrompt extends LeerDatos {
 
         return cadena;
     }
+
+    leerCadenaMaxCaracteres(mensaje_o_id,longitud){
+
+        let cadena;
+        let isValid=false;
+
+        do {
+            try {
+                cadena = this.leerCadena1(mensaje_o_id);
+                if(cadena.length<=longitud){
+                    isValid = true;
+                }else{
+                    console.log("La cadena es demasiado larga.Maximo: "+longitud+" caracteres");
+                }
+            
+            } catch (error) {
+                console.log("[LeerDatosPrompt]->Error leer cadena hasta " + error);
+            }
+
+        } while (!isValid);
+
+        return cadena;
+    }
 }
 
 

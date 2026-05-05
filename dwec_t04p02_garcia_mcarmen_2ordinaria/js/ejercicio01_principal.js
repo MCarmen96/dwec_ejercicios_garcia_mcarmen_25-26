@@ -13,7 +13,7 @@ function main() {
         // a través de Tienda.
         // Invocar métodos que pueden lanzar errores.
         console.log(Libro.GENEROS_LITERARIOS);
-        pruebas();
+        //pruebas();
         const tienda = Tienda.getInstancia("Librería Prieto");
         tienda.cargarDatosPrueba();
         tienda.iniciar();

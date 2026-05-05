@@ -99,9 +99,16 @@ class PedidosTienda extends Pedidos {
     }
     //buscarPedidoPorId (idAbuscar): devuelve un objeto pedido por id. Si no encuentra ningún pedido con ese id, devuelve null.
     buscarPedidoPorId(idAbuscar) {
-        let pedidoEncontrado = this.listadoPedidos.find(pedido => {
-            return pedido.id === idAbuscar;
-        })
+
+        let pedidoEncontrado= this.listadoPedidos.find(pedido => {
+            return pedido.id == idAbuscar;
+        });
+
+        if(!pedidoEncontrado){
+            console.log("Pedido no encontrado");
+            pedidoEncontrado =null;
+        }
+
         return pedidoEncontrado;
     }
     //cerrarPedidoPorId (idAbuscar): cierra un pedido por id. Devuelve true / false si lo ha podido cerrar o no.

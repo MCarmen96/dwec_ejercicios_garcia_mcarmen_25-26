@@ -7,6 +7,8 @@ class Tienda {
     #clientes;
     #pedidosTienda;
     #nombreTienda;
+    #distribuidores;
+    #comentarios;
     #lector;
 
     // ===== ATRIBUTOS ESTÁTICOS =====
@@ -34,8 +36,9 @@ class Tienda {
         this.#tiposEnvios = new TiposEnvios();
         this.#clientes = new Clientes();
         this.#pedidosTienda = new PedidosTienda();
-
+        this.#distribuidores = [distribuidorLeroy, distribuidorSkill];
         this.#lector = new LeerDatosPrompt();
+        this.#comentarios = [];
     }
 
     get nombreTienda() {
@@ -82,18 +85,18 @@ class Tienda {
         do {
             console.log(this.mostrarMenu());
             opcion = this.pedirOpcionMenu();
-            if (opcion >= 1 && opcion <= 11) {
+            if (opcion >= 1 && opcion <= 14) {
                 this.gestionarOpcionMenu(opcion);
             } else {
                 console.log("Opcion no valida");
                 opcion = -1;
             }
         }
-        while (opcion === -1 || opcion != 11);
+        while (opcion === -1 || opcion != 14);
     }
     //mostrarMenu(): Devuelve una cadena con las opciones del menú.
     mostrarMenu() {
-        let menu = "1.Mostrar catalogo libros disponibles\n2.Insertar libros o modificar\n3.Actualizar stock\n4.Ver stock bajo minimo\n5.Insertar nuevo cliente\n6.Mostrar pedidos(abiertos) clientes\n7.Borrar cliente por dni\n8.Hacer pedido\n9.Mostrar pedido por ID\n10.Mostrar estadisticas\n11.Salir";
+        let menu = "1.Mostrar catalogo libros disponibles\n2.Insertar libros o modificar\n3.Actualizar stock\n4.Ver stock bajo minimo\n5.Insertar nuevo cliente\n6.Mostrar pedidos(abiertos) clientes\n7.Borrar cliente por dni\n8.Hacer pedido\n9.Mostrar pedido por ID\n10.Mostrar estadisticas\n11.Datos distribuidores\n12.Insertar comentario\n13.Ver comentarios\n14.Salir";
         return menu;
     }
     //pedirOpcionMenu(): Muestra el menú usando mostrarMenu() y devuelve la opción del menú pedida al usuario.
@@ -138,6 +141,14 @@ class Tienda {
                     console.error("Error en la opcion 4: " + error);
                 }
                 break;
+            case 5:
+                try {
+                    console.log("Has elegido:5.Insertar nuevo cliente");
+                    this.pedirYcrearVariosClientes();
+                } catch (Error) {
+                    console.error("Error en la opcion 5: " + error);
+                }
+                break;
             case 6:
                 try {
                     console.log("Has elegido:6.Mostrar pedidos(abiertos) clientes");
@@ -161,6 +172,34 @@ class Tienda {
                 } catch (Error) {
                     console.error("Error en la opcion 8: " + error);
                 }
+                break;
+
+            case 9:
+                try {
+                    console.log("Has elegido:9.Mostrar pedido por ID");
+                    this.mostrarPedidoPorID();
+                } catch (Error) {
+                    console.error("Error en la opcion 9: " + error);
+                }
+                break;
+
+            case 11:
+                try {
+                    console.log("Has elegido:11.Mostrar distribuidores");
+                    this.mostrarDistribuidores();
+                } catch (Error) {
+                    console.error("Error en la opcion 9: " + error);
+                }
+                break;
+            case 12:
+                try {
+                    console.log("Has elegido:12.Insertar comentarios");
+                    this.insertarComentario();
+                } catch (Error) {
+                    console.error("Error en la opcion 12: " + Error);
+                }
+                break;
+
             default:
                 console.log("error inesperado");
         }
@@ -425,13 +464,79 @@ class Tienda {
         }
 
     }
-    pedirYcrearVariosLibros() { }
+    //pedirYcrearVariosLibros() { }
 
     pedirYcrearCliente() {
+        let nombre;
+        let dni;
+        let direccion;
+
+        let nombreOk=false;
+        let dniOk=false;
+        let direccionOk=false;
+        let cliente;
+        try{
+            nombre=this.#lector.leerCadena1("Introduce el nombre del cliente: ");
+            if(Util.validarNombrePersona(nombre)){
+                nombreOk=true;
+            }else{
+                console.log("El nombre no cumple con los criterios necesarios Minimo 3 caracters")
+            }
+        }catch(error){
+            console.log("Error en pedir el nombre "+error);
+        }
+
+        try{
+            dni=this.#lector.leerCadena1("Introduce el dni del cliente: ");
+            if(Util.validarCadenaNoVacia(dni)){
+                dniOk=true;
+            }else{
+                console.log("El dni no es valido");
+            }
+        }catch(error){
+            console.log("Error en pedir el nombre "+error);
+        }
+
+        try{
+            direccion=this.#lector.leerCadena1("Introduce la direccion del cliente");
+            if(Util.validarDireccion(direccion)){
+                direccionOk=true;
+            }else{
+                console.log("La direccion no es valida.Minimo 3 caracteres");
+            }
+        }catch(error){
+            console.log("Error en pedir la direccion "+error);
+        }
+
+
+        if(nombreOk&&dniOk&&direccionOk){
+            console.log("Creando cliente... "+nombre)
+            cliente=new Cliente(dni,nombre,direccion);
+            this.#clientes.listadoClientes.push(cliente);// aqui me estoy cargando la abstraccion
+            console.log("Cliente creado con exito!")
+        }else{
+            console.log("Error en al creacion del cliente no se ha podido crear");
+        }
+    
 
     }
 
-    pedirYcrearVariosClientes() { }
+    pedirYcrearVariosClientes() {
+        let crearCliente=true;
+        let opcion;
+        do{
+            try{
+                opcion=this.#lector.leerCadena1("Quieres crear un cliente si/no");
+                if(opcion.toLocaleLowerCase()=="no"){
+                    crearCliente=false;
+                }else{
+                    this.pedirYcrearCliente();
+                }
+            }catch(error){
+                console.log("Error en pedir el nombre "+error);
+            }
+        }while(crearCliente);
+    }
 
     //mostrarCatálogoLibrosDisponibles(): muestra todos los libros disponibles para comprar, separando los ebooks de los libros en papel.
     mostrarCatalogoLibrosDisponibles() {
@@ -500,52 +605,59 @@ class Tienda {
     mostrarPedidosAbiertoCliente() {
         let cliente;
         let dniCliente;
-        let encontrado=false;
+        let encontrado = false;
         try {
             do {
                 dniCliente = this.#lector.leerCadena1("Introduce el dni del cliente para ver sus pedidos abiertos: ");
-                
-                cliente=this.#clientes.buscarClientePorDNI(dniCliente);
-                if(cliente!=null){
-                    encontrado=true;
+
+                cliente = this.#clientes.buscarClientePorDNI(dniCliente);
+                if (cliente != null) {
+                    encontrado = true;
                 }
 
             } while (!encontrado);
-        }catch(Error){
+        } catch (Error) {
             console.error("Error en pedir dni cliente: " + error);
         }
 
-        console.log("Pedidos abiertos del cliente "+cliente.nombreCompleto+"\n");
-        console.log(cliente.mostrarPedidosAbiertoCliente());
+        console.log("Pedidos abiertos del cliente " + cliente.nombreCompleto + "\n");
+        console.log(cliente.mostrarDatosPedidoAbiertoCliente());
     }
 
-    borrarCliente() { 
+    borrarCliente() {
         let cliente;
         let dniCliente;
-        let encontrado=false;
-        try {
-            do {
+        let encontrado = false;
+        let salir = false;
+
+        do {
+
+            try {
+                console.log("0.Salir")
                 dniCliente = this.#lector.leerCadena1("Introduce el dni del cliente a eliminar: ");
-                
-                cliente=this.#clientes.listadoClientes.buscarClientePorDNI(dniCliente);
-                if(cliente!=null){
-                    encontrado=true;
+                if (dniCliente == 0) {
+                    salir = true;
                 }
+                cliente = this.#clientes.buscarClientePorDNI(dniCliente);
+                if (cliente != null) {
+                    console.log("Cliente encontrado");
+                    encontrado = true;
+                    try {
+                        this.#clientes.borrarClientePorDni(dniCliente);
+                        console.log("Cliente con dni " + dniCliente + " eliminado con exito");
+                    } catch (Error) {
+                        console.error("Error en eliminar cliente: " + Error);
+                    }
 
-            } while (!encontrado);
-        }catch(Error){
-            console.error("Error en pedir dni cliente: " + error);
-        }
-
-        try{
-            if(this.#clientes.listadoClientes.borrarCliente(dniCliente)){
-                console.log("Cliente con dni "+dniCliente+" eliminado con exito");
-            }else{
-                console.log("Cliente con dni "+dniCliente+"no s eha podido eliminar");
+                } else {
+                    console.log("Cliente no encontrado");
+                    console.log("Cliente con dni " + dniCliente + "no se ha podido eliminar");
+                }
+            } catch (Error) {
+                console.error("Error en pedir dni cliente: " + Error);
             }
-        }catch(Error){
-            console.error("Error al borrar el  cliente: " + error);
-        }
+        } while (!salir);
+
     }
 
     hacerPedidoPorCliente() {
@@ -564,7 +676,7 @@ class Tienda {
         console.log("Cliente encontrado: " + clienteEncontrado.nombreCompleto);
         let opcion;
         let alMenosUnPapel = false;
-        let libroElegido = false;
+
         do {
             console.log("Libros de la tienda:")
             console.log(this.#libros.obtenerCadenaLibrosMenu() + "\n0.Salir");
@@ -575,27 +687,30 @@ class Tienda {
                 console.log("Libro elegido: " + libro.titulo);
 
                 if (libro instanceof Ebook) {
-                    libroElegido = true;
+
                     pedidoActual.insertarLibro(libro, 1);// del ebook solo se puede adquirir 1 und
 
-                } else if (libro.stock > 0) {// ! AQUI DEBERIA USAR EL METODO DE DISPONIBILIDAD DE LIBROPAPEL NO HACERLO A MANO ¡¡CORREGIR!!
-                    libroElegido = true;
+                } else if (libro.comprobarDisponibilidad()) {// ! AQUI DEBERIA USAR EL METODO DE DISPONIBILIDAD DE LIBROPAPEL NO HACERLO A MANO ¡¡CORREGIR!!
+
                     console.log("Stock del libro: " + libro.titulo + " Stock->" + (libro.stock));
                     let unidades;
 
                     do {
                         unidades = this.#lector.leerEntero("Introduce las unidades del libro a adquirir");
-                        if (unidades < libro.stock && unidades != 0) {
+                        if (unidades <= libro.stock && unidades != 0) {
                             pedidoActual.insertarLibro(libro, unidades);
                             alMenosUnPapel = true;
                         } else {
                             console.log("No hay unidades suficientes");
                         }
-                    } while (unidades == 0 || unidades > libro.stock);
+                    } while (unidades <= 0 || !alMenosUnPapel);
 
+                } else {
+                    console.log("El libro actual no tiene stock");
                 }
             }
-        } while (!libroElegido);
+
+        } while (opcion != 0);
 
         let tipoEnvioSelecionado;
         let tipoEnvio;
@@ -605,16 +720,121 @@ class Tienda {
                 console.log(this.#tiposEnvios.obtenerCadenaTiposMenu());
                 tipoEnvioSelecionado = this.#lector.leerEntero("Elige el tipo de envio: ");
 
+                if (tipoEnvioSelecionado > 0 && tipoEnvioSelecionado <= this.#tiposEnvios.tiposEnvios.length) {
+                    tipoEnvio = this.#tiposEnvios.tiposEnvios[tipoEnvioSelecionado - 1];
+                    if (pedidoActual.establecerTipoEnvio(tipoEnvio)) {
+                        console.log("Tipo de envio selecionado: " + tipoEnvio.nombre);
+                        console.log("Tipo de envio establecido con exito");
+                    } else {
+                        console.log("Tipo de envio no valido");
+                        tipoEnvioSelecionado = 0;
+                    }
+                }
+
             } while (tipoEnvioSelecionado == 0 || tipoEnvioSelecionado > this.#tiposEnvios.length);
-            tipoEnvio = this.#tiposEnvios.tiposEnvios[tipoEnvioSelecionado - 1];
-            pedidoActual.establecerTipoEnvio(tipoEnvio);
         }
 
         console.log("Datos del pedido: " + pedidoActual.mostrarDatosPedido());
         this.#pedidosTienda.insertarUnPedido(pedidoActual);
     }
 
-    mostrarPedidoPorID() { }
+    mostrarPedidoPorID() {
+
+        let idPedido;
+        let existe = false;
+        let encontrado = null;
+        try {
+            do {
+                idPedido = this.#lector.leerEntero("Introduce el id del pedido a buscar");
+                encontrado = this.#pedidosTienda.buscarPedidoPorId(idPedido);
+                if (encontrado) {
+                    existe = true;
+                }
+            } while (!existe);
+        } catch (Error) {
+            console.error("Error en pedir el id del pedido: " + error);
+        }
+
+        console.log("Datos del pedido: ");
+        console.log(encontrado.mostrarDatosPedido());
+
+    }
+
+    mostrarDistribuidores() {
+        let datos = "";
+        this.#distribuidores.forEach(distri => {
+            datos += distri.nombre + "(" + distri.provincia + ")" + "Dias de servicio->" + distri.diasServicio + "\n";
+        });
+
+        console.log(datos);
+    }
+
+    insertarComentario() {
+        let dni;
+        let libro;
+        let cliente;
+        let comentario;
+        let texto;
+        let dniOk = false;
+        let libroSelect;
+        let libroOk=false;
+        let fecha=new Date();
+
+        // cliente 
+        do {
+            try {
+                dni = this.#lector.leerCadena1("Introdocue el dni del cliente:");
+                cliente = this.#clientes.buscarClientePorDNI(dni);
+                if (cliente != null) {
+                    dniOk = true;
+                    console.log("Cliente encontrado: " + cliente.nombreCompleto);
+                } else {
+                    console.log("Cliente no encontrado");
+                }
+            } catch (Error) {
+                console.error("Error en pedir el dni: " + error);
+            }
+        } while (!dniOk);
+
+        // libro
+        do {
+            try {
+                console.log("Elige el libro a comentar:")
+                console.log(this.#libros.obtenerCadenaLibrosMenu() + "\n0.Salir");
+                libroSelect = this.#lector.leerEntero("Introduce el numero segun el libro a elegir");
+                if (libroSelect > 0 && libroSelect <= this.#libros.listaLibros.length) {
+                    libro = this.#libros.listaLibros[libroSelect - 1];
+                    console.log("Has elegido el libro: " + libro.titulo);
+                    libroOk=true;
+                } else {
+                    console.log("Opcion de libro no valida");
+                }
+            } catch (Error) {
+                console.error("Error en la eleccion del libro: " + error);
+            }
+        } while (!libroOk);
+
+        // comentario
+        
+        if(dniOk&&libroOk){
+            try {
+                texto = this.#lector.leerCadenaMaxCaracteres("Introduce el comentario para el libro " + libro.titulo, 100);
+
+            } catch (Error) {
+                console.error("Error en el texto del comentario: " + error);
+            }
+
+        }else{
+            console.log("Error");
+            texto="";
+
+        }
+        
+        comentario=new Comentario(cliente,libro,texto,fecha);
+        console.log(comentario.obtenerDatosComentario());
+        this.#comentarios.push(comentario);
+    }
+
 
     mostrarEstadisticas() { }
 }

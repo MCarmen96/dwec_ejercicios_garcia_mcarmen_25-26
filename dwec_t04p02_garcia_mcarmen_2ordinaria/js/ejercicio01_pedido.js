@@ -249,7 +249,7 @@ class Pedido {
                         this.tipoEnvioPedido = tipoEnvio;
                         //this.precioTotalConEnvioSinIVA = this.precioTotalSinEnvioSinIVA + tipoEnvio.precioSinIVA;
                     } else {
-                        isValid = false; // si el peso de los lirbos supera el maximo de peso del envio
+                        isValid = false; // si el peso de los libros supera el maximo de peso del envio
                     }
                 } else {
                     isValid = false; // SI todos los libros del pedido son ebooks
